@@ -1,16 +1,199 @@
-<!doctype html>
-<html lang="<!-- figma:lang -->">
-  <head>
-    <!-- figma:head-start -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><!-- figma:title --></title>
-    <!-- figma:head-end -->
-  </head>
-  <body>
-    <!-- figma:body-start -->
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <!-- figma:body-end -->
-  </body>
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onlytoon - Series Animadas Independientes</title>
+    <!-- Tailwind CSS CDN para un diseño rápido y estilizado -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#030712',
+                            900: '#0f172a',
+                            800: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- 1. Cabecera (Header) -->
+    <header class="border-b border-slate-800/80 sticky top-0 bg-slate-950/90 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl font-black tracking-wider text-indigo-400">Onlytoon</span>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                <a href="#inicio" class="hover:text-indigo-400 transition">Inicio</a>
+                <a href="#descubrir" class="hover:text-indigo-400 transition">Series & Cortos</a>
+                <a href="#crowdfunding" class="hover:text-indigo-400 transition">Crowdfunding</a>
+                <a href="#recursos" class="hover:text-indigo-400 transition">Recursos</a>
+            </nav>
+
+            <div>
+                <a 
+                    href="#subir" 
+                    class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2 rounded-xl transition shadow-lg shadow-indigo-600/20"
+                >
+                    Sube tu proyecto
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        
+        <!-- 2. Carrusel Principal (Hero Section) -->
+        <section id="inicio" class="relative bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 rounded-3xl p-6 sm:p-12 border border-slate-800 shadow-2xl overflow-hidden">
+            <div class="relative z-10 max-w-2xl space-y-4">
+                <span class="inline-block bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs px-3 py-1 rounded-full uppercase font-bold tracking-wider">
+                    Destacado del Mes
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                    El talento independiente en movimiento
+                </h2>
+                <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                    Descubre obras únicas de animación creadas por artistas independientes de todo el mundo. Apoya directamente su visión y disfruta de contenido original.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4">
+                    <a 
+                        href="#ver" 
+                        class="bg-white hover:bg-slate-200 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-md"
+                    >
+                        Ver Ahora
+                    </a>
+                    <a 
+                        href="#explorar" 
+                        class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-6 py-3 rounded-xl border border-slate-700 transition"
+                    >
+                        Explorar Catálogo
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Sección de Descubrimiento (Grid de Contenidos) -->
+        <section id="descubrir" class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                    <h3 class="text-2xl font-bold tracking-tight">Descubre Contenido</h3>
+                    <p class="text-sm text-slate-400">Cortometrajes y series independientes actualizadas</p>
+                </div>
+                <div class="flex gap-2 text-xs font-medium">
+                    <button class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg">Todos</button>
+                    <button class="bg-slate-900 hover:bg-slate-800 text-slate-400 px-3 py-1.5 rounded-lg border border-slate-800 transition">Fantasía</button>
+                    <button class="bg-slate-900 hover:bg-slate-800 text-slate-400 px-3 py-1.5 rounded-lg border border-slate-800 transition">Sci-Fi</button>
+                    <button class="bg-slate-900 hover:bg-slate-800 text-slate-400 px-3 py-1.5 rounded-lg border border-slate-800 transition">Comedia</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tarjeta 1 -->
+                <div class="bg-slate-900/80 rounded-2xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition group">
+                    <div class="aspect-video bg-slate-800 flex items-center justify-center text-slate-500 font-medium relative overflow-hidden">
+                        <span class="group-hover:scale-105 transition duration-300 text-sm">[ Miniatura YouTube ]</span>
+                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">12:45</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">Cortometraje</span>
+                            <span class="text-xs text-slate-500">Fantasía</span>
+                        </div>
+                        <h4 class="font-bold text-lg group-hover:text-indigo-400 transition">El Viaje de las Estrellas</h4>
+                        <p class="text-sm text-slate-400">Por: Estudio Independiente Animation</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="bg-slate-900/80 rounded-2xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition group">
+                    <div class="aspect-video bg-slate-800 flex items-center justify-center text-slate-500 font-medium relative overflow-hidden">
+                        <span class="group-hover:scale-105 transition duration-300 text-sm">[ Miniatura YouTube ]</span>
+                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">Ep. 1</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">Serie Animada</span>
+                            <span class="text-xs text-slate-500">Sci-Fi</span>
+                        </div>
+                        <h4 class="font-bold text-lg group-hover:text-indigo-400 transition">Cyber Toons Chronicles</h4>
+                        <p class="text-sm text-slate-400">Por: Creador Anim</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="bg-slate-900/80 rounded-2xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition group">
+                    <div class="aspect-video bg-slate-800 flex items-center justify-center text-slate-500 font-medium relative overflow-hidden">
+                        <span class="group-hover:scale-105 transition duration-300 text-sm">[ Miniatura YouTube ]</span>
+                        <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-0.5 rounded">08:20</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-indigo-400 font-semibold uppercase tracking-wider">Cortometraje</span>
+                            <span class="text-xs text-slate-500">Comedia</span>
+                        </div>
+                        <h4 class="font-bold text-lg group-hover:text-indigo-400 transition">El Monstruo de la Oficina</h4>
+                        <p class="text-sm text-slate-400">Por: ToonLab Studio</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Crowdfunding y Recursos -->
+        <div id="crowdfunding" class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6">
+            <section class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+                <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Financiación Abierta</span>
+                <h3 class="text-xl font-bold">Campañas de Crowdfunding Activas</h3>
+                <p class="text-sm text-slate-400">Apoya campañas en plataformas externas (Kickstarter, Verkami) para hacer realidad nuevas producciones animadas.</p>
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                        <h5 class="font-semibold text-sm">Proyecto Piloto Temporada 2</h5>
+                        <p class="text-xs text-slate-500 mt-0.5">Meta: 85% alcanzado</p>
+                    </div>
+                    <a href="#apoyar" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                        Apoyar
+                    </a>
+                </div>
+            </section>
+
+            <section id="recursos" class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+                <span class="text-xs text-emerald-400 font-bold uppercase tracking-wider">Herramientas</span>
+                <h3 class="text-xl font-bold">Recursos para Animadores</h3>
+                <p class="text-sm text-slate-400">Recomendaciones de tabletas gráficas, software y utilidades profesionales para creadores de animación.</p>
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800/80 flex items-center justify-between">
+                    <div>
+                        <h5 class="font-semibold text-sm">Tabletas y Software Profesional</h5>
+                        <p class="text-xs text-slate-500 mt-0.5">Guía de equipos recomendados</p>
+                    </div>
+                    <a href="#ver-recursos" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-4 py-2 rounded-xl border border-slate-700 transition">
+                        Ver Guía
+                    </a>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- 5. Pie de Página (Footer) -->
+    <footer class="border-t border-slate-800/80 mt-20 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>&copy; 2026 Onlytoon. Conectando la animación independiente con el mundo[cite: 8, 9].</p>
+            <div class="flex space-x-6">
+                <a href="#legal" class="hover:text-slate-400 transition">Términos</a>
+                <a href="#privacidad" class="hover:text-slate-400 transition">Privacidad</a>
+                <a href="#contacto" class="hover:text-slate-400 transition">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
 </html>
