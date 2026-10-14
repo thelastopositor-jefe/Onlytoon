@@ -10,12 +10,12 @@ export const CAROUSEL_ITEMS = [
   },
   {
     id: 2,
-    title: "HOLGAZANES & DEMONIOS EPISODIO 01",
-    tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía del héroe legendario...",
-    category: "DESTACADO",
+    title: "",
+    tagline: "",
+    category: "",
     thumbnail: "/images/carousel/carousel02.jpg",
-    videoUrl: "https://youtu.be/Jro1TkqpEXg",
-    linkText: "Ver proyecto"
+    videoUrl: "",
+    linkText: ""
   },
   {
     id: 3,
@@ -28,11 +28,11 @@ export const CAROUSEL_ITEMS = [
   },
   {
     id: 4,
-    title: "TÍTULO CUARTO PROYECTO",
-    tagline: "Nueva aventura animada llena de sorpresas, personajes increíbles y mucha acción.",
+    title: "HOLGAZANES & DEMONIOS EPISODIO 01",
+    tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía del héroe legendario...",
     category: "NUEVO",
     thumbnail: "/images/carousel/carousel04.jpg",
-    videoUrl: "https://youtube.com/",
+    videoUrl: "https://youtu.be/Jro1TkqpEXg",
     linkText: "Ver proyecto"
   },
   {
