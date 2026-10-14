@@ -933,7 +933,7 @@ export default function App() {
     className="w-full h-full object-cover opacity-100 scale-100"
   />
   {/* Gradiente lateral izquierdo: mantiene el fondo oscuro solo donde está el texto y se desvanece hacia la derecha */}
-  <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#121212]/30 via-[#121212]/10 to-transparent p-6 flex flex-col justify-end" />
+  <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-[#121212]/72 to-transparent" />
 </div>
 
                 {/* Contenido Hero */}
