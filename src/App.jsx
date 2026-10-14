@@ -12,7 +12,8 @@ import {
 // CONFIGURACIÓN DE ADMINISTRADORES
 // ==========================================
 const ADMIN_EMAILS = ['roman82ap@gmail.com', 'thelastopositor@gmail.com'];
-const GENRES_LIST = ['Acción', 'Aventura', 'Ciencia ficción', 'Fantasía', 'Drama', 'Comedia', 'Terror', 'Musical'];
+const GENRES_LIST = ['Acción', 'Aventura', 'Ciencia ficción', 'Fantasía', 'Fantasía oscura', 'Drama', 'Comedia', 'Terror', 'Suspenso', 'Infantil', 'Adulto', 'Social', 'Musical'];
+const PROJECT_CATEGORIES = ['Cortometraje', 'Largometraje', 'Serie', 'Tráiler', 'Musical', 'Crowdfunding', 'Tutoriales', 'Making of'];
 
 // ==========================================
 // DATOS MOCK INICIALES
@@ -284,6 +285,9 @@ export default function App() {
   // Modales
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showPublishWarning, setShowPublishWarning] = useState(false);
+  const [editingProject, setEditingProject] = useState(null);
+  const [editProjectForm, setEditProjectForm] = useState({ title: '', description: '', year: '', youtubeUrl: '' });
   const [showNewTopicModal, setShowNewTopicModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -341,7 +345,7 @@ export default function App() {
 
   // --- Verificación si es Administrador ---
   const isAdmin = useMemo(() => {
-    return user && ADMIN_EMAILS.includes(user.email.toLowerCase());
+    return Boolean(user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase()));
   }, [user]);
 
   // Proyectos Destacados para el Carrusel
@@ -357,8 +361,8 @@ export default function App() {
       // Filtro de Búsqueda
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
-        const matchTitle = p.title.toLowerCase().includes(query);
-        const matchCreator = p.creator.toLowerCase().includes(query);
+        const matchTitle = String(p.title || '').toLowerCase().includes(query);
+        const matchCreator = String(p.creator || p.creatorName || '').toLowerCase().includes(query);
         if (!matchTitle && !matchCreator) return false;
       }
 
@@ -614,6 +618,46 @@ export default function App() {
     }
   };
 
+  const handleOpenEditProject = (project) => {
+    setEditProjectForm({ title: project.title || '', description: project.description || '', year: String(project.year || new Date().getFullYear()), youtubeUrl: project.youtubeId ? `https://www.youtube.com/watch?v=${project.youtubeId}` : '' });
+    setEditingProject(project);
+  };
+
+  const handleSaveEditedProject = async (e) => {
+    e.preventDefault();
+    if (!editingProject || !user?.id || (editingProject.creatorId !== user.id && editingProject.creatorEmail !== user.email && !isAdmin)) { alert('No tienes permiso para editar este proyecto.'); return; }
+    const ytId = editProjectForm.youtubeUrl.trim() ? extractYoutubeId(editProjectForm.youtubeUrl.trim()) : editingProject.youtubeId;
+    const updates = { title: editProjectForm.title.trim(), description: editProjectForm.description.trim(), year: String(editProjectForm.year), youtubeId: ytId, thumbnail: `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` };
+    if (!updates.title) { alert('El título es obligatorio.'); return; }
+    try {
+      await updateDoc(doc(db, 'projects', editingProject.id), updates);
+      setProjects(prev => prev.map(p => p.id === editingProject.id ? { ...p, ...updates } : p));
+      setSelectedProject(prev => prev?.id === editingProject.id ? { ...prev, ...updates } : prev);
+      setEditingProject(null);
+      alert('Proyecto actualizado correctamente.');
+    } catch (error) { console.error('Error al editar proyecto:', error); alert('No se pudo editar el proyecto.'); }
+  };
+
+  const handleDeleteOwnProject = async (project) => {
+    if (!user?.id || (project.creatorId !== user.id && project.creatorEmail !== user.email && !isAdmin)) { alert('Solo puedes eliminar tus propios proyectos.'); return; }
+    if (!window.confirm('¿Quieres eliminar este proyecto? Esta acción no se puede deshacer.')) return;
+    try {
+      await deleteDoc(doc(db, 'projects', project.id));
+      setProjects(prev => prev.filter(p => p.id !== project.id));
+      setSelectedProject(null);
+      alert('Proyecto eliminado.');
+    } catch (error) { console.error('Error al eliminar proyecto:', error); alert('No se pudo eliminar el proyecto.'); }
+  };
+
+  useEffect(() => {
+    if (!selectedProject?.id) return;
+    const projectId = selectedProject.id;
+    setProjects(prev => prev.map(p => p.id === projectId ? { ...p, viewsCount: (p.viewsCount || 0) + 1 } : p));
+    setSelectedProject(prev => prev?.id === projectId ? { ...prev, viewsCount: (prev.viewsCount || 0) + 1 } : prev);
+    updateDoc(doc(db, 'projects', projectId), { viewsCount: increment(1) })
+      .catch(error => console.error('No se pudo registrar la visita:', error));
+  }, [selectedProject?.id]);
+
   const handleToggleFeatured = async (id) => {
     const project = projects.find(p => p.id === id);
     if (!project) return;
@@ -704,7 +748,7 @@ export default function App() {
     const existingData = userSnap.exists() ? userSnap.data() : {};
     const loggedUser = {
       id: firebaseUser.uid,
-      name: firebaseUser.displayName || existingData.name || email.split('@')[0],
+      name: existingData.name || firebaseUser.displayName || email.split('@')[0],
       email,
       photo: firebaseUser.photoURL || existingData.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
       banner: existingData.banner || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
@@ -805,6 +849,26 @@ export default function App() {
       const newUserData = { ...user, ...updatedData };
       setUser(newUserData);
       localStorage.setItem('onlytoon_user', JSON.stringify(newUserData));
+      const ownedProjects = projects.filter(p => p.creatorId === user.id || p.creatorEmail === user.email);
+      await Promise.all(ownedProjects.map(p => updateDoc(doc(db, 'projects', p.id), {
+        creator: updatedData.name, creatorName: updatedData.name,
+        creatorPhoto: updatedData.photo, creatorBio: updatedData.bio
+      }).catch(err => console.error('No se pudo sincronizar el creador del proyecto:', err))));
+      setProjects(prev => prev.map(p => (p.creatorId === user.id || p.creatorEmail === user.email)
+        ? { ...p, creator: updatedData.name, creatorName: updatedData.name, creatorPhoto: updatedData.photo, creatorBio: updatedData.bio } : p));
+      const ownedTopics = forumTopics.filter(t => t.authorId === user.id || t.authorEmail === user.email);
+      await Promise.all(ownedTopics.map(t => {
+        const comments = (t.comments || []).map(c => c.authorId === user.id ? { ...c, author: updatedData.name } : c);
+        return updateDoc(doc(db, 'discussions', t.id), { authorName: updatedData.name, comments })
+          .catch(err => console.error('No se pudo sincronizar el nombre en el foro:', err));
+      }));
+      setForumTopics(prev => prev.map(t => ({
+        ...t,
+        ...(t.authorId === user.id || t.authorEmail === user.email ? { authorName: updatedData.name } : {}),
+        comments: (t.comments || []).map(c => c.authorId === user.id ? { ...c, author: updatedData.name } : c)
+      })));
+      setSelectedProject(current => current && (current.creatorId === user.id || current.creatorEmail === user.email)
+        ? { ...current, creator: updatedData.name, creatorName: updatedData.name } : current);
       setShowEditProfileModal(false);
       alert('¡Perfil actualizado con éxito en la nube!');
     } catch (error) {
@@ -874,7 +938,7 @@ export default function App() {
 
         {/* Acciones y menú móvil */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <button onClick={() => { setShowSubmitModal(true); setMobileMenuOpen(false); }} className="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-2.5 sm:px-4 py-2 rounded-full flex items-center gap-1.5 whitespace-nowrap">
+          <button onClick={() => { setShowPublishWarning(true); setMobileMenuOpen(false); }} className="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-2.5 sm:px-4 py-2 rounded-full flex items-center gap-1.5 whitespace-nowrap">
             <Plus className="w-4 h-4" /><span className="hidden sm:inline">Publicar</span>
           </button>
           {user ? (
@@ -1053,6 +1117,7 @@ export default function App() {
                       <option value="Comedia">Comedia</option>
                       <option value="Terror">Terror</option>
                       <option value="Musical">Musical</option>
+                      {GENRES_LIST.filter(g => !['Acción','Aventura','Ciencia ficción','Fantasía','Drama','Comedia','Terror','Musical'].includes(g)).map(g => <option key={g} value={g}>{g}</option>)}
                     </select>
                   </div>
 
@@ -1129,6 +1194,9 @@ export default function App() {
                       />
                       <span className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-0.5 rounded">
                         {project.duration}
+                      </span>
+                      <span className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded">
+                        {(project.viewsCount || 0).toLocaleString('es-ES')} visitas
                       </span>
 
                       {/* Botón Admin para Borrado Rápido */}
@@ -1581,7 +1649,7 @@ export default function App() {
                 <div className="min-w-0 flex-1">
                   <h2 className="text-2xl sm:text-3xl font-black text-white">{selectedProject.title}</h2>
                   <p className="text-sm text-gray-400 mt-2">
-                    {selectedProject.year || '2026'} <span className="mx-1">•</span> {selectedProject.format || selectedProject.type || 'Proyecto'}
+                    {selectedProject.year || '2026'} <span className="mx-1">•</span> {selectedProject.format || selectedProject.type || 'Proyecto'} <span className="mx-1">•</span> {selectedProject.viewsCount || 0} visitas
                   </p>
                   <div className="flex flex-wrap gap-2 mt-3">
                     {(selectedProject.genres || [selectedProject.genre].filter(Boolean)).map(genre => (
@@ -1597,6 +1665,10 @@ export default function App() {
                   >
                     <Heart className="w-4 h-4 text-red-500 fill-current" /> Me gusta · {selectedProject.likesCount || 0}
                   </button>
+                  {(user?.id && (selectedProject.creatorId === user.id || selectedProject.creatorEmail === user.email || isAdmin)) && <>
+                    <button onClick={() => handleOpenEditProject(selectedProject)} className="bg-[#222226] hover:bg-blue-700 text-gray-200 text-xs font-bold px-3 py-2.5 rounded-xl border border-[#2e2e34]">Editar</button>
+                    <button onClick={() => handleDeleteOwnProject(selectedProject)} className="bg-red-900/70 hover:bg-red-700 text-white text-xs font-bold px-3 py-2.5 rounded-xl border border-red-800">Eliminar</button>
+                  </>}
                   <button onClick={() => handleShareProject(selectedProject)} title="Compartir proyecto" className="bg-[#222226] hover:bg-[#2e2e34] text-gray-200 text-xs font-bold px-3 py-2.5 rounded-xl border border-[#2e2e34] flex items-center gap-1.5">
                     <Share2 className="w-4 h-4" /> Compartir
                   </button>
@@ -1694,6 +1766,31 @@ export default function App() {
         </div>
       )}
 
+      {showPublishWarning && (
+        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div role="alertdialog" aria-modal="true" className="bg-[#161618] border border-amber-500/40 w-full max-w-lg rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex items-center gap-3"><ShieldCheck className="w-7 h-7 text-amber-400" /><h2 className="text-xl font-bold text-white">Antes de publicar tu proyecto</h2></div>
+            <p className="text-sm text-gray-300 leading-relaxed">Asegúrate de que tienes los derechos necesarios sobre el contenido y que los enlaces funcionan. La publicación quedará pendiente de revisión antes de aparecer públicamente. No publiques material ilegal, ofensivo o que infrinja derechos de terceros.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowPublishWarning(false)} className="flex-1 bg-[#222226] hover:bg-[#2e2e34] text-gray-200 font-semibold py-3 rounded-xl">Cancelar</button>
+              <button onClick={() => { setShowPublishWarning(false); setShowSubmitModal(true); }} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl">Entendido, continuar</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {editingProject && (
+        <div className="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
+          <form onSubmit={handleSaveEditedProject} className="bg-[#161618] border border-[#2e2e34] w-full max-w-lg rounded-3xl p-6 space-y-4 my-auto">
+            <h2 className="text-xl font-bold text-white">Editar proyecto</h2>
+            <label className="block text-xs text-gray-400">Título<input required value={editProjectForm.title} onChange={e => setEditProjectForm({ ...editProjectForm, title: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <label className="block text-xs text-gray-400">Enlace de YouTube<input type="url" value={editProjectForm.youtubeUrl} onChange={e => setEditProjectForm({ ...editProjectForm, youtubeUrl: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <label className="block text-xs text-gray-400">Año de realización<input type="number" min="1900" max="2100" required value={editProjectForm.year} onChange={e => setEditProjectForm({ ...editProjectForm, year: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <label className="block text-xs text-gray-400">Descripción<textarea rows={4} value={editProjectForm.description} onChange={e => setEditProjectForm({ ...editProjectForm, description: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <div className="flex gap-3"><button type="button" onClick={() => setEditingProject(null)} className="flex-1 bg-[#222226] py-3 rounded-xl">Cancelar</button><button type="submit" className="flex-1 bg-blue-600 py-3 rounded-xl font-bold">Guardar cambios</button></div>
+          </form>
+        </div>
+      )}
+
       {/* ==========================================
           MODAL PUBLICAR TRABAJO
       ========================================== */}
@@ -1757,6 +1854,10 @@ export default function App() {
                     <option value="Largometraje">Largometraje</option>
                     <option value="Serie">Serie</option>
                     <option value="Tráiler">Tráiler</option>
+                    <option value="Musical">Musical</option>
+                    <option value="Crowdfunding">Crowdfunding</option>
+                    <option value="Tutoriales">Tutoriales</option>
+                    <option value="Making of">Making of</option>
                   </select>
                 </div>
               </div>
@@ -1786,6 +1887,12 @@ export default function App() {
                 </div>
               )}
 
+              <div>
+                <label className="text-xs font-bold text-gray-400 block mb-1">Año de realización</label>
+                <input type="number" min="1900" max="2100" required value={newProjectForm.year}
+                  onChange={(e) => setNewProjectForm({ ...newProjectForm, year: e.target.value })}
+                  className="w-full bg-[#121212] border border-[#2e2e34] text-xs rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-blue-500" />
+              </div>
               <div>
                 <label className="text-xs font-bold text-gray-400 block mb-1">Descripción</label>
                 <textarea 
