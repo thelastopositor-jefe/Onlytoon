@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
 import { auth, googleProvider, signInWithPopup, signOut, db } from './firebase';
-import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, increment, onSnapshot } from 'firebase/firestore';
 import { 
   Search, Heart, Bookmark, Share2, Play, Plus, CheckCircle, XCircle, 
   Trash2, ShieldCheck, User, Bell, ExternalLink, MessageSquare, ThumbsUp, 
@@ -248,7 +248,7 @@ export default function App() {
           id: projectDoc.id
         }));
 
-        if (isMounted && projectsList.length > 0) {
+        if (isMounted) {
           setProjects(projectsList);
         }
       } catch (error) {
@@ -261,6 +261,19 @@ export default function App() {
       isMounted = false;
     };
   }, []);
+
+  // Las discusiones se leen de Firestore; los datos de ejemplo solo sirven mientras carga.
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'discussions'), (snapshot) => {
+      const topics = snapshot.docs.map(topicDoc => ({ ...topicDoc.data(), id: topicDoc.id }));
+      topics.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      setForumTopics(topics);
+    }, (error) => {
+      console.error('Error al sincronizar las discusiones:', error);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [seasons, setSeasons] = useState([{ seasonNumber: 1, episodes: [{ title: 'Episodio 1', youtubeUrl: '', episodeNumber: 1 }] }]);
@@ -358,21 +371,37 @@ export default function App() {
   }, [projects, searchQuery, filterType, filterGenre, filterYear, filterFormat]);
 
   // --- Manejadores de Eventos ---
-  const handleToggleFavorite = (projectId) => {
-    setUser(prev => {
-      const exists = prev.favorites.includes(projectId);
-      return {
-        ...prev,
-        favorites: exists 
-          ? prev.favorites.filter(id => id !== projectId)
-          : [...prev.favorites, projectId]
-      };
-    });
+  const handleToggleFavorite = async (projectId) => {
+    if (!user?.id) {
+      setShowAuthModal(true);
+      return;
+    }
+    const alreadyFavorite = (user.favorites || []).includes(projectId);
+    const nextFavorites = alreadyFavorite
+      ? (user.favorites || []).filter(id => id !== projectId)
+      : [...(user.favorites || []), projectId];
+    const nextUser = { ...user, favorites: nextFavorites };
+    setUser(nextUser);
+    localStorage.setItem('onlytoons_user', JSON.stringify(nextUser));
+    try {
+      await setDoc(doc(db, 'users', user.id), {
+        favorites: alreadyFavorite ? arrayRemove(projectId) : arrayUnion(projectId)
+      }, { merge: true });
+    } catch (error) {
+      console.error('Error al guardar favoritos:', error);
+      alert('No se pudieron sincronizar los favoritos con Firestore.');
+    }
   };
 
-  const handleLikeProject = (projectId) => {
+  const handleLikeProject = async (projectId) => {
     setProjects(prev => prev.map(p => p.id === projectId ? { ...p, likesCount: (p.likesCount || 0) + 1 } : p));
     setSelectedProject(current => current?.id === projectId ? { ...current, likesCount: (current.likesCount || 0) + 1 } : current);
+    try {
+      await updateDoc(doc(db, 'projects', projectId), { likesCount: increment(1) });
+    } catch (error) {
+      console.error('Error al guardar el me gusta:', error);
+      alert('No se pudo guardar el me gusta en Firestore.');
+    }
   };
 
   const toggleGenre = (genre) => {
@@ -400,7 +429,7 @@ export default function App() {
   };
 
   const handleShareProject = async (project) => {
-    const shareText = `${project.title} — ${project.creator || project.creatorName || 'OnlyToons'}`;
+    const shareText = `${project.title} — ${project.creator || project.creatorName || 'OnlyToon'}`;
     try {
       if (navigator.share) await navigator.share({ title: project.title, text: shareText, url: window.location.href });
       else if (navigator.clipboard) { await navigator.clipboard.writeText(`${shareText} | ${window.location.href}`); alert('Enlace copiado para compartir.'); }
@@ -505,13 +534,16 @@ export default function App() {
   };
 
   // Acciones de Moderación Admin
-  const handleApproveProject = (id) => {
-    setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'approved' } : p));
+  const handleApproveProject = async (id) => {
+    try { await updateDoc(doc(db, 'projects', id), { status: 'approved' }); setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'approved' } : p)); }
+    catch (error) { console.error('Error al aprobar el proyecto:', error); alert('No se pudo guardar la aprobación en Firestore.'); }
   };
 
   const handleRejectProject = (id) => {
     const reason = rejectionNote[id] || 'El contenido no cumple con nuestras directrices comunitarias.';
-    setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected', rejectionReason: reason } : p));
+    updateDoc(doc(db, 'projects', id), { status: 'rejected', rejectionReason: reason })
+      .then(() => setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected', rejectionReason: reason } : p)))
+      .catch(error => { console.error('Error al rechazar el proyecto:', error); alert('No se pudo guardar el rechazo en Firestore.'); });
   };
 
   // Elimina el documento del proyecto en Firestore y sincroniza la interfaz.
@@ -540,7 +572,7 @@ export default function App() {
     }
   };
 
-  // Los episodios de OnlyToons están organizados dentro de seasons[].episodes[].
+  // Los episodios de OnlyToon están organizados dentro de seasons[].episodes[].
   // Como los episodios actuales no tienen id propio, se identifican por sus índices.
   const handleDeleteEpisode = async (projectId, seasonIndex, episodeIndex) => {
     if (!isAdmin) {
@@ -580,41 +612,76 @@ export default function App() {
     }
   };
 
-  const handleToggleFeatured = (id) => {
-    setProjects(prev => prev.map(p => p.id === id ? { ...p, isFeatured: !p.isFeatured } : p));
+  const handleToggleFeatured = async (id) => {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    const isFeatured = !project.isFeatured;
+    try { await updateDoc(doc(db, 'projects', id), { isFeatured }); setProjects(prev => prev.map(p => p.id === id ? { ...p, isFeatured } : p)); }
+    catch (error) { console.error('Error al actualizar destacado:', error); alert('No se pudo guardar el cambio en Firestore.'); }
   };
 
   // Foro
-  const handleCreateTopic = (e) => {
+  const handleCreateTopic = async (e) => {
     e.preventDefault();
-    const topic = {
-      id: `topic_${Date.now()}`,
-      title: newTopicForm.title,
+    if (!user?.id) {
+      setShowAuthModal(true);
+      return;
+    }
+    const topicPayload = {
+      title: newTopicForm.title.trim(),
       category: newTopicForm.category,
-      authorName: user.name,
+      authorName: user.name || 'Usuario',
+      authorId: user.id,
       authorEmail: user.email,
-      createdAt: 'Ahora mismo',
-      content: newTopicForm.content,
+      createdAt: new Date().toISOString(),
+      content: newTopicForm.content.trim(),
       likes: 0,
       comments: []
     };
-    setForumTopics([topic, ...forumTopics]);
-    setShowNewTopicModal(false);
-    setNewTopicForm({ title: '', category: 'Herramientas', content: '' });
+    if (!topicPayload.title || !topicPayload.content) {
+      alert('Completa el título y el contenido de la discusión.');
+      return;
+    }
+    try {
+      await addDoc(collection(db, 'discussions'), topicPayload);
+      setShowNewTopicModal(false);
+      setNewTopicForm({ title: '', category: 'Herramientas', content: '' });
+    } catch (error) {
+      console.error('Error al crear la discusión:', error);
+      alert('No se pudo publicar la discusión. Comprueba las reglas de Firestore.');
+    }
   };
 
-  const handleAddComment = (topicId) => {
-    if (!newCommentText.trim() || !user) return;
-    setForumTopics(prev => prev.map(t => {
-      if (t.id === topicId) {
-        return {
-          ...t,
-          comments: [...t.comments, { id: `c_${Date.now()}`, author: user.name, text: newCommentText, createdAt: 'Ahora' }]
-        };
-      }
-      return t;
-    }));
-    setNewCommentText('');
+  const handleAddComment = async (topicId) => {
+    const text = newCommentText.trim();
+    if (!text || !user?.id) {
+      if (!user?.id) setShowAuthModal(true);
+      return;
+    }
+    const comment = {
+      author: user.name || 'Usuario',
+      authorId: user.id,
+      text,
+      createdAt: new Date().toISOString()
+    };
+    try {
+      // Subcolección escalable para comentarios: discussions/{topicId}/comments.
+      const commentRef = await addDoc(collection(db, 'discussions', topicId, 'comments'), comment);
+      const savedComment = { ...comment, id: commentRef.id };
+      // También se mantiene un resumen embebido para que la vista actual pueda leer comentarios
+      // desde el documento principal; la subcolección permite escalar a muchos comentarios.
+      await updateDoc(doc(db, 'discussions', topicId), { comments: arrayUnion(savedComment) });
+      setForumTopics(prev => prev.map(topic => topic.id === topicId
+        ? { ...topic, comments: [...(topic.comments || []), savedComment] }
+        : topic));
+      setSelectedForumTopic(current => current?.id === topicId
+        ? { ...current, comments: [...(current.comments || []), savedComment] }
+        : current);
+      setNewCommentText('');
+    } catch (error) {
+      console.error('Error al guardar el comentario:', error);
+      alert('No se pudo guardar el comentario en Firestore.');
+    }
   };
 
   // ==========================================
@@ -639,7 +706,7 @@ export default function App() {
       email,
       photo: firebaseUser.photoURL || existingData.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
       banner: existingData.banner || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-      bio: existingData.bio ?? '¡Hola! Soy creador en OnlyToons.',
+      bio: existingData.bio ?? '¡Hola! Soy creador en OnlyToon.',
       patreonUrl: existingData.patreonUrl ?? '',
       kofiUrl: existingData.kofiUrl ?? '',
       websiteUrl: existingData.websiteUrl ?? '',
@@ -732,7 +799,7 @@ export default function App() {
     try {
       setIsSavingProfile(true);
       const userRef = doc(db, 'users', user.id);
-      await updateDoc(userRef, updatedData);
+      await setDoc(userRef, { ...updatedData, id: user.id, email: user.email }, { merge: true });
       const newUserData = { ...user, ...updatedData };
       setUser(newUserData);
       localStorage.setItem('onlytoons_user', JSON.stringify(newUserData));
@@ -1522,7 +1589,7 @@ export default function App() {
             <div className="relative aspect-video bg-black">
               <iframe
                 src={`https://www.youtube.com/embed/${selectedProject.youtubeId || ''}?autoplay=1`}
-                title={selectedProject.title || 'Reproductor de OnlyToons'}
+                title={selectedProject.title || 'Reproductor de OnlyToon'}
                 className="w-full h-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -1585,8 +1652,8 @@ export default function App() {
                 />
                 <div className="min-w-0 flex-1 text-center sm:text-left">
                   <p className="text-[10px] uppercase tracking-[0.18em] text-blue-300 font-bold mb-1">Conoce al creador</p>
-                  <h3 className="text-lg font-bold text-white">{selectedProject.creatorName || selectedProject.creator || 'Creador de OnlyToons'}</h3>
-                  <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{selectedProject.creatorBio || 'Creador de contenido en OnlyToons.'}</p>
+                  <h3 className="text-lg font-bold text-white">{selectedProject.creatorName || selectedProject.creator || 'Creador de OnlyToon'}</h3>
+                  <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{selectedProject.creatorBio || 'Creador de contenido en OnlyToon.'}</p>
                   <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
                     {(selectedProject.creatorPatreon || selectedProject.patreonUrl) && (
                       <a href={selectedProject.creatorPatreon || selectedProject.patreonUrl} target="_blank" rel="noopener noreferrer" className="bg-[#ff424d] hover:bg-[#e63946] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors">
@@ -1838,7 +1905,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white">Editar perfil</h2>
-                <p className="text-xs text-gray-400 mt-1">Los cambios se guardarán en tu cuenta de OnlyToons.</p>
+                <p className="text-xs text-gray-400 mt-1">Los cambios se guardarán en tu cuenta de OnlyToon.</p>
               </div>
               <button type="button" onClick={() => setShowEditProfileModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar">
                 <X className="w-5 h-5" />
@@ -1925,7 +1992,7 @@ export default function App() {
           <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-md rounded-3xl p-6 lg:p-8 space-y-6 shadow-2xl">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-white">Iniciar sesión en OnlyToons</h2>
+                <h2 className="text-xl font-bold text-white">Iniciar sesión en OnlyToon</h2>
                 <p className="text-xs text-gray-400 mt-1">Usa tu cuenta de Google para continuar.</p>
               </div>
               <button onClick={() => setShowAuthModal(false)} className="text-gray-400 hover:text-white">
@@ -1952,10 +2019,10 @@ export default function App() {
       <footer className="bg-[#161618] border-t border-[#2e2e34] py-8 px-6 lg:px-12 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white">ONLYTOONS</span>
+            <span className="font-bold text-white">ONLYTOON</span>
             <span>— Historias que cobran vida.</span>
           </div>
-          <p>© 2026 OnlyToons. Todos los derechos reservados.</p>
+          <p>© 2026 OnlyToon. Todos los derechos reservados.</p>
         </div>
       </footer>
 
