@@ -12,10 +12,10 @@ export const CAROUSEL_ITEMS = [
     id: 2,
     title: "",
     tagline: "",
-    category: "",
+    category: "POPULAR",
     thumbnail: "/images/carousel/carousel02.jpg",
     videoUrl: "",
-    linkText: ""
+    linkText: "Sube tu proyecto"
   },
   {
     id: 3,
@@ -44,4 +44,4 @@ export const CAROUSEL_ITEMS = [
     videoUrl: "https://onlytoon.vercel.app/",
     linkText: "Sube tu proyecto"
   }
-];
+];g
