@@ -5,7 +5,7 @@ import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc,
 import { 
   Search, Heart, Bookmark, Share2, Play, Plus, CheckCircle, XCircle, 
   Trash2, ShieldCheck, User, Bell, ExternalLink, MessageSquare, ThumbsUp, 
-  Tv, Film, Sparkles, Filter, ChevronLeft, ChevronRight, X, LogIn, Upload
+  Tv, Film, Sparkles, Filter, ChevronLeft, ChevronRight, X, LogIn, Upload, Menu
 } from 'lucide-react';
 
 // ==========================================
@@ -221,12 +221,14 @@ const INITIAL_FORUM_TOPICS = [
 export default function App() {
   // --- Estados de Aplicación ---
   const [activeTab, setActiveTab] = useState('explorar'); // 'explorar', 'productos', 'comunidad', 'perfil', 'admin'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('onlytoons_user');
+      const savedUser = localStorage.getItem('onlytoon_user') || localStorage.getItem('onlytoons_user');
       return savedUser ? JSON.parse(savedUser) : null;
     } catch (error) {
       console.warn('No se pudo recuperar la sesión guardada:', error);
+      localStorage.removeItem('onlytoon_user');
       localStorage.removeItem('onlytoons_user');
       return null;
     }
@@ -382,7 +384,7 @@ export default function App() {
       : [...(user.favorites || []), projectId];
     const nextUser = { ...user, favorites: nextFavorites };
     setUser(nextUser);
-    localStorage.setItem('onlytoons_user', JSON.stringify(nextUser));
+    localStorage.setItem('onlytoon_user', JSON.stringify(nextUser));
     try {
       await setDoc(doc(db, 'users', user.id), {
         favorites: alreadyFavorite ? arrayRemove(projectId) : arrayUnion(projectId)
@@ -719,7 +721,7 @@ export default function App() {
     await setDoc(userRef, loggedUser, { merge: true });
 
     setUser(loggedUser);
-    localStorage.setItem('onlytoons_user', JSON.stringify(loggedUser));
+    localStorage.setItem('onlytoon_user', JSON.stringify(loggedUser));
     setShowAuthModal(false);
 
     if (isAdmin) {
@@ -802,7 +804,7 @@ export default function App() {
       await setDoc(userRef, { ...updatedData, id: user.id, email: user.email }, { merge: true });
       const newUserData = { ...user, ...updatedData };
       setUser(newUserData);
-      localStorage.setItem('onlytoons_user', JSON.stringify(newUserData));
+      localStorage.setItem('onlytoon_user', JSON.stringify(newUserData));
       setShowEditProfileModal(false);
       alert('¡Perfil actualizado con éxito en la nube!');
     } catch (error) {
@@ -817,6 +819,7 @@ export default function App() {
     try {
       await signOut(auth);
       setUser(null);
+      localStorage.removeItem('onlytoon_user');
       localStorage.removeItem('onlytoons_user');
       setActiveTab('explorar');
       alert('Has cerrado sesión correctamente.');
@@ -830,114 +833,83 @@ export default function App() {
     <div className="min-h-screen bg-[#121212] text-gray-100 font-sans flex flex-col selection:bg-blue-600 selection:text-white">
       
       {/* ==========================================
-          TOPBAR / NAVEGACIÓN SUPERIOR
+          TOPBAR / NAVEGACIÓN RESPONSIVA
       ========================================== */}
-      <header className="sticky top-0 z-40 bg-[#161618]/90 backdrop-blur-md border-b border-[#2e2e34] px-4 lg:px-8 py-3.5 flex items-center justify-between gap-4">
-        
+      <header className="sticky top-0 z-40 bg-[#161618]/95 backdrop-blur-md border-b border-[#2e2e34] px-3 sm:px-4 lg:px-8 py-3 flex items-center justify-between gap-2 sm:gap-4 w-full">
         {/* Logo */}
-        <div 
-          onClick={() => setActiveTab('explorar')} 
-          className="flex items-center gap-2 cursor-pointer group"
+        <button
+          type="button"
+          onClick={() => { setActiveTab('explorar'); setMobileMenuOpen(false); }}
+          className="flex items-center gap-2 cursor-pointer shrink-0 min-w-0"
+          aria-label="OnlyToon, ir a explorar"
         >
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-            OT
-          </div>
-          <span className="text-xl font-extrabold tracking-tight">
-            ONLY<span className="text-blue-500">TOONS</span>
+          <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">OT</span>
+          <span className="text-lg sm:text-xl font-extrabold tracking-tight whitespace-nowrap">
+            ONLY<span className="text-blue-500">TOON</span>
           </span>
-        </div>
+        </button>
 
-        {/* Buscador Central */}
+        {/* Buscador central: solo escritorio */}
         <div className="flex-1 max-w-md hidden md:block">
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Buscar proyectos, técnicas o estudios..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#1a1a1e] border border-[#2e2e34] text-sm rounded-full pl-10 pr-4 py-2 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
             />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-white"
-              >
-                Limpiar
-              </button>
-            )}
+            {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-white">Limpiar</button>}
           </div>
         </div>
 
-        {/* Menú Navegación */}
-        <nav className="flex items-center gap-1 sm:gap-4">
-          <button 
-            onClick={() => setActiveTab('explorar')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'explorar' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}
-          >
-            Explorar
-          </button>
-          <button 
-            onClick={() => setActiveTab('productos')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'productos' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}
-          >
-            Productos
-          </button>
-          <button 
-            onClick={() => setActiveTab('comunidad')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'comunidad' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}
-          >
-            Comunidad
-          </button>
-
-          {/* Botón Admin Exclusivo */}
-          {isAdmin && (
-            <button 
-              onClick={() => setActiveTab('admin')}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors ${activeTab === 'admin' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'text-amber-400 hover:bg-amber-500/10'}`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span className="hidden sm:inline">Moderación</span>
-            </button>
-          )}
-
-          {/* Botón Publicar Trabajo */}
-          <button 
-            onClick={() => setShowSubmitModal(true)}
-            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-full flex items-center gap-1.5 shadow-md shadow-blue-600/30 transition-all hover:scale-105"
-          >
-            <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">Publicar</span>
-          </button>
-
-          {/* Perfil o Login */}
-          {user ? (
-            <div className="flex items-center gap-2 ml-2">
-              <button
-                onClick={() => setActiveTab('perfil')}
-                className="w-9 h-9 rounded-full overflow-hidden border-2 border-[#2e2e34] hover:border-blue-500 transition-colors"
-                title={user.name}
-              >
-                <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
-              </button>
-              <button
-                onClick={handleLogout}
-                className="text-xs font-semibold text-gray-400 hover:text-white px-2 py-1.5"
-              >
-                Salir
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={handleGoogleLogin}
-              className="text-sm font-semibold text-gray-300 hover:text-white px-3 py-1.5 flex items-center gap-1.5"
-            >
-              <LogIn className="w-4 h-4" />
-              Iniciar sesión con Google
-            </button>
-          )}
+        {/* Navegación de escritorio */}
+        <nav className="hidden md:flex items-center gap-1 lg:gap-2 shrink-0">
+          <button onClick={() => setActiveTab('explorar')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'explorar' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Explorar</button>
+          <button onClick={() => setActiveTab('productos')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'productos' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Productos</button>
+          <button onClick={() => setActiveTab('comunidad')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'comunidad' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Comunidad</button>
+          {isAdmin && <button onClick={() => setActiveTab('admin')} className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 ${activeTab === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'text-amber-400 hover:bg-amber-500/10'}`}><ShieldCheck className="w-4 h-4" /><span>Moderación</span></button>}
         </nav>
+
+        {/* Acciones y menú móvil */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <button onClick={() => { setShowSubmitModal(true); setMobileMenuOpen(false); }} className="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-semibold px-2.5 sm:px-4 py-2 rounded-full flex items-center gap-1.5 whitespace-nowrap">
+            <Plus className="w-4 h-4" /><span className="hidden sm:inline">Publicar</span>
+          </button>
+          {user ? (
+            <button onClick={() => { setActiveTab('perfil'); setMobileMenuOpen(false); }} className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-[#2e2e34] hover:border-blue-500 shrink-0" title={user.name} aria-label="Mi perfil">
+              <img src={user.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'} alt={user.name || 'Perfil'} className="w-full h-full object-cover" />
+            </button>
+          ) : (
+            <button onClick={handleGoogleLogin} className="text-xs sm:text-sm font-semibold text-gray-300 hover:text-white px-1.5 sm:px-3 py-2 flex items-center gap-1.5 whitespace-nowrap" aria-label="Iniciar sesión">
+              <LogIn className="w-4 h-4" /><span className="hidden lg:inline">Iniciar sesión</span>
+            </button>
+          )}
+          <button type="button" onClick={() => setMobileMenuOpen(open => !open)} className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-[#222226]" aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={mobileMenuOpen}>
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </header>
+
+      {/* Menú desplegable móvil */}
+      {mobileMenuOpen && (
+        <nav className="md:hidden sticky top-[57px] z-30 bg-[#161618] border-b border-[#2e2e34] px-4 py-3 shadow-xl space-y-1">
+          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['comunidad', 'Comunidad']].map(([tab, label]) => (
+            <button key={tab} onClick={() => { setActiveTab(tab); setMobileMenuOpen(false); }} className={`block w-full text-left px-3 py-3 rounded-lg text-sm font-medium ${activeTab === tab ? 'bg-[#222226] text-blue-400' : 'text-gray-200 hover:bg-[#222226]'}`}>{label}</button>
+          ))}
+          {isAdmin && <button onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-amber-400 hover:bg-[#222226]">Moderación</button>}
+          {user && <button onClick={() => { setActiveTab('perfil'); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-blue-400 hover:bg-[#222226]">Mi perfil</button>}
+          {user && <button onClick={() => { setMobileMenuOpen(false); handleLogout(); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-gray-400 hover:bg-[#222226] hover:text-white">Cerrar sesión</button>}
+          {!user && <button onClick={() => { setMobileMenuOpen(false); handleGoogleLogin(); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-gray-200 hover:bg-[#222226]">Iniciar sesión con Google</button>}
+          <div className="px-3 pt-2 md:hidden">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input type="search" placeholder="Buscar proyectos..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full bg-[#1a1a1e] border border-[#2e2e34] text-sm rounded-xl pl-9 pr-3 py-2.5 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-blue-500" />
+            </div>
+          </div>
+        </nav>
+      )}
 
       {/* ==========================================
           CONTENIDO PRINCIPAL (CAMBIO DE PESTAÑAS)
@@ -948,11 +920,11 @@ export default function App() {
             PESTAÑA 1: EXPLORAR (HOME)
         ------------------------------------------ */}
         {activeTab === 'explorar' && (
-          <div className="space-y-12 pb-16">
+          <div className="space-y-8 sm:space-y-12 pb-10 sm:pb-16 w-full overflow-x-hidden">
             
             {/* HERO / CARRUSEL DESTACADO */}
             {CAROUSEL_ITEMS.length > 0 && (
-              <section className="relative w-full h-[480px] lg:h-[560px] bg-[#1a1a1e] overflow-hidden border-b border-[#2e2e34]">
+              <section className="relative w-full h-[390px] sm:h-[440px] lg:h-[560px] bg-[#1a1a1e] overflow-hidden border-b border-[#2e2e34]">
                 {/* Imagen de fondo nítida con gradiente solo en la izquierda */}
 <div className="absolute inset-0">
   <img 
@@ -965,7 +937,7 @@ export default function App() {
 </div>
 
                 {/* Contenido Hero */}
-                <div className="relative max-w-7xl mx-auto h-full px-6 lg:px-12 flex flex-col justify-end pb-12">
+                <div className="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-12 flex flex-col justify-end pb-7 sm:pb-12">
                   <div className="max-w-2xl space-y-4">
                     <span className="text-xs font-bold tracking-widest text-blue-400 uppercase bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20 inline-block">
                       {CAROUSEL_ITEMS[heroIndex]?.category || 'DESTACADO'}
