@@ -1466,7 +1466,7 @@ export default function App() {
                 </div>
                 <div className="bg-gray-800/50 p-3 rounded-lg">
                   <span className="block text-2xl font-bold text-blue-400">
-                    {projects.filter(p => (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase()).length}
+                    {projects.filter(p => p.creatorId === user?.id || (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase()).length}
                   </span>
                   <span className="text-xs text-gray-400 uppercase tracking-wider">Proyectos Subidos</span>
                 </div>
@@ -1512,10 +1512,10 @@ export default function App() {
                 <span>🎬</span> Mis Proyectos Subidos
               </h2>
 
-              {projects.filter(p => (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase()).length > 0 ? (
+              {projects.filter(p => p.creatorId === user?.id || (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase()).length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {projects
-                    .filter(p => (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase())
+                    .filter(p => p.creatorId === user?.id || (p.authorEmail || p.creatorEmail)?.toLowerCase() === user?.email?.toLowerCase())
                     .map(proj => (
                       <div
                         key={proj.id}
@@ -1541,6 +1541,22 @@ export default function App() {
                             )}
                           </div>
                           <p className="text-gray-400 text-xs">{proj.genre} • {proj.format}</p>
+                          <div className="flex flex-wrap gap-2 mt-3" onClick={e => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditProject(proj)}
+                              className="px-3 py-1.5 rounded-lg bg-blue-600/20 border border-blue-500/30 text-blue-300 text-xs font-semibold hover:bg-blue-600/30 transition-colors"
+                            >
+                              ✏️ Editar
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteOwnProject(proj)}
+                              className="px-3 py-1.5 rounded-lg bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-semibold hover:bg-red-600/30 transition-colors"
+                            >
+                              🗑️ Eliminar
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
