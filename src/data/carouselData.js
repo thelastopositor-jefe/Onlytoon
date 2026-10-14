@@ -37,11 +37,11 @@ export const CAROUSEL_ITEMS = [
   },
   {
     id: 5,
-    title: "TÍTULO QUINTO PROYECTO",
-    tagline: "El gran cierre de temporada con momentos épicos y comedia imperdible.",
+    title: "",
+    tagline: "",
     category: "POPULAR",
     thumbnail: "/images/carousel/carousel05.jpg",
-    videoUrl: "https://youtube.com/",
-    linkText: "Ver proyecto"
+    videoUrl: "https://onlytoon.vercel.app/",
+    linkText: "Sube tu proyecto"
   }
 ];
