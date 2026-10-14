@@ -44,4 +44,4 @@ export const CAROUSEL_ITEMS = [
     videoUrl: "https://onlytoon.vercel.app/",
     linkText: "Sube tu proyecto"
   }
-];g
+];
