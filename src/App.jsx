@@ -236,7 +236,30 @@ export default function App() {
   });
 
   const [projects, setProjects] = useState(INITIAL_PROJECTS);
+  const [products, setProducts] = useState(PRODUCTS_DATA);
   const [forumTopics, setForumTopics] = useState(INITIAL_FORUM_TOPICS);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [productForm, setProductForm] = useState({ title: '', category: 'Software', price: '', image: '', description: '', link: '' });
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [contactForm, setContactForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [sendingContact, setSendingContact] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'products'), async (snapshot) => {
+      if (!snapshot.empty) {
+        setProducts(snapshot.docs.map(productDoc => ({ ...productDoc.data(), id: productDoc.id })));
+      } else if (isAdmin) {
+        // Inicializa una sola vez la colección para que los productos de ejemplo también puedan editarse y eliminarse de forma persistente.
+        try {
+          await Promise.all(PRODUCTS_DATA.map(product => setDoc(doc(db, 'products', product.id), product, { merge: true })));
+        } catch (error) {
+          console.error('No se pudieron inicializar los productos:', error);
+        }
+      }
+    }, (error) => console.error('Error al sincronizar productos:', error));
+    return () => unsubscribe();
+  }, []);
 
   // Carga los proyectos guardados en Firestore al iniciar la aplicación.
   // Si la colección está vacía o falla la conexión, se conservan los proyectos de respaldo.
@@ -666,6 +689,91 @@ export default function App() {
     catch (error) { console.error('Error al actualizar destacado:', error); alert('No se pudo guardar el cambio en Firestore.'); }
   };
 
+  // Administración de productos (solo administradores).
+  const openNewProduct = () => {
+    if (!isAdmin) return alert('Solo los administradores pueden gestionar productos.');
+    setEditingProductId(null);
+    setProductForm({ title: '', category: 'Software', price: '', image: '', description: '', link: '' });
+    setShowProductModal(true);
+  };
+
+  const openEditProduct = (product) => {
+    if (!isAdmin) return alert('Solo los administradores pueden gestionar productos.');
+    setEditingProductId(product.id);
+    setProductForm({ title: product.title || '', category: product.category || 'Software', price: product.price || '', image: product.image || '', description: product.description || '', link: product.link || '' });
+    setShowProductModal(true);
+  };
+
+  const handleSaveProduct = async (e) => {
+    e.preventDefault();
+    if (!isAdmin) return alert('No tienes permisos para gestionar productos.');
+    const payload = { ...productForm, title: productForm.title.trim(), description: productForm.description.trim(), updatedAt: new Date().toISOString() };
+    if (!payload.title || !payload.link) return alert('El título y el enlace del producto son obligatorios.');
+    const productId = editingProductId || `product_${Date.now()}`;
+    try {
+      await setDoc(doc(db, 'products', productId), payload, { merge: true });
+      setProducts(prev => editingProductId ? prev.map(item => item.id === productId ? { ...payload, id: productId } : item) : [...prev, { ...payload, id: productId }]);
+      setShowProductModal(false);
+      alert(editingProductId ? 'Producto actualizado.' : 'Producto agregado.');
+    } catch (error) {
+      console.error('Error al guardar producto:', error);
+      alert('No se pudo guardar el producto. Revisa las reglas de Firestore.');
+    }
+  };
+
+  const handleDeleteProduct = async (product) => {
+    if (!isAdmin) return alert('Solo los administradores pueden gestionar productos.');
+    if (!window.confirm(`¿Eliminar el producto «${product.title}»?`)) return;
+    try {
+      await deleteDoc(doc(db, 'products', product.id));
+      setProducts(prev => prev.filter(item => item.id !== product.id));
+    } catch (error) {
+      console.error('Error al eliminar producto:', error);
+      alert('No se pudo eliminar el producto. Revisa las reglas de Firestore.');
+    }
+  };
+
+  const handleDeleteTopic = async (topic) => {
+    if (!user?.id) return setShowAuthModal(true);
+    if (!isAdmin && topic.authorId !== user.id && topic.authorEmail !== user.email) {
+      alert('Solo puedes eliminar tus propios temas del foro.');
+      return;
+    }
+    if (!window.confirm(`¿Eliminar el tema «${topic.title}»? Esta acción no se puede deshacer.`)) return;
+    try {
+      await deleteDoc(doc(db, 'discussions', topic.id));
+      setForumTopics(prev => prev.filter(item => item.id !== topic.id));
+      setSelectedForumTopic(current => current?.id === topic.id ? null : current);
+    } catch (error) {
+      console.error('Error al eliminar tema:', error);
+      alert('No se pudo eliminar el tema. Revisa las reglas de Firestore.');
+    }
+  };
+
+  const handleSendContact = async (e) => {
+    e.preventDefault();
+    const payload = { name: contactForm.name.trim(), email: contactForm.email.trim(), subject: contactForm.subject.trim(), message: contactForm.message.trim() };
+    if (!payload.name || !payload.email || !payload.message) return alert('Completa tu nombre, correo y mensaje.');
+    setSendingContact(true);
+    try {
+      // FormSubmit procesa el envío desde la web; la dirección destinataria no se muestra en la interfaz.
+      const response = await fetch('https://formsubmit.co/ajax/thelastopositor@mail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...payload, _subject: payload.subject || 'Nuevo mensaje desde OnlyToon', _captcha: 'false' })
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      setContactForm({ name: '', email: '', subject: '', message: '' });
+      setShowContactModal(false);
+      alert('Mensaje enviado. Si es el primer envío con este servicio, puede ser necesario confirmar la activación desde el correo destinatario.');
+    } catch (error) {
+      console.error('Error al enviar mensaje de contacto:', error);
+      alert('No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.');
+    } finally {
+      setSendingContact(false);
+    }
+  };
+
   // Foro
   const handleCreateTopic = async (e) => {
     e.preventDefault();
@@ -950,6 +1058,7 @@ export default function App() {
               <LogIn className="w-4 h-4" /><span className="hidden lg:inline">Iniciar sesión</span>
             </button>
           )}
+          {user && <button type="button" onClick={handleLogout} className="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-300 hover:text-white px-2.5 py-2 rounded-lg border border-[#2e2e34] hover:bg-[#222226] whitespace-nowrap"><LogIn className="w-4 h-4 rotate-180" />Cerrar sesión</button>}
           <button type="button" onClick={() => setMobileMenuOpen(open => !open)} className="md:hidden p-2 rounded-lg text-gray-300 hover:text-white hover:bg-[#222226]" aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={mobileMenuOpen}>
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -1251,14 +1360,15 @@ export default function App() {
             <div>
               <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">RECURSOS RECOMENDADOS</span>
               <h1 className="text-3xl font-bold text-white">Software y Hardware para Animación</h1>
-              <p className="text-gray-400 text-sm mt-1">Herramientas seleccionadas para acelerar tu flujo de trabajo de animación.</p>
+              <p className="text-gray-400 text-sm mt-1">Software, hardware y accesorios seleccionados para creadores.</p>
+              {isAdmin && <button onClick={openNewProduct} className="mt-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl inline-flex items-center gap-2"><Plus className="w-4 h-4" />Agregar producto</button>}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PRODUCTS_DATA.map((prod) => (
+              {products.map((prod) => (
                 <div key={prod.id} className="bg-[#1a1a1e] border border-[#2e2e34] rounded-2xl overflow-hidden flex flex-col justify-between hover:border-gray-500 transition-all">
                   <div>
-                    <img src={prod.image} alt={prod.title} className="w-full h-44 object-cover" />
+                    <img src={prod.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'} alt={prod.title} className="w-full h-44 object-cover" />
                     <div className="p-5 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded-full border border-blue-500/20">
@@ -1271,7 +1381,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="p-5 pt-0">
+                  <div className="p-5 pt-0 space-y-2">
                     <a 
                       href={prod.link} 
                       target="_blank" 
@@ -1281,6 +1391,7 @@ export default function App() {
                       <span>Obtener recurso</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
+                    {isAdmin && <div className="grid grid-cols-2 gap-2"><button onClick={() => openEditProduct(prod)} className="rounded-lg border border-blue-500/30 bg-blue-500/10 py-2 text-xs font-semibold text-blue-300 hover:bg-blue-500/20">Editar</button><button onClick={() => handleDeleteProduct(prod)} className="rounded-lg border border-red-500/30 bg-red-500/10 py-2 text-xs font-semibold text-red-300 hover:bg-red-500/20">Eliminar</button></div>}
                   </div>
                 </div>
               ))}
@@ -1334,21 +1445,22 @@ export default function App() {
                       <span>Por <strong className="text-gray-300">{topic.authorName}</strong></span>
                       <div className="flex items-center gap-4">
                         <span className="flex items-center gap-1"><ThumbsUp className="w-3.5 h-3.5" /> {topic.likes}</span>
-                        <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" /> {topic.comments.length} comentarios</span>
+                        <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" /> {(topic.comments || []).length} comentarios</span>
                       </div>
                     </div>
+                    {(isAdmin || (user && (topic.authorId === user.id || topic.authorEmail === user.email))) && <div className="flex justify-end"><button onClick={(event) => { event.stopPropagation(); handleDeleteTopic(topic); }} className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-500/20"><Trash2 className="w-3.5 h-3.5" />Eliminar tema</button></div>}
                   </div>
                 ))}
               </div>
             ) : (
               /* Vista Detallada de un Tema */
               <div className="bg-[#1a1a1e] border border-[#2e2e34] p-6 lg:p-8 rounded-2xl space-y-6">
-                <button 
+                <div className="flex flex-wrap items-center justify-between gap-3"><button 
                   onClick={() => setSelectedForumTopic(null)}
                   className="text-xs text-gray-400 hover:text-white flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" /> Volver al listado de temas
-                </button>
+                </button>{(isAdmin || (user && (selectedForumTopic.authorId === user.id || selectedForumTopic.authorEmail === user.email))) && <button onClick={() => handleDeleteTopic(selectedForumTopic)} className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-300 hover:bg-red-500/20"><Trash2 className="w-3.5 h-3.5" />Eliminar tema</button>}</div>
 
                 <div className="space-y-2">
                   <span className="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">
@@ -1364,10 +1476,10 @@ export default function App() {
 
                 {/* Sección Comentarios */}
                 <div className="space-y-4 pt-4 border-t border-[#2e2e34]">
-                  <h4 className="text-base font-bold text-white">Respuestas ({selectedForumTopic.comments.length})</h4>
+                  <h4 className="text-base font-bold text-white">Respuestas ({(selectedForumTopic.comments || []).length})</h4>
 
                   <div className="space-y-3">
-                    {selectedForumTopic.comments.map((comment) => (
+                    {(selectedForumTopic.comments || []).map((comment) => (
                       <div key={comment.id} className="bg-[#222226] p-3.5 rounded-xl border border-[#2e2e34] space-y-1">
                         <div className="flex justify-between text-xs text-gray-400">
                           <strong className="text-gray-200">{comment.author}</strong>
@@ -2079,6 +2191,39 @@ export default function App() {
         </div>
       )}
 
+      {/* MODAL ADMINISTRACIÓN DE PRODUCTOS */}
+      {showProductModal && isAdmin && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-xl rounded-3xl p-6 space-y-5 shadow-2xl my-8">
+            <div className="flex items-center justify-between"><h2 className="text-xl font-bold text-white">{editingProductId ? 'Editar producto' : 'Agregar producto'}</h2><button onClick={() => setShowProductModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar"><X className="w-5 h-5" /></button></div>
+            <form onSubmit={handleSaveProduct} className="space-y-3">
+              <div><label className="block text-xs text-gray-400 mb-1">Nombre del producto *</label><input required value={productForm.title} onChange={e => setProductForm({...productForm,title:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label className="block text-xs text-gray-400 mb-1">Categoría *</label><select value={productForm.category} onChange={e => setProductForm({...productForm,category:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white"><option>Software</option><option>Hardware</option><option>Accesorio</option></select></div><div><label className="block text-xs text-gray-400 mb-1">Precio</label><input value={productForm.price} onChange={e => setProductForm({...productForm,price:e.target.value})} placeholder="Ej. Gratis o 29 €" className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div></div>
+              <div><label className="block text-xs text-gray-400 mb-1">URL de imagen</label><input type="url" value={productForm.image} onChange={e => setProductForm({...productForm,image:e.target.value})} placeholder="https://..." className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
+              <div><label className="block text-xs text-gray-400 mb-1">Enlace del producto *</label><input required type="url" value={productForm.link} onChange={e => setProductForm({...productForm,link:e.target.value})} placeholder="https://..." className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
+              <div><label className="block text-xs text-gray-400 mb-1">Descripción</label><textarea rows={3} value={productForm.description} onChange={e => setProductForm({...productForm,description:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
+              <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 rounded-xl py-3 text-sm font-bold text-white">Guardar producto</button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE CONTACTO: envía el mensaje desde la web sin mostrar el destinatario */}
+      {showContactModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-lg rounded-3xl p-6 space-y-5 shadow-2xl my-8">
+            <div className="flex items-center justify-between"><div><h2 className="text-xl font-bold text-white">Contacta con OnlyToon</h2><p className="text-xs text-gray-400 mt-1">Envíanos tu consulta mediante este formulario.</p></div><button onClick={() => setShowContactModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar"><X className="w-5 h-5" /></button></div>
+            <form onSubmit={handleSendContact} className="space-y-3">
+              <input required placeholder="Tu nombre" value={contactForm.name} onChange={e => setContactForm({...contactForm,name:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
+              <input required type="email" placeholder="Tu correo para responderte" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
+              <input placeholder="Asunto (opcional)" value={contactForm.subject} onChange={e => setContactForm({...contactForm,subject:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
+              <textarea required rows={5} placeholder="Escribe tu mensaje..." value={contactForm.message} onChange={e => setContactForm({...contactForm,message:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
+              <button disabled={sendingContact} type="submit" className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-60 rounded-xl py-3 text-sm font-bold text-white">{sendingContact ? 'Enviando...' : 'Enviar mensaje'}</button>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* ==========================================
           MODAL DE AUTENTICACIÓN GOOGLE
       ========================================== */}
@@ -2117,7 +2262,7 @@ export default function App() {
             <span className="font-bold text-white">ONLYTOON</span>
             <span>— Historias que cobran vida.</span>
           </div>
-          <p>© 2026 OnlyToon. Todos los derechos reservados.</p>
+          <div className="flex items-center gap-4"><button onClick={() => setShowContactModal(true)} className="text-blue-300 hover:text-white font-semibold">Contacto</button><p>© 2026 OnlyToon. Todos los derechos reservados.</p></div>
         </div>
       </footer>
 
