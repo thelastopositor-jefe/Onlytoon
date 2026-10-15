@@ -781,23 +781,52 @@ export default function App() {
 
   const handleSendContact = async (e) => {
     e.preventDefault();
-    const payload = { name: contactForm.name.trim(), email: contactForm.email.trim(), subject: contactForm.subject.trim(), message: contactForm.message.trim() };
-    if (!payload.name || !payload.email || !payload.message) return alert('Completa tu nombre, correo y mensaje.');
+    const payload = {
+      name: contactForm.name.trim(),
+      email: contactForm.email.trim(),
+      subject: contactForm.subject.trim(),
+      message: contactForm.message.trim()
+    };
+    if (!payload.name || !payload.email || !payload.message) {
+      alert('Completa tu nombre, correo y mensaje.');
+      return;
+    }
+
     setSendingContact(true);
     try {
-      // FormSubmit procesa el envío desde la web; la dirección destinataria no se muestra en la interfaz.
-      const response = await fetch('https://formsubmit.co/ajax/thelastopositor@mail.com', {
+      // El destinatario correcto es la cuenta de Gmail de OnlyToon.
+      const response = await fetch('https://formsubmit.co/ajax/thelastopositor@gmail.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...payload, _subject: payload.subject || 'Nuevo mensaje desde OnlyToon', _captcha: 'false' })
+        body: JSON.stringify({
+          name: payload.name,
+          email: payload.email,
+          subject: payload.subject,
+          message: payload.message,
+          _subject: payload.subject || 'Nuevo mensaje desde OnlyToon',
+          _replyto: payload.email,
+          _captcha: 'false'
+        })
       });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+      let result = null;
+      try {
+        result = await response.json();
+      } catch {
+        // Una respuesta no JSON no debe interpretarse como un envío confirmado.
+      }
+
+      if (!response.ok || !result || result.success === false || result.success === 'false') {
+        console.error('Respuesta de FormSubmit:', { status: response.status, result });
+        throw new Error(result?.message || `El servicio de correo respondió con HTTP ${response.status}`);
+      }
+
       setContactForm({ name: '', email: '', subject: '', message: '' });
       setShowContactModal(false);
-      alert('Mensaje enviado. Si es el primer envío con este servicio, puede ser necesario confirmar la activación desde el correo destinatario.');
+      alert('El servicio ha aceptado el mensaje. Si es el primer envío a esta dirección, revisa thelastopositor@gmail.com y confirma el correo de activación de FormSubmit. Comprueba también Spam.');
     } catch (error) {
       console.error('Error al enviar mensaje de contacto:', error);
-      alert('No se pudo enviar el mensaje. Inténtalo de nuevo más tarde.');
+      alert('No se pudo confirmar el envío del mensaje. Revisa tu conexión e inténtalo de nuevo. Si persiste, consulta la consola del navegador para ver el error.');
     } finally {
       setSendingContact(false);
     }
