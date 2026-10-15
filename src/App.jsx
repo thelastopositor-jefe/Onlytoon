@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
+import onlyToonLogo from './Logo_web.jpg';
 import { auth, googleProvider, signInWithPopup, signOut, db } from './firebase';
 import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, increment, onSnapshot } from 'firebase/firestore';
 import { 
@@ -310,7 +311,8 @@ export default function App() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [showPublishWarning, setShowPublishWarning] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
-  const [editProjectForm, setEditProjectForm] = useState({ title: '', description: '', year: '', youtubeUrl: '' });
+  const [editProjectForm, setEditProjectForm] = useState({ title: '', description: '', year: '', youtubeUrl: '', type: '2D', format: 'Cortometraje', duration: '05:00', patreonUrl: '' });
+  const [editProjectGenres, setEditProjectGenres] = useState([]);
   const [showNewTopicModal, setShowNewTopicModal] = useState(false);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [profileForm, setProfileForm] = useState({
@@ -642,7 +644,20 @@ export default function App() {
   };
 
   const handleOpenEditProject = (project) => {
-    setEditProjectForm({ title: project.title || '', description: project.description || '', year: String(project.year || new Date().getFullYear()), youtubeUrl: project.youtubeId ? `https://www.youtube.com/watch?v=${project.youtubeId}` : '' });
+    const genres = Array.isArray(project.genres) && project.genres.length
+      ? project.genres
+      : (project.genre ? [project.genre] : []);
+    setEditProjectGenres(genres.slice(0, 3));
+    setEditProjectForm({
+      title: project.title || '',
+      description: project.description || '',
+      year: String(project.year || new Date().getFullYear()),
+      youtubeUrl: project.youtubeId ? `https://www.youtube.com/watch?v=${project.youtubeId}` : '',
+      type: project.type || '2D',
+      format: project.format || 'Cortometraje',
+      duration: project.duration || '05:00',
+      patreonUrl: project.patreonUrl || ''
+    });
     setEditingProject(project);
   };
 
@@ -650,8 +665,22 @@ export default function App() {
     e.preventDefault();
     if (!editingProject || !user?.id || (editingProject.creatorId !== user.id && editingProject.creatorEmail !== user.email && !isAdmin)) { alert('No tienes permiso para editar este proyecto.'); return; }
     const ytId = editProjectForm.youtubeUrl.trim() ? extractYoutubeId(editProjectForm.youtubeUrl.trim()) : editingProject.youtubeId;
-    const updates = { title: editProjectForm.title.trim(), description: editProjectForm.description.trim(), year: String(editProjectForm.year), youtubeId: ytId, thumbnail: `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` };
+    const genres = editProjectGenres.length ? editProjectGenres : [editProjectForm.genre || editingProject.genre || 'Acción'];
+    const updates = {
+      title: editProjectForm.title.trim(),
+      description: editProjectForm.description.trim(),
+      year: String(editProjectForm.year),
+      youtubeId: ytId,
+      thumbnail: `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`,
+      type: editProjectForm.type || '2D',
+      format: editProjectForm.format || 'Cortometraje',
+      genre: genres[0],
+      genres,
+      duration: editProjectForm.duration || '05:00',
+      patreonUrl: editProjectForm.patreonUrl.trim()
+    };
     if (!updates.title) { alert('El título es obligatorio.'); return; }
+    if (editProjectForm.youtubeUrl.trim() && !/^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(editProjectForm.youtubeUrl.trim())) { alert('Introduce un enlace válido de YouTube.'); return; }
     try {
       await updateDoc(doc(db, 'projects', editingProject.id), updates);
       setProjects(prev => prev.map(p => p.id === editingProject.id ? { ...p, ...updates } : p));
@@ -1015,10 +1044,11 @@ export default function App() {
           className="flex items-center gap-2 cursor-pointer shrink-0 min-w-0"
           aria-label="OnlyToon, ir a explorar"
         >
-          <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">OT</span>
-          <span className="text-lg sm:text-xl font-extrabold tracking-tight whitespace-nowrap">
-            ONLY<span className="text-blue-500">TOON</span>
-          </span>
+          <img
+            src={onlyToonLogo}
+            alt="OnlyToon — Independent Animation"
+            className="h-14 sm:h-16 w-auto max-w-[48vw] object-contain"
+          />
         </button>
 
         {/* Buscador central: solo escritorio */}
@@ -1908,13 +1938,41 @@ export default function App() {
       )}
       {editingProject && (
         <div className="fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4 overflow-y-auto">
-          <form onSubmit={handleSaveEditedProject} className="bg-[#161618] border border-[#2e2e34] w-full max-w-lg rounded-3xl p-6 space-y-4 my-auto">
+          <form onSubmit={handleSaveEditedProject} className="bg-[#161618] border border-[#2e2e34] w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 lg:p-8 space-y-4 my-auto">
             <h2 className="text-xl font-bold text-white">Editar proyecto</h2>
             <label className="block text-xs text-gray-400">Título<input required value={editProjectForm.title} onChange={e => setEditProjectForm({ ...editProjectForm, title: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
-            <label className="block text-xs text-gray-400">Enlace de YouTube<input type="url" value={editProjectForm.youtubeUrl} onChange={e => setEditProjectForm({ ...editProjectForm, youtubeUrl: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
-            <label className="block text-xs text-gray-400">Año de realización<input type="number" min="1900" max="2100" required value={editProjectForm.year} onChange={e => setEditProjectForm({ ...editProjectForm, year: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <label className="block text-xs text-gray-400">Enlace de YouTube<input type="url" value={editProjectForm.youtubeUrl} onChange={e => setEditProjectForm({ ...editProjectForm, youtubeUrl: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <label className="block text-xs text-gray-400">Técnica
+                <select value={editProjectForm.type} onChange={e => setEditProjectForm({ ...editProjectForm, type: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white">
+                  <option value="2D">2D</option><option value="3D">3D</option><option value="Stop Motion">Stop Motion</option><option value="IA">IA</option>
+                </select>
+              </label>
+              <label className="block text-xs text-gray-400">Categoría de proyecto
+                <select value={editProjectForm.format} onChange={e => setEditProjectForm({ ...editProjectForm, format: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white">
+                  <option value="Cortometraje">Cortometraje</option><option value="Largometraje">Largometraje</option><option value="Serie">Serie</option><option value="Tráiler">Tráiler</option><option value="Musical">Musical</option><option value="Crowdfunding">Crowdfunding</option><option value="Tutoriales">Tutoriales</option><option value="Making of">Making of</option>
+                </select>
+              </label>
+              <label className="block text-xs text-gray-400">Año de realización
+                <input type="number" min="1900" max="2100" required value={editProjectForm.year} onChange={e => setEditProjectForm({ ...editProjectForm, year: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" />
+              </label>
+              <label className="block text-xs text-gray-400">Duración
+                <input value={editProjectForm.duration} onChange={e => setEditProjectForm({ ...editProjectForm, duration: e.target.value })} placeholder="05:00" className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" />
+              </label>
+            </div>
+            <div>
+              <label className="block text-xs text-gray-400 mb-2">Géneros (hasta 3)</label>
+              <div className="flex flex-wrap gap-2">
+                {GENRES_LIST.map(genre => {
+                  const isSelected = editProjectGenres.includes(genre);
+                  return <button key={genre} type="button" onClick={() => setEditProjectGenres(current => isSelected ? current.filter(item => item !== genre) : (current.length < 3 ? [...current, genre] : current))} className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${isSelected ? 'bg-blue-600 border-blue-500 text-white' : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'}`}>{genre}{isSelected ? ' ✓' : ''}</button>;
+                })}
+              </div>
+              <p className="text-[10px] text-gray-500 mt-2">{editProjectGenres.length}/3 géneros seleccionados</p>
+            </div>
+            <label className="block text-xs text-gray-400">Enlace de Patreon (opcional)<input type="url" value={editProjectForm.patreonUrl} onChange={e => setEditProjectForm({ ...editProjectForm, patreonUrl: e.target.value })} placeholder="https://www.patreon.com/..." className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
             <label className="block text-xs text-gray-400">Descripción<textarea rows={4} value={editProjectForm.description} onChange={e => setEditProjectForm({ ...editProjectForm, description: e.target.value })} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-white" /></label>
-            <div className="flex gap-3"><button type="button" onClick={() => setEditingProject(null)} className="flex-1 bg-[#222226] py-3 rounded-xl">Cancelar</button><button type="submit" className="flex-1 bg-blue-600 py-3 rounded-xl font-bold">Guardar cambios</button></div>
+            <div className="flex gap-3"><button type="button" onClick={() => setEditingProject(null)} className="flex-1 bg-[#222226] hover:bg-[#2e2e34] text-gray-200 py-3 rounded-xl">Cancelar</button><button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold">Guardar cambios</button></div>
           </form>
         </div>
       )}
@@ -2002,7 +2060,15 @@ export default function App() {
                 <div className="space-y-4 border border-[#2e2e34] bg-[#121212] p-4 rounded-2xl">
                   <h3 className="text-sm font-bold text-white">Temporadas y episodios</h3>
                   {seasons.map((season, seasonIndex) => <div key={season.seasonNumber} className="space-y-3 border-b border-[#2e2e34] pb-4 last:border-0 last:pb-0">
-                    <h4 className="text-xs font-bold text-blue-300">Temporada {season.seasonNumber}</h4>
+                    <div className="flex items-center justify-between gap-3">
+                      <h4 className="text-xs font-bold text-blue-300">Temporada {season.seasonNumber}</h4>
+                      {seasons.length > 1 && <button
+                        type="button"
+                        onClick={() => setSeasons(current => current.filter((_, idx) => idx !== seasonIndex).map((item, idx) => ({ ...item, seasonNumber: idx + 1 })))}
+                        className="text-[10px] font-semibold text-red-300 hover:text-red-200 border border-red-500/30 rounded-lg px-2.5 py-1.5"
+                        aria-label={`Eliminar temporada ${season.seasonNumber}`}
+                      >Eliminar temporada</button>}
+                    </div>
                     {season.episodes.map((episode, episodeIndex) => <div key={`${season.seasonNumber}-${episodeIndex}`} className="grid grid-cols-1 sm:grid-cols-6 gap-2 p-3 rounded-xl bg-[#1a1a1e]">
                       <div className="sm:col-span-1"><label className="text-[10px] text-gray-400 block mb-1">N.º</label><input type="number" min="1" required value={episode.episodeNumber} onChange={e => handleEpisodeChange(seasonIndex, episodeIndex, 'episodeNumber', e.target.value)} className="w-full bg-[#121212] border border-[#2e2e34] rounded-lg px-2 py-2 text-xs text-white" /></div>
                       <div className="sm:col-span-2"><label className="text-[10px] text-gray-400 block mb-1">Título del episodio</label><input type="text" required value={episode.title} onChange={e => handleEpisodeChange(seasonIndex, episodeIndex, 'title', e.target.value)} className="w-full bg-[#121212] border border-[#2e2e34] rounded-lg px-2 py-2 text-xs text-white" /></div>
