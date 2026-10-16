@@ -16,6 +16,36 @@ const ADMIN_EMAILS = ['roman82ap@gmail.com', 'thelastopositor@gmail.com'];
 const GENRES_LIST = ['Acción', 'Aventura', 'Ciencia ficción', 'Fantasía', 'Fantasía oscura', 'Drama', 'Comedia', 'Terror', 'Suspenso', 'Infantil', 'Adulto', 'Social', 'Musical'];
 const PROJECT_CATEGORIES = ['Cortometraje', 'Largometraje', 'Serie', 'Tráiler', 'Musical', 'Crowdfunding', 'Tutoriales', 'Making of'];
 
+// Normaliza tildes, mayúsculas y espacios para comparar etiquetas de la interfaz
+// con los valores internos que pueden estar guardados en Firestore.
+const normalizeFilterText = (value) => String(value ?? '')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .trim()
+  .toLowerCase();
+
+const GENRE_ALIASES = {
+  accion: 'accion',
+  aventura: 'aventura',
+  'ciencia ficcion': 'scifi',
+  scifi: 'scifi',
+  fantasia: 'fantasia',
+  'fantasia oscura': 'fantasia oscura',
+  drama: 'drama',
+  comedia: 'comedia',
+  terror: 'terror',
+  suspenso: 'suspenso',
+  infantil: 'infantil',
+  adulto: 'adulto',
+  social: 'social',
+  musical: 'musical'
+};
+
+const normalizeGenre = (value) => {
+  const normalized = normalizeFilterText(value);
+  return GENRE_ALIASES[normalized] || normalized;
+};
+
 // ==========================================
 // DATOS MOCK INICIALES
 // ==========================================
@@ -391,11 +421,31 @@ export default function App() {
         if (!matchTitle && !matchCreator) return false;
       }
 
-      // Filtros Desplegables
-      if (filterType !== 'Todos' && p.type !== filterType) return false;
-      if (filterGenre !== 'Todos' && p.genre !== filterGenre) return false;
-      if (filterYear !== 'Todos' && p.year !== filterYear) return false;
-      if (filterFormat !== 'Todos' && p.format !== filterFormat) return false;
+      // Filtros desplegables. El campo type representa la técnica de animación
+      // (2D, 3D, Stop Motion o IA); format representa el formato del proyecto.
+      if (filterType !== 'Todos' && normalizeFilterText(p.type) !== normalizeFilterText(filterType)) return false;
+
+      // Firestore puede guardar el género como etiqueta visible ("Ciencia ficción")
+      // o como código interno ("scifi"). También admitimos el campo genres como array.
+      if (filterGenre !== 'Todos') {
+        const targetGenre = normalizeGenre(filterGenre);
+        const projectGenres = [
+          ...(Array.isArray(p.genres) ? p.genres : []),
+          ...(p.genre != null ? [p.genre] : [])
+        ];
+        const matchesGenre = projectGenres.some(genre => normalizeGenre(genre) === targetGenre);
+        if (!matchesGenre) return false;
+      }
+
+      if (filterYear !== 'Todos' && normalizeFilterText(p.year) !== normalizeFilterText(filterYear)) return false;
+
+      if (filterFormat !== 'Todos') {
+        const projectFormat = normalizeFilterText(p.format);
+        const targetFormat = normalizeFilterText(filterFormat);
+        const matchesFormat = projectFormat === targetFormat ||
+          (targetFormat === 'cortometraje' && !projectFormat);
+        if (!matchesFormat) return false;
+      }
 
       return true;
     });
