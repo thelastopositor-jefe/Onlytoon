@@ -29,8 +29,8 @@ export const CAROUSEL_ITEMS = [
   {
     id: 4,
     title: "HOLGAZANES & DEMONIOS EPISODIO 01",
-    tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía del héroe legendario...",
-    category: "NUEVO",
+    tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía",
+    category: "ESTRENO",
     thumbnail: "/images/carousel/carousel04.jpg",
     videoUrl: "https://youtu.be/Jro1TkqpEXg",
     linkText: "Ver proyecto"

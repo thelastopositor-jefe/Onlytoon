@@ -13,7 +13,7 @@ import {
 // CONFIGURACIÓN DE ADMINISTRADORES
 // ==========================================
 const ADMIN_EMAILS = ['roman82ap@gmail.com', 'thelastopositor@gmail.com'];
-const GENRES_LIST = ['Acción', 'Aventura', 'Ciencia ficción', 'Fantasía', 'Fantasía oscura', 'Drama', 'Comedia', 'Terror', 'Suspenso', 'Infantil', 'Adulto', 'Social', 'Musical'];
+const GENRES_LIST = ['Acción', 'Aventura', 'Ciencia ficción', 'Fantasía', 'Fantasía oscura', 'Drama', 'Comedia', 'Terror', 'Suspenso', 'Infantil', 'Adulto', 'Social', 'Musical', 'Romance'];
 const PROJECT_CATEGORIES = ['Cortometraje', 'Largometraje', 'Serie', 'Tráiler', 'Musical', 'Crowdfunding', 'Tutoriales', 'Making of'];
 
 // Normaliza tildes, mayúsculas y espacios para comparar etiquetas de la interfaz
@@ -38,7 +38,8 @@ const GENRE_ALIASES = {
   infantil: 'infantil',
   adulto: 'adulto',
   social: 'social',
-  musical: 'musical'
+  musical: 'musical',
+  romance: 'romance'
 };
 
 const normalizeGenre = (value) => {
@@ -271,7 +272,18 @@ export default function App() {
   const [forumTopics, setForumTopics] = useState(INITIAL_FORUM_TOPICS);
   const [showProductModal, setShowProductModal] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);
-  const [productForm, setProductForm] = useState({ title: '', category: 'Software', price: '', image: '', description: '', link: '' });
+  const [productForm, setProductForm] = useState({ title: '', category: 'Software', subtype: '', techniques: [], uses: [], software: [], price: '', image: '', description: '', link: '' });
+  const [productCategoryFilter, setProductCategoryFilter] = useState('Todos');
+  const [productTechniqueFilter, setProductTechniqueFilter] = useState('Todos');
+  const [productUseFilter, setProductUseFilter] = useState('Todos');
+  const [productSubtypeFilter, setProductSubtypeFilter] = useState('Todos');
+  const [educationItems, setEducationItems] = useState([]);
+  const [showEducationModal, setShowEducationModal] = useState(false);
+  const [editingEducationId, setEditingEducationId] = useState(null);
+  const [educationForm, setEducationForm] = useState({ title: '', provider: '', url: '', price: 'Gratis', image: '', description: '', techniques: [], topics: [], software: [] });
+  const [educationTechniqueFilter, setEducationTechniqueFilter] = useState('Todos');
+  const [educationTopicFilter, setEducationTopicFilter] = useState('Todos');
+  const [educationSoftwareFilter, setEducationSoftwareFilter] = useState('Todos');
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sendingContact, setSendingContact] = useState(false);
@@ -292,31 +304,17 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Carga los proyectos guardados en Firestore al iniciar la aplicación.
-  // Si la colección está vacía o falla la conexión, se conservan los proyectos de respaldo.
   useEffect(() => {
-    let isMounted = true;
+    const unsubscribe = onSnapshot(collection(db, 'education'), snapshot => setEducationItems(snapshot.docs.map(item => ({ ...item.data(), id: item.id }))), error => console.error('Error al sincronizar cursos:', error));
+    return () => unsubscribe();
+  }, []);
 
-    const fetchProjects = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'projects'));
-        const projectsList = querySnapshot.docs.map(projectDoc => ({
-          ...projectDoc.data(),
-          id: projectDoc.id
-        }));
-
-        if (isMounted) {
-          setProjects(projectsList);
-        }
-      } catch (error) {
-        console.error('Error al cargar los proyectos desde Firestore:', error);
-      }
-    };
-
-    fetchProjects();
-    return () => {
-      isMounted = false;
-    };
+  // Mantiene los proyectos sincronizados en tiempo real, incluidos los mensajes de moderación.
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'projects'), snapshot => {
+      setProjects(snapshot.docs.map(projectDoc => ({ ...projectDoc.data(), id: projectDoc.id })));
+    }, error => console.error('Error al sincronizar proyectos desde Firestore:', error));
+    return () => unsubscribe();
   }, []);
 
   // Las discusiones se leen de Firestore; los datos de ejemplo solo sirven mientras carga.
@@ -511,12 +509,21 @@ export default function App() {
 
   const handleShareProject = async (project) => {
     const shareText = `${project.title} — ${project.creator || project.creatorName || 'OnlyToon'}`;
+    const shareUrl = `${window.location.origin}${window.location.pathname}?project=${encodeURIComponent(project.id)}`;
     try {
-      if (navigator.share) await navigator.share({ title: project.title, text: shareText, url: window.location.href });
-      else if (navigator.clipboard) { await navigator.clipboard.writeText(`${shareText} | ${window.location.href}`); alert('Enlace copiado para compartir.'); }
-      else alert(shareText);
+      if (navigator.share) await navigator.share({ title: project.title, text: shareText, url: shareUrl });
+      else if (navigator.clipboard) { await navigator.clipboard.writeText(shareUrl); alert('Enlace directo al vídeo copiado.'); }
+      else window.prompt('Copia el enlace al vídeo:', shareUrl);
     } catch (error) { if (error?.name !== 'AbortError') console.error('No se pudo compartir el proyecto:', error); }
   };
+
+  // Abre automáticamente el proyecto cuando alguien entra mediante un enlace compartido.
+  useEffect(() => {
+    const projectId = new URLSearchParams(window.location.search).get('project');
+    if (!projectId || !projects.length) return;
+    const sharedProject = projects.find(project => project.id === projectId && project.status === 'approved');
+    if (sharedProject) setSelectedProject(current => current?.id === projectId ? current : sharedProject);
+  }, [projects]);
 
   const extractYoutubeId = (url) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -621,9 +628,9 @@ export default function App() {
   };
 
   const handleRejectProject = (id) => {
-    const reason = rejectionNote[id] || 'El contenido no cumple con nuestras directrices comunitarias.';
-    updateDoc(doc(db, 'projects', id), { status: 'rejected', rejectionReason: reason })
-      .then(() => setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected', rejectionReason: reason } : p)))
+    const reason = (rejectionNote[id] || '').trim() || 'El contenido no cumple con nuestras directrices comunitarias.';
+    updateDoc(doc(db, 'projects', id), { status: 'rejected', rejectionReason: reason, moderatorMessage: reason, moderatedAt: new Date().toISOString() })
+      .then(() => setProjects(prev => prev.map(p => p.id === id ? { ...p, status: 'rejected', rejectionReason: reason, moderatorMessage: reason } : p)))
       .catch(error => { console.error('Error al rechazar el proyecto:', error); alert('No se pudo guardar el rechazo en Firestore.'); });
   };
 
@@ -772,14 +779,14 @@ export default function App() {
   const openNewProduct = () => {
     if (!isAdmin) return alert('Solo los administradores pueden gestionar productos.');
     setEditingProductId(null);
-    setProductForm({ title: '', category: 'Software', price: '', image: '', description: '', link: '' });
+    setProductForm({ title: '', category: 'Software', subtype: '', techniques: [], uses: [], software: [], price: '', image: '', description: '', link: '' });
     setShowProductModal(true);
   };
 
   const openEditProduct = (product) => {
     if (!isAdmin) return alert('Solo los administradores pueden gestionar productos.');
     setEditingProductId(product.id);
-    setProductForm({ title: product.title || '', category: product.category || 'Software', price: product.price || '', image: product.image || '', description: product.description || '', link: product.link || '' });
+    setProductForm({ title: product.title || '', category: product.category || 'Software', subtype: product.subtype || '', techniques: product.techniques || [], uses: product.uses || [], software: product.software || [], price: product.price || '', image: product.image || '', description: product.description || '', link: product.link || '' });
     setShowProductModal(true);
   };
 
@@ -811,6 +818,12 @@ export default function App() {
       alert('No se pudo eliminar el producto. Revisa las reglas de Firestore.');
     }
   };
+
+  const toggleArrayValue = (form, setForm, field, value) => setForm(current => ({ ...current, [field]: current[field].includes(value) ? current[field].filter(item => item !== value) : [...current[field], value] }));
+  const openNewEducation = () => { if (!isAdmin) return; setEditingEducationId(null); setEducationForm({ title: '', provider: '', url: '', price: 'Gratis', image: '', description: '', techniques: [], topics: [], software: [] }); setShowEducationModal(true); };
+  const openEditEducation = item => { setEditingEducationId(item.id); setEducationForm({ title: item.title || '', provider: item.provider || '', url: item.url || '', price: item.price || 'Gratis', image: item.image || '', description: item.description || '', techniques: item.techniques || [], topics: item.topics || [], software: item.software || [] }); setShowEducationModal(true); };
+  const handleSaveEducation = async e => { e.preventDefault(); if (!isAdmin) return; const payload = { ...educationForm, title: educationForm.title.trim(), updatedAt: new Date().toISOString() }; if (!payload.title || !payload.url) return alert('El título y el enlace del curso son obligatorios.'); const id = editingEducationId || `course_${Date.now()}`; try { await setDoc(doc(db, 'education', id), payload, { merge: true }); setEducationItems(prev => editingEducationId ? prev.map(item => item.id === id ? { ...payload, id } : item) : [...prev, { ...payload, id }]); setShowEducationModal(false); } catch (error) { console.error('Error al guardar curso:', error); alert('No se pudo guardar el curso. Revisa las reglas de Firestore.'); } };
+  const handleDeleteEducation = async item => { if (!isAdmin || !window.confirm(`¿Eliminar el curso «${item.title}»?`)) return; try { await deleteDoc(doc(db, 'education', item.id)); setEducationItems(prev => prev.filter(course => course.id !== item.id)); } catch (error) { console.error(error); alert('No se pudo eliminar el curso.'); } };
 
   const handleDeleteTopic = async (topic) => {
     if (!user?.id) return setShowAuthModal(true);
@@ -1149,6 +1162,7 @@ export default function App() {
         <nav className="hidden md:flex items-center gap-1 lg:gap-2 shrink-0">
           <button onClick={() => setActiveTab('explorar')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'explorar' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Explorar</button>
           <button onClick={() => setActiveTab('productos')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'productos' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Productos</button>
+          <button onClick={() => setActiveTab('educacion')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'educacion' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Aprender</button>
           <button onClick={() => setActiveTab('comunidad')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'comunidad' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Comunidad</button>
           {isAdmin && <button onClick={() => setActiveTab('admin')} className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 ${activeTab === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'text-amber-400 hover:bg-amber-500/10'}`}><ShieldCheck className="w-4 h-4" /><span>Moderación</span></button>}
         </nav>
@@ -1177,7 +1191,7 @@ export default function App() {
       {/* Menú desplegable móvil */}
       {mobileMenuOpen && (
         <nav className="md:hidden sticky top-[57px] z-30 bg-[#161618] border-b border-[#2e2e34] px-4 py-3 shadow-xl space-y-1">
-          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['comunidad', 'Comunidad']].map(([tab, label]) => (
+          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['educacion', 'Aprender'], ['comunidad', 'Comunidad']].map(([tab, label]) => (
             <button key={tab} onClick={() => { setActiveTab(tab); setMobileMenuOpen(false); }} className={`block w-full text-left px-3 py-3 rounded-lg text-sm font-medium ${activeTab === tab ? 'bg-[#222226] text-blue-400' : 'text-gray-200 hover:bg-[#222226]'}`}>{label}</button>
           ))}
           {isAdmin && <button onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-amber-400 hover:bg-[#222226]">Moderación</button>}
@@ -1335,6 +1349,7 @@ export default function App() {
                       <option value="Comedia">Comedia</option>
                       <option value="Terror">Terror</option>
                       <option value="Musical">Musical</option>
+                      <option value="Romance">Romance</option>
                       {GENRES_LIST.filter(g => !['Acción','Aventura','Ciencia ficción','Fantasía','Drama','Comedia','Terror','Musical'].includes(g)).map(g => <option key={g} value={g}>{g}</option>)}
                     </select>
                   </div>
@@ -1368,6 +1383,8 @@ export default function App() {
                       <option value="Serie">Serie</option>
                       <option value="Tráiler">Tráiler</option>
                       <option value="Musical">Musical</option>
+                      <option value="Tutoriales">Tutoriales</option>
+                      <option value="Making of">Making of</option>
                     </select>
                   </div>
                 </div>
@@ -1473,8 +1490,14 @@ export default function App() {
               {isAdmin && <button onClick={openNewProduct} className="mt-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl inline-flex items-center gap-2"><Plus className="w-4 h-4" />Agregar producto</button>}
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-[#2e2e34] bg-[#1a1a1e] p-4">
+              <label className="text-xs text-gray-400">Categoría<select value={productCategoryFilter} onChange={e => setProductCategoryFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option><option>Software</option><option>Hardware</option><option>Accesorio</option></select></label>
+              <label className="text-xs text-gray-400">Técnica<select value={productTechniqueFilter} onChange={e => setProductTechniqueFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['2D','3D','Stop Motion','IA','Híbrido'].map(x => <option key={x}>{x}</option>)}</select></label>
+              <label className="text-xs text-gray-400">Uso<select value={productUseFilter} onChange={e => setProductUseFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['Animación','Modelado','Dibujo','Escultura','Rigging','Texturizado','Renderizado','Composición','Edición','Iluminación','Stop motion','Captura de movimiento','Preproducción','Storyboard','Entornos','Audio'].map(x => <option key={x}>{x}</option>)}</select></label>
+              <label className="text-xs text-gray-400">Tipo de equipo / subtipo<select value={productSubtypeFilter} onChange={e => setProductSubtypeFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['Tableta con pantalla','Tableta sin pantalla','Tableta autónoma','Lápiz digital','Cámara','Objetivo','Trípode','Plataforma giratoria','Kit de iluminación','Marioneta','Armadura para stop motion','Set / decorado','Impresora 3D','Escáner 3D','Capturadora','Micrófono','Ordenador','Monitor','Almacenamiento','Accesorio'].map(x => <option key={x}>{x}</option>)}</select></label>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((prod) => (
+              {products.filter(prod => (productCategoryFilter === 'Todos' || prod.category === productCategoryFilter) && (productTechniqueFilter === 'Todos' || (prod.techniques || []).includes(productTechniqueFilter) || (productTechniqueFilter === '2D' && /2d/i.test(prod.title + ' ' + prod.description)) || (productTechniqueFilter === '3D' && /3d/i.test(prod.title + ' ' + prod.description))) && (productUseFilter === 'Todos' || (prod.uses || []).includes(productUseFilter)) && (productSubtypeFilter === 'Todos' || prod.subtype === productSubtypeFilter)).map((prod) => (
                 <div key={prod.id} className="bg-[#1a1a1e] border border-[#2e2e34] rounded-2xl overflow-hidden flex flex-col justify-between hover:border-gray-500 transition-all">
                   <div>
                     <img src={prod.image || 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'} alt={prod.title} className="w-full h-44 object-cover" />
@@ -1487,6 +1510,7 @@ export default function App() {
                       </div>
                       <h3 className="text-lg font-bold text-white leading-snug">{prod.title}</h3>
                       <p className="text-xs text-gray-400 line-clamp-3 leading-relaxed">{prod.description}</p>
+                      <div className="flex flex-wrap gap-1">{[...(prod.techniques || []), ...(prod.uses || []), ...(prod.subtype ? [prod.subtype] : [])].map(tag => <span key={tag} className="text-[10px] rounded-full bg-[#292930] px-2 py-1 text-gray-300">{tag}</span>)}</div>
                     </div>
                   </div>
 
@@ -1505,6 +1529,21 @@ export default function App() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------
+            PESTAÑA: APRENDER / EDUCACIÓN
+        ------------------------------------------ */}
+        {activeTab === 'educacion' && (
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 space-y-8">
+            <div><span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">FORMACIÓN PARA CREADORES</span><h1 className="text-3xl font-bold text-white">Aprender animación</h1><p className="text-sm text-gray-400 mt-1">Cursos, tutoriales y recursos formativos gratuitos y de pago, clasificados por técnica, especialidad y software.</p>{isAdmin && <button onClick={openNewEducation} className="mt-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl inline-flex items-center gap-2"><Plus className="w-4 h-4"/>Agregar curso</button>}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 rounded-2xl border border-[#2e2e34] bg-[#1a1a1e] p-4">
+              <label className="text-xs text-gray-400">Técnica<select value={educationTechniqueFilter} onChange={e => setEducationTechniqueFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['2D','3D','Stop Motion','IA','Híbrido'].map(x => <option key={x}>{x}</option>)}</select></label>
+              <label className="text-xs text-gray-400">Especialidad<select value={educationTopicFilter} onChange={e => setEducationTopicFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['Dibujo','Animación','Modelado','Escultura','Rigging','Texturizado','Entornos','Iluminación','Renderizado','Composición','Edición','Storyboard','Diseño de personajes','Fondos','Layout','Anatomía','Guion','Preproducción','Producción','Postproducción','Stop motion','Impresión 3D','Marionetas y armaduras','Fotografía','IA generativa','Efectos visuales'].map(x => <option key={x}>{x}</option>)}</select></label>
+              <label className="text-xs text-gray-400">Software utilizado<select value={educationSoftwareFilter} onChange={e => setEducationSoftwareFilter(e.target.value)} className="mt-1 w-full bg-[#121212] border border-[#2e2e34] rounded-lg p-2 text-white"><option>Todos</option>{['Blender','Maya','3ds Max','Cinema 4D','Houdini','ZBrush','Substance 3D Painter','Substance 3D Designer','Adobe Photoshop','Adobe Illustrator','Adobe Animate','After Effects','Premiere Pro','Toon Boom Harmony','Storyboard Pro','TVPaint','Krita','OpenToonz','Clip Studio Paint','Moho','Spine','Live2D Cubism','Dragonframe','Stop Motion Studio','DaVinci Resolve','Unreal Engine','Unity','Godot','Marvelous Designer','Houdini','ComfyUI','Stable Diffusion','Runway','Midjourney','Autodesk MotionBuilder','iClone','Character Creator','Procreate','Grease Pencil','Nuke','Aseprite','Synfig','Pencil2D','TupiTube','Audacity','Reaper','Otro'].map(x => <option key={x}>{x}</option>)}</select></label>
+            </div>
+            {educationItems.filter(item => (educationTechniqueFilter === 'Todos' || (item.techniques || []).includes(educationTechniqueFilter)) && (educationTopicFilter === 'Todos' || (item.topics || []).includes(educationTopicFilter)) && (educationSoftwareFilter === 'Todos' || (item.software || []).includes(educationSoftwareFilter))).length ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{educationItems.filter(item => (educationTechniqueFilter === 'Todos' || (item.techniques || []).includes(educationTechniqueFilter)) && (educationTopicFilter === 'Todos' || (item.topics || []).includes(educationTopicFilter)) && (educationSoftwareFilter === 'Todos' || (item.software || []).includes(educationSoftwareFilter))).map(item => <article key={item.id} className="bg-[#1a1a1e] border border-[#2e2e34] rounded-2xl overflow-hidden flex flex-col">{item.image && <img src={item.image} alt={item.title} className="w-full h-44 object-cover"/>}<div className="p-5 flex-1 space-y-3"><div className="flex justify-between gap-2"><span className="text-[10px] rounded-full bg-blue-500/10 text-blue-300 px-2 py-1">{item.price || 'Consultar precio'}</span><span className="text-xs text-gray-400">{item.provider}</span></div><h3 className="text-lg font-bold text-white">{item.title}</h3><p className="text-sm text-gray-400">{item.description}</p>{[...(item.techniques || []), ...(item.topics || []), ...(item.software || [])].map(tag => <span key={tag} className="inline-block text-[10px] rounded-full bg-[#292930] px-2 py-1 mr-1 mb-1 text-gray-300">{tag}</span>)}</div><div className="p-5 pt-0 flex gap-2"><a href={item.url} target="_blank" rel="noopener noreferrer" className="flex-1 text-center bg-blue-600 hover:bg-blue-500 rounded-xl py-2.5 text-sm font-semibold text-white">Ver curso <ExternalLink className="inline w-3 h-3"/></a>{isAdmin && <><button onClick={() => openEditEducation(item)} className="px-3 rounded-lg bg-blue-500/10 text-blue-300 text-xs">Editar</button><button onClick={() => handleDeleteEducation(item)} className="px-3 rounded-lg bg-red-500/10 text-red-300 text-xs">Eliminar</button></>}</div></article>)}</div> : <p className="text-sm text-gray-500 rounded-2xl border border-dashed border-[#2e2e34] p-8 text-center">Aún no hay cursos con estos filtros. {isAdmin ? 'Agrega el primero desde el botón superior.' : 'Vuelve más tarde para descubrir nuevos recursos.'}</p>}
           </div>
         )}
 
@@ -1762,6 +1801,8 @@ export default function App() {
                             )}
                           </div>
                           <p className="text-gray-400 text-xs">{proj.genre} • {proj.format}</p>
+                          {proj.status === 'rejected' && (proj.moderatorMessage || proj.rejectionReason) && <p className="mt-2 rounded-lg border border-red-500/20 bg-red-500/5 p-2 text-xs text-red-200"><strong>Mensaje del moderador:</strong> {proj.moderatorMessage || proj.rejectionReason}</p>}
+                          {proj.status === 'approved' && proj.moderatorMessage && <p className="mt-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-2 text-xs text-emerald-200"><strong>Mensaje del moderador:</strong> {proj.moderatorMessage}</p>}
                           <div className="flex flex-wrap gap-2 mt-3" onClick={e => e.stopPropagation()}>
                             <button
                               type="button"
@@ -1834,7 +1875,7 @@ export default function App() {
                       <div className="space-y-1.5">
                         <input 
                           type="text" 
-                          placeholder="Motivo del rechazo..."
+                          placeholder="Mensaje para el usuario (se guardará al aprobar o rechazar)..."
                           value={rejectionNote[proj.id] || ''}
                           onChange={(e) => setRejectionNote({ ...rejectionNote, [proj.id]: e.target.value })}
                           className="w-full bg-[#121212] border border-[#2e2e34] text-xs rounded-lg px-2.5 py-1.5 text-gray-200 focus:outline-none"
@@ -2344,6 +2385,9 @@ export default function App() {
             <form onSubmit={handleSaveProduct} className="space-y-3">
               <div><label className="block text-xs text-gray-400 mb-1">Nombre del producto *</label><input required value={productForm.title} onChange={e => setProductForm({...productForm,title:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3"><div><label className="block text-xs text-gray-400 mb-1">Categoría *</label><select value={productForm.category} onChange={e => setProductForm({...productForm,category:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white"><option>Software</option><option>Hardware</option><option>Accesorio</option></select></div><div><label className="block text-xs text-gray-400 mb-1">Precio</label><input value={productForm.price} onChange={e => setProductForm({...productForm,price:e.target.value})} placeholder="Ej. Gratis o 29 €" className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div></div>
+              <div><label className="block text-xs text-gray-400 mb-1">Subtipo físico (opcional)</label><select value={productForm.subtype} onChange={e => setProductForm({...productForm,subtype:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white"><option value="">Sin subtipo</option>{['Tableta con pantalla','Tableta sin pantalla','Tableta autónoma','Lápiz digital','Cámara','Objetivo','Trípode','Plataforma giratoria','Kit de iluminación','Marioneta','Armadura para stop motion','Set / decorado','Impresora 3D','Escáner 3D','Capturadora','Micrófono','Ordenador','Monitor','Almacenamiento','Accesorio'].map(x => <option key={x}>{x}</option>)}</select></div>
+              <div><label className="block text-xs text-gray-400 mb-1">Técnicas (puedes elegir varias)</label><div className="flex flex-wrap gap-2">{['2D','3D','Stop Motion','IA','Híbrido'].map(x => <label key={x} className="text-xs text-gray-300 flex gap-1 items-center"><input type="checkbox" checked={productForm.techniques.includes(x)} onChange={() => toggleArrayValue(productForm,setProductForm,'techniques',x)}/>{x}</label>)}</div></div>
+              <div><label className="block text-xs text-gray-400 mb-1">Usos / especialidades</label><div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-32 overflow-y-auto">{['Animación','Modelado','Dibujo','Escultura','Rigging','Texturizado','Renderizado','Composición','Edición','Iluminación','Stop motion','Captura de movimiento','Preproducción','Storyboard','Entornos','Audio','Diseño de personajes','Impresión 3D','Fotografía','IA generativa'].map(x => <label key={x} className="text-xs text-gray-300 flex gap-1 items-center"><input type="checkbox" checked={productForm.uses.includes(x)} onChange={() => toggleArrayValue(productForm,setProductForm,'uses',x)}/>{x}</label>)}</div></div>
               <div><label className="block text-xs text-gray-400 mb-1">URL de imagen</label><input type="url" value={productForm.image} onChange={e => setProductForm({...productForm,image:e.target.value})} placeholder="https://..." className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
               <div><label className="block text-xs text-gray-400 mb-1">Enlace del producto *</label><input required type="url" value={productForm.link} onChange={e => setProductForm({...productForm,link:e.target.value})} placeholder="https://..." className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
               <div><label className="block text-xs text-gray-400 mb-1">Descripción</label><textarea rows={3} value={productForm.description} onChange={e => setProductForm({...productForm,description:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" /></div>
@@ -2352,6 +2396,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {showEducationModal && isAdmin && <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"><div className="bg-[#161618] border border-[#2e2e34] w-full max-w-2xl rounded-3xl p-6 space-y-5 my-8"><div className="flex items-center justify-between"><h2 className="text-xl font-bold text-white">{editingEducationId ? 'Editar curso' : 'Agregar curso'}</h2><button onClick={() => setShowEducationModal(false)}><X className="w-5 h-5"/></button></div><form onSubmit={handleSaveEducation} className="space-y-3"><input required placeholder="Título del curso *" value={educationForm.title} onChange={e => setEducationForm({...educationForm,title:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/><div className="grid sm:grid-cols-2 gap-3"><input placeholder="Academia / profesor" value={educationForm.provider} onChange={e => setEducationForm({...educationForm,provider:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/><input placeholder="Gratis, 25 €, suscripción…" value={educationForm.price} onChange={e => setEducationForm({...educationForm,price:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/></div><input required type="url" placeholder="Enlace del curso *" value={educationForm.url} onChange={e => setEducationForm({...educationForm,url:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/><input type="url" placeholder="URL de imagen (opcional)" value={educationForm.image} onChange={e => setEducationForm({...educationForm,image:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/><textarea rows={3} placeholder="Descripción del curso" value={educationForm.description} onChange={e => setEducationForm({...educationForm,description:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl p-3 text-sm text-white"/>{[['Técnicas','techniques',['2D','3D','Stop Motion','IA','Híbrido']],['Especialidades','topics',['Dibujo','Animación','Modelado','Escultura','Rigging','Texturizado','Entornos','Iluminación','Renderizado','Composición','Edición','Storyboard','Diseño de personajes','Fondos','Layout','Anatomía','Guion','Preproducción','Producción','Postproducción','Stop motion','Impresión 3D','Marionetas y armaduras','Fotografía','IA generativa','Efectos visuales']],['Software utilizado','software',['Blender','Maya','3ds Max','Cinema 4D','Houdini','ZBrush','Substance 3D Painter','Substance 3D Designer','Photoshop','Illustrator','Adobe Animate','After Effects','Premiere Pro','Toon Boom Harmony','Storyboard Pro','TVPaint','Krita','OpenToonz','Clip Studio Paint','Moho','Spine','Live2D Cubism','Dragonframe','Stop Motion Studio','DaVinci Resolve','Unreal Engine','Unity','Godot','Marvelous Designer','ComfyUI','Stable Diffusion','Runway','Midjourney','MotionBuilder','iClone','Character Creator','Procreate','Nuke','Aseprite','Synfig','Pencil2D','TupiTube','Audacity','Reaper','Otro']]].map(([label,field,options]) => <div key={field}><p className="text-xs text-gray-400 mb-2">{label} (selección múltiple)</p><div className="flex flex-wrap gap-x-3 gap-y-2 max-h-28 overflow-y-auto">{options.map(x => <label key={x} className="text-xs text-gray-300 flex items-center gap-1"><input type="checkbox" checked={educationForm[field].includes(x)} onChange={() => toggleArrayValue(educationForm,setEducationForm,field,x)}/>{x}</label>)}</div></div>)}<button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 rounded-xl py-3 text-sm font-bold text-white">Guardar curso</button></form></div></div>}
 
       {/* MODAL DE CONTACTO: envía el mensaje desde la web sin mostrar el destinatario */}
       {showContactModal && (
