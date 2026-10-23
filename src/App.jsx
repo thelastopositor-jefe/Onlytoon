@@ -1228,8 +1228,8 @@ export default function App() {
     alt={CAROUSEL_ITEMS[heroIndex]?.title} 
     className="w-full h-full object-cover opacity-100 scale-100"
   />
-  {/* Gradiente lateral izquierdo: mantiene el fondo oscuro solo donde está el texto y se desvanece hacia la derecha */}
-  <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-[#121212]/72 to-transparent" />
+  {/* Gradiente más suave: deja ver mejor la imagen sin perder legibilidad del texto */}
+  <div className="absolute inset-0 bg-gradient-to-r from-[#121212]/75 via-[#121212]/35 to-transparent" />
 </div>
 
                 {/* Contenido Hero */}
