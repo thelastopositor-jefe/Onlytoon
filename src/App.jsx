@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
-import onlyToonLogo from './Logo_web.jpg';
+const TOONKNIGHT_LOGO = '/images/logo/toonknight.png';
 import { auth, googleProvider, signInWithPopup, signOut, db } from './firebase';
 import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, increment, onSnapshot } from 'firebase/firestore';
 import { 
@@ -508,7 +508,7 @@ export default function App() {
   };
 
   const handleShareProject = async (project) => {
-    const shareText = `${project.title} — ${project.creator || project.creatorName || 'OnlyToon'}`;
+    const shareText = `${project.title} — ${project.creator || project.creatorName || 'ToonKnight'}`;
     const shareUrl = `${window.location.origin}${window.location.pathname}?project=${encodeURIComponent(project.id)}`;
     try {
       if (navigator.share) await navigator.share({ title: project.title, text: shareText, url: shareUrl });
@@ -660,7 +660,7 @@ export default function App() {
     }
   };
 
-  // Los episodios de OnlyToon están organizados dentro de seasons[].episodes[].
+  // Los episodios de ToonKnight están organizados dentro de seasons[].episodes[].
   // Como los episodios actuales no tienen id propio, se identifican por sus índices.
   const handleDeleteEpisode = async (projectId, seasonIndex, episodeIndex) => {
     if (!isAdmin) {
@@ -857,7 +857,7 @@ export default function App() {
 
     setSendingContact(true);
     try {
-      // El destinatario correcto es la cuenta de Gmail de OnlyToon.
+      // El destinatario correcto es la cuenta de Gmail de ToonKnight.
       const response = await fetch('https://formsubmit.co/ajax/thelastopositor@gmail.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -866,7 +866,7 @@ export default function App() {
           email: payload.email,
           subject: payload.subject,
           message: payload.message,
-          _subject: payload.subject || 'Nuevo mensaje desde OnlyToon',
+          _subject: payload.subject || 'Nuevo mensaje desde ToonKnight',
           _replyto: payload.email,
           _captcha: 'false'
         })
@@ -981,7 +981,7 @@ export default function App() {
       email,
       photo: firebaseUser.photoURL || existingData.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
       banner: existingData.banner || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-      bio: existingData.bio ?? '¡Hola! Soy creador en OnlyToon.',
+      bio: existingData.bio ?? '¡Hola! Soy creador en ToonKnight.',
       patreonUrl: existingData.patreonUrl ?? '',
       kofiUrl: existingData.kofiUrl ?? '',
       websiteUrl: existingData.websiteUrl ?? '',
@@ -1134,11 +1134,11 @@ export default function App() {
           type="button"
           onClick={() => { setActiveTab('explorar'); setMobileMenuOpen(false); }}
           className="flex items-center gap-2 cursor-pointer shrink-0 min-w-0"
-          aria-label="OnlyToon, ir a explorar"
+          aria-label="ToonKnight, ir a explorar"
         >
           <img
-            src={onlyToonLogo}
-            alt="OnlyToon — Independent Animation"
+            src={TOONKNIGHT_LOGO}
+            alt="ToonKnight — Animación Independiente"
             className="h-14 sm:h-16 w-auto max-w-[48vw] object-contain"
           />
         </button>
@@ -1907,7 +1907,7 @@ export default function App() {
             <div className="relative aspect-video bg-black">
               <iframe
                 src={`https://www.youtube.com/embed/${selectedProject.youtubeId || ''}?autoplay=1`}
-                title={selectedProject.title || 'Reproductor de OnlyToon'}
+                title={selectedProject.title || 'Reproductor de ToonKnight'}
                 className="w-full h-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -1974,8 +1974,8 @@ export default function App() {
                 />
                 <div className="min-w-0 flex-1 text-center sm:text-left">
                   <p className="text-[10px] uppercase tracking-[0.18em] text-blue-300 font-bold mb-1">Conoce al creador</p>
-                  <h3 className="text-lg font-bold text-white">{selectedProject.creatorName || selectedProject.creator || 'Creador de OnlyToon'}</h3>
-                  <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{selectedProject.creatorBio || 'Creador de contenido en OnlyToon.'}</p>
+                  <h3 className="text-lg font-bold text-white">{selectedProject.creatorName || selectedProject.creator || 'Creador de ToonKnight'}</h3>
+                  <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{selectedProject.creatorBio || 'Creador de contenido en ToonKnight.'}</p>
                   <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
                     {(selectedProject.creatorPatreon || selectedProject.patreonUrl) && (
                       <a href={selectedProject.creatorPatreon || selectedProject.patreonUrl} target="_blank" rel="noopener noreferrer" className="bg-[#ff424d] hover:bg-[#e63946] text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors">
@@ -2298,7 +2298,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white">Editar perfil</h2>
-                <p className="text-xs text-gray-400 mt-1">Los cambios se guardarán en tu cuenta de OnlyToon.</p>
+                <p className="text-xs text-gray-400 mt-1">Los cambios se guardarán en tu cuenta de ToonKnight.</p>
               </div>
               <button type="button" onClick={() => setShowEditProfileModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar">
                 <X className="w-5 h-5" />
@@ -2403,7 +2403,7 @@ export default function App() {
       {showContactModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-lg rounded-3xl p-6 space-y-5 shadow-2xl my-8">
-            <div className="flex items-center justify-between"><div><h2 className="text-xl font-bold text-white">Contacta con OnlyToon</h2><p className="text-xs text-gray-400 mt-1">Envíanos tu consulta mediante este formulario.</p></div><button onClick={() => setShowContactModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar"><X className="w-5 h-5" /></button></div>
+            <div className="flex items-center justify-between"><div><h2 className="text-xl font-bold text-white">Contacta con ToonKnight</h2><p className="text-xs text-gray-400 mt-1">Envíanos tu consulta mediante este formulario.</p></div><button onClick={() => setShowContactModal(false)} className="text-gray-400 hover:text-white" aria-label="Cerrar"><X className="w-5 h-5" /></button></div>
             <form onSubmit={handleSendContact} className="space-y-3">
               <input required placeholder="Tu nombre" value={contactForm.name} onChange={e => setContactForm({...contactForm,name:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
               <input required type="email" placeholder="Tu correo para responderte" value={contactForm.email} onChange={e => setContactForm({...contactForm,email:e.target.value})} className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
@@ -2423,7 +2423,7 @@ export default function App() {
           <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-md rounded-3xl p-6 lg:p-8 space-y-6 shadow-2xl">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-bold text-white">Iniciar sesión en OnlyToon</h2>
+                <h2 className="text-xl font-bold text-white">Iniciar sesión en ToonKnight</h2>
                 <p className="text-xs text-gray-400 mt-1">Usa tu cuenta de Google para continuar.</p>
               </div>
               <button onClick={() => setShowAuthModal(false)} className="text-gray-400 hover:text-white">
@@ -2450,10 +2450,10 @@ export default function App() {
       <footer className="bg-[#161618] border-t border-[#2e2e34] py-8 px-6 lg:px-12 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white">ONLYTOON</span>
+            <span className="font-bold text-white">TOONKNIGHT</span>
             <span>— Historias que cobran vida.</span>
           </div>
-          <div className="flex items-center gap-4"><button onClick={() => setShowContactModal(true)} className="text-blue-300 hover:text-white font-semibold">Contacto</button><p>© 2026 OnlyToon. Todos los derechos reservados.</p></div>
+          <div className="flex items-center gap-4"><button onClick={() => setShowContactModal(true)} className="text-blue-300 hover:text-white font-semibold">Contacto</button><p>© 2026 ToonKnight. Todos los derechos reservados.</p></div>
         </div>
       </footer>
 
