@@ -887,8 +887,8 @@
     "url": "https://www.youtube.com/watch?v=HPOcLm0fMws"
   },
   {
-    "id": "review-3MVE6yledLg",
-    "title": "Serie 2D — Episodio 01",
+    "id": "series-serie-2d",
+    "title": "Serie 2D",
     "creator": "Creadores Independientes",
     "creatorChannel": "",
     "type": "2D",
@@ -899,24 +899,29 @@
       "Drama"
     ],
     "year": "2023",
-    "url": "https://www.youtube.com/watch?v=3MVE6yledLg",
-    "description": "Episodio 01 de una serie animada 2D."
-  },
-  {
-    "id": "review-gFQEX4ltr14",
-    "title": "Serie 2D — Episodio 02",
-    "creator": "Creadores Independientes",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Aventura",
-    "genres": [
-      "Aventura",
-      "Drama"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=gFQEX4ltr14",
-    "description": "Episodio 02 de una serie animada 2D."
+    "description": "Serie animada 2D. Los episodios están agrupados por temporada.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "review-3MVE6yledLg",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=3MVE6yledLg",
+            "description": "Episodio 01 de una serie animada 2D."
+          },
+          {
+            "id": "review-gFQEX4ltr14",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=gFQEX4ltr14",
+            "description": "Episodio 02 de una serie animada 2D."
+          }
+        ]
+      }
+    ]
   },
   {
     "title": "Wild Love",
@@ -986,7 +991,8 @@
     "id": "ref-122"
   },
   {
-    "title": "Metrecalia — T1E00",
+    "id": "series-metrecalia",
+    "title": "Metrecalia",
     "creator": "Estudio Metrecalia",
     "creatorChannel": "",
     "type": "2D",
@@ -997,41 +1003,36 @@
       "Fantasía"
     ],
     "year": "2023",
-    "url": "https://www.youtube.com/watch?v=T9xqpwpHWrw",
-    "description": "Temporada 1, episodio 00 de la serie Metrecalia.",
-    "id": "ref-123"
-  },
-  {
-    "title": "Metrecalia — T1E01",
-    "creator": "Estudio Metrecalia",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Aventura",
-    "genres": [
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=P_rfRMRl8h4",
-    "description": "Temporada 1, episodio 01 de la serie Metrecalia.",
-    "id": "ref-124"
-  },
-  {
-    "title": "Metrecalia — T1E02",
-    "creator": "Estudio Metrecalia",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Aventura",
-    "genres": [
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=PPXPbzhahv0",
-    "description": "Temporada 1, episodio 02 de la serie Metrecalia.",
-    "id": "ref-125"
+    "description": "Serie Metrecalia. Los episodios están agrupados por temporada.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "ref-123",
+            "title": "Episodio 00",
+            "episode": 0,
+            "url": "https://www.youtube.com/watch?v=T9xqpwpHWrw",
+            "description": "Temporada 1, episodio 00 de la serie Metrecalia."
+          },
+          {
+            "id": "ref-124",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=P_rfRMRl8h4",
+            "description": "Temporada 1, episodio 01 de la serie Metrecalia."
+          },
+          {
+            "id": "ref-125",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=PPXPbzhahv0",
+            "description": "Temporada 1, episodio 02 de la serie Metrecalia."
+          }
+        ]
+      }
+    ]
   },
   {
     "title": "HIDARI (Pilot Film)",
@@ -1353,7 +1354,8 @@
     "id": "ref-145"
   },
   {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E01",
+    "id": "series-scifi-aventura-fantasia",
+    "title": "Serie Sci-Fi, Aventura y Fantasía",
     "creator": "Estudio Independiente",
     "creatorChannel": "",
     "type": "2D",
@@ -1365,97 +1367,61 @@
       "Fantasía"
     ],
     "year": "2023",
-    "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
-    "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-146"
+    "description": "Serie animada de ciencia ficción, aventura y fantasía. Los episodios están agrupados por temporada.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "ref-146",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
+            "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía."
+          },
+          {
+            "id": "ref-147",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
+            "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía."
+          },
+          {
+            "id": "ref-148",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
+            "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía."
+          },
+          {
+            "id": "ref-149",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
+            "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía."
+          },
+          {
+            "id": "ref-150",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
+            "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía."
+          },
+          {
+            "id": "ref-151",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
+            "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía."
+          }
+        ]
+      }
+    ]
   },
   {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E02",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
-    "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-147"
-  },
-  {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E03",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
-    "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-148"
-  },
-  {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E04",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
-    "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-149"
-  },
-  {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E05",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
-    "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-150"
-  },
-  {
-    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E06",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Aventura",
-      "Fantasía"
-    ],
-    "year": "2023",
-    "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
-    "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía.",
-    "id": "ref-151"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E01",
+    "id": "series-ciencia-ficcion-drama-ia",
+    "title": "Serie de Ciencia Ficción y Drama (IA)",
     "creator": "Estudio de Animación IA",
     "creatorChannel": "",
     "type": "IA",
@@ -1467,127 +1433,70 @@
       "Fantasía"
     ],
     "year": "2024",
-    "url": "https://www.youtube.com/watch?v=r0b_gKZgnbQ",
-    "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-152"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E02",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=YoNhOiNQols",
-    "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-153"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E03",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=eU_j7rfpTSM",
-    "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-154"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E04",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=SoCn-e5MowA",
-    "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-155"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E05",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=O1JWMBhDArI",
-    "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-156"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E06",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=bgjINrcG0ts",
-    "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-157"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E07",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=JHb3TmsdlCI",
-    "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-158"
-  },
-  {
-    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E08",
-    "creator": "Estudio de Animación IA",
-    "creatorChannel": "",
-    "type": "IA",
-    "format": "Serie",
-    "genre": "Ciencia ficción",
-    "genres": [
-      "Ciencia ficción",
-      "Drama",
-      "Fantasía"
-    ],
-    "year": "2024",
-    "url": "https://www.youtube.com/watch?v=AgSh4bzUGmQ",
-    "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA.",
-    "id": "ref-159"
+    "description": "Serie de ciencia ficción y drama creada con IA. Los episodios están agrupados por temporada.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "ref-152",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=r0b_gKZgnbQ",
+            "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-153",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=YoNhOiNQols",
+            "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-154",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=eU_j7rfpTSM",
+            "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-155",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=SoCn-e5MowA",
+            "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-156",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=O1JWMBhDArI",
+            "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-157",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=bgjINrcG0ts",
+            "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-158",
+            "title": "Episodio 07",
+            "episode": 7,
+            "url": "https://www.youtube.com/watch?v=JHb3TmsdlCI",
+            "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA."
+          },
+          {
+            "id": "ref-159",
+            "title": "Episodio 08",
+            "episode": 8,
+            "url": "https://www.youtube.com/watch?v=AgSh4bzUGmQ",
+            "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA."
+          }
+        ]
+      }
+    ]
   }
 ]
