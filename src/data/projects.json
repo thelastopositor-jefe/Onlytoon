@@ -7,7 +7,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "2024",
     "url": "https://www.youtube.com/watch?v=nCKwUB8EVbc"
   },
@@ -19,7 +21,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Comedia",
-    "genres": ["Comedia", "Aventura"],
+    "genres": [
+      "Comedia",
+      "Aventura"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=WAvchbP2kXM"
   },
@@ -31,7 +36,10 @@
     "type": "2D",
     "format": "Tráiler",
     "genre": "Fantasía",
-    "genres": ["Fantasía", "Aventura"],
+    "genres": [
+      "Fantasía",
+      "Aventura"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=6SO52MdUxSA"
   },
@@ -43,7 +51,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Terror",
-    "genres": ["Terror", "Drama"],
+    "genres": [
+      "Terror",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=6s9pwv_tI6A"
   },
@@ -55,7 +66,10 @@
     "type": "2D",
     "format": "Serie",
     "genre": "Acción",
-    "genres": ["Acción", "Drama"],
+    "genres": [
+      "Acción",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=8pr352T1Ae4"
   },
@@ -67,7 +81,11 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía", "Social"],
+    "genres": [
+      "Drama",
+      "Fantasía",
+      "Social"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=ijq_UkRKSFw"
   },
@@ -79,7 +97,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Romance"],
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
     "year": "2010",
     "url": "https://www.youtube.com/watch?v=PTdzCAGH3lU"
   },
@@ -91,7 +112,9 @@
     "type": "2D",
     "format": "Tráiler",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=KN81SinuSKs"
   },
@@ -103,7 +126,10 @@
     "type": "2D",
     "format": "Tráiler",
     "genre": "Acción",
-    "genres": ["Acción", "Comedia"],
+    "genres": [
+      "Acción",
+      "Comedia"
+    ],
     "year": "2025",
     "url": "https://www.youtube.com/watch?v=mJYD7inQNEU"
   },
@@ -115,7 +141,10 @@
     "type": "2D",
     "format": "Tráiler",
     "genre": "Fantasía",
-    "genres": ["Fantasía", "Ciencia ficción"],
+    "genres": [
+      "Fantasía",
+      "Ciencia ficción"
+    ],
     "year": "2026",
     "url": "https://www.youtube.com/watch?v=mPRlg8YA4K8"
   },
@@ -127,7 +156,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Acción",
-    "genres": ["Acción", "Ciencia ficción"],
+    "genres": [
+      "Acción",
+      "Ciencia ficción"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=KNNUhFe1i-0"
   },
@@ -139,7 +171,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=NudUBj1w7z4"
   },
@@ -151,7 +185,10 @@
     "type": "Stop Motion",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía"],
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=cAXbIHREKt8"
   },
@@ -163,7 +200,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Comedia"],
+    "genres": [
+      "Romance",
+      "Comedia"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=ZHbiVjMBtLU"
   },
@@ -175,7 +215,10 @@
     "type": "Stop Motion",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía"],
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=VIkrLb8YD-g"
   },
@@ -187,7 +230,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=5c9wtTqMT0E"
   },
@@ -199,7 +244,10 @@
     "type": "IA",
     "format": "Cortometraje",
     "genre": "Ciencia ficción",
-    "genres": ["Ciencia ficción", "Fantasía"],
+    "genres": [
+      "Ciencia ficción",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=H-1x66MkQuU"
   },
@@ -211,7 +259,10 @@
     "type": "IA",
     "format": "Cortometraje",
     "genre": "Ciencia ficción",
-    "genres": ["Ciencia ficción", "Fantasía"],
+    "genres": [
+      "Ciencia ficción",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=E9Rpbtm9vCE"
   },
@@ -223,7 +274,9 @@
     "type": "Stop Motion",
     "format": "Cortometraje",
     "genre": "Comedia",
-    "genres": ["Comedia"],
+    "genres": [
+      "Comedia"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=SrgaOT1WEfE"
   },
@@ -235,7 +288,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Suspenso",
-    "genres": ["Suspenso", "Comedia"],
+    "genres": [
+      "Suspenso",
+      "Comedia"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=HT-baDHI1TU"
   },
@@ -247,7 +303,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=l8mScKWj3kQ"
   },
@@ -259,7 +317,9 @@
     "type": "3D",
     "format": "Tutoriales",
     "genre": "Tutoriales",
-    "genres": ["Tutoriales"],
+    "genres": [
+      "Tutoriales"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=G51sgH_RZuE"
   },
@@ -271,7 +331,9 @@
     "type": "2D",
     "format": "Serie",
     "genre": "Comedia",
-    "genres": ["Comedia"],
+    "genres": [
+      "Comedia"
+    ],
     "year": "2010",
     "url": "https://www.youtube.com/watch?v=npUI1vOA_fI"
   },
@@ -283,7 +345,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía", "Drama"],
+    "genres": [
+      "Fantasía",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=rDCcmawiiJI"
   },
@@ -295,7 +360,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=Dwc_WERFdX0"
   },
@@ -307,7 +374,11 @@
     "type": "2D",
     "format": "Musical",
     "genre": "Musical",
-    "genres": ["Musical", "Fantasía", "Drama"],
+    "genres": [
+      "Musical",
+      "Fantasía",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=O515YeHQhYE"
   },
@@ -319,7 +390,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Acción"],
+    "genres": [
+      "Drama",
+      "Acción"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=bxx_l268Z2Q"
   },
@@ -331,7 +405,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Aventura"],
+    "genres": [
+      "Drama",
+      "Aventura"
+    ],
     "year": "2026",
     "url": "https://www.youtube.com/watch?v=i3q_h7ywypE"
   },
@@ -343,7 +420,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Drama"],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=uept9KJfQlM"
   },
@@ -355,7 +435,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía"],
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=VunZkhQz1gk"
   },
@@ -367,7 +450,9 @@
     "type": "2D",
     "format": "Musical",
     "genre": "Musical",
-    "genres": ["Musical"],
+    "genres": [
+      "Musical"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=GXAE7G0Mr2c"
   },
@@ -379,7 +464,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Comedia",
-    "genres": ["Comedia"],
+    "genres": [
+      "Comedia"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=v1COAYBvwXM"
   },
@@ -391,7 +478,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=XbGd0-vqBEo"
   },
@@ -403,7 +492,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=hyn3tJmDpOI"
   },
@@ -415,7 +506,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Acción",
-    "genres": ["Acción", "Fantasía"],
+    "genres": [
+      "Acción",
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=cJP2cYKP0pM"
   },
@@ -427,7 +521,10 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Social"],
+    "genres": [
+      "Drama",
+      "Social"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=bF77AWDVors"
   },
@@ -439,7 +536,9 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=Q8GSmIbZlbk"
   },
@@ -451,7 +550,9 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=wXhGd3lu2s0"
   },
@@ -463,7 +564,10 @@
     "type": "2D",
     "format": "Musical",
     "genre": "Musical",
-    "genres": ["Musical", "Fantasía"],
+    "genres": [
+      "Musical",
+      "Fantasía"
+    ],
     "year": "2005",
     "url": "https://www.youtube.com/watch?v=gqFaBe2fl3E"
   },
@@ -475,7 +579,11 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Acción",
-    "genres": ["Acción", "Social", "Drama"],
+    "genres": [
+      "Acción",
+      "Social",
+      "Drama"
+    ],
     "year": "2021",
     "url": "https://www.youtube.com/watch?v=xs7fmZHSem8"
   },
@@ -487,7 +595,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Acción",
-    "genres": ["Acción", "Drama"],
+    "genres": [
+      "Acción",
+      "Drama"
+    ],
     "year": "2023",
     "url": "https://www.youtube.com/watch?v=SbTGD6bbtcw"
   },
@@ -499,7 +610,9 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Aventura",
-    "genres": ["Aventura"],
+    "genres": [
+      "Aventura"
+    ],
     "year": "2022",
     "url": "https://www.youtube.com/watch?v=Z_-xG_l7s7E"
   },
@@ -511,7 +624,9 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "2017",
     "url": "https://www.youtube.com/watch?v=G5Ff2lCfd2c"
   },
@@ -523,7 +638,9 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "2020",
     "url": "https://www.youtube.com/watch?v=zCOnHnY3uho"
   },
@@ -535,7 +652,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía", "Drama"],
+    "genres": [
+      "Fantasía",
+      "Drama"
+    ],
     "year": "2017",
     "url": "https://www.youtube.com/watch?v=OGe4NzRz59Y"
   },
@@ -547,7 +667,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía"],
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
     "year": "2018",
     "url": "https://www.youtube.com/watch?v=_PucLFe0EqI"
   },
@@ -559,7 +682,11 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Aventura",
-    "genres": ["Aventura", "Drama", "Comedia"],
+    "genres": [
+      "Aventura",
+      "Drama",
+      "Comedia"
+    ],
     "year": "2019",
     "url": "https://www.youtube.com/watch?v=iczWLibdsn8"
   },
@@ -571,7 +698,10 @@
     "type": "Stop Motion",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Fantasía"],
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
     "year": "2023",
     "url": "https://www.youtube.com/watch?v=46nvpUTfvTI"
   },
@@ -583,7 +713,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama", "Suspenso"],
+    "genres": [
+      "Drama",
+      "Suspenso"
+    ],
     "year": "2021",
     "url": "https://www.youtube.com/watch?v=u_4bj4BfwSI"
   },
@@ -595,7 +728,9 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "2018",
     "url": "https://www.youtube.com/watch?v=TUZi7bu7SPs"
   },
@@ -607,7 +742,11 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Comedia",
-    "genres": ["Comedia", "Fantasía", "Drama"],
+    "genres": [
+      "Comedia",
+      "Fantasía",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=Anw_bhEzsys"
   },
@@ -619,7 +758,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Drama"],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
     "year": "",
     "url": "https://www.youtube.com/watch?v=NnCqByTuUNw"
   },
@@ -631,7 +773,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Comedia"],
+    "genres": [
+      "Romance",
+      "Comedia"
+    ],
     "year": "2014",
     "url": "https://www.youtube.com/watch?v=9xqZRtJkgxo"
   },
@@ -643,7 +788,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Drama"],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
     "year": "2017",
     "url": "https://www.youtube.com/watch?v=pdFrXcV5Ulg"
   },
@@ -655,7 +803,11 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Comedia", "Drama"],
+    "genres": [
+      "Romance",
+      "Comedia",
+      "Drama"
+    ],
     "year": "2014",
     "url": "https://www.youtube.com/watch?v=u9lj-c29dxI"
   },
@@ -667,7 +819,10 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Fantasía"],
+    "genres": [
+      "Romance",
+      "Fantasía"
+    ],
     "year": "2012",
     "url": "https://www.youtube.com/watch?v=UXqq0ZvbOnk"
   },
@@ -679,7 +834,11 @@
     "type": "3D",
     "format": "Musical",
     "genre": "Romance",
-    "genres": ["Romance", "Musical", "Fantasía"],
+    "genres": [
+      "Romance",
+      "Musical",
+      "Fantasía"
+    ],
     "year": "2021",
     "url": "https://www.youtube.com/watch?v=SkVqJ1SGeL0"
   },
@@ -691,7 +850,11 @@
     "type": "Stop Motion",
     "format": "Cortometraje",
     "genre": "Romance",
-    "genres": ["Romance", "Drama", "Social"],
+    "genres": [
+      "Romance",
+      "Drama",
+      "Social"
+    ],
     "year": "2010",
     "url": "https://www.youtube.com/watch?v=1fbBusggjSE"
   },
@@ -703,7 +866,9 @@
     "type": "3D",
     "format": "Making of",
     "genre": "Making of",
-    "genres": ["Making of"],
+    "genres": [
+      "Making of"
+    ],
     "year": "2018",
     "url": "https://www.youtube.com/watch?v=_yAHsbanSk4"
   },
@@ -715,8 +880,714 @@
     "type": "2D",
     "format": "Making of",
     "genre": "Making of",
-    "genres": ["Making of"],
+    "genres": [
+      "Making of"
+    ],
     "year": "2019",
     "url": "https://www.youtube.com/watch?v=HPOcLm0fMws"
+  },
+  {
+    "id": "review-3MVE6yledLg",
+    "title": "Serie 2D — Episodio 01",
+    "creator": "Creadores Independientes",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Drama"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=3MVE6yledLg",
+    "description": "Episodio 01 de una serie animada 2D."
+  },
+  {
+    "id": "review-gFQEX4ltr14",
+    "title": "Serie 2D — Episodio 02",
+    "creator": "Creadores Independientes",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Drama"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=gFQEX4ltr14",
+    "description": "Episodio 02 de una serie animada 2D."
+  },
+  {
+    "title": "Wild Love",
+    "creator": "Paul Autric, Quentin Camus, Maryka Laudet, Léora Lutz, Corentin McIntyre (ESMA)",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Terror",
+    "genres": [
+      "Terror",
+      "Comedia"
+    ],
+    "year": "2018",
+    "url": "https://www.youtube.com/watch?v=956NwEluTBo",
+    "description": "Unos turistas en lancha sufren un desafortunado encuentro con la fauna salvaje en un pantano, desencadenando una pesadilla de humor negro.",
+    "id": "ref-119"
+  },
+  {
+    "title": "Bolt Connection",
+    "creator": "MiniBoss Studio",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía",
+      "Ciencia ficción",
+      "Acción"
+    ],
+    "year": "2021",
+    "url": "https://www.youtube.com/watch?v=ff--Kg2HS0Y",
+    "description": "Pieza de animación en 3D ambientada en un universo mecánico y futurista lleno de acción y tecnología.",
+    "id": "ref-120"
+  },
+  {
+    "title": "Scavengers",
+    "creator": "Joe Bennett y Charles Huettner",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía",
+      "Ciencia ficción",
+      "Drama"
+    ],
+    "year": "2016",
+    "url": "https://www.youtube.com/watch?v=1TRzemJbUsw",
+    "description": "Obra de animación 2D que sigue a exploradores espaciales varados en un planeta misterioso.",
+    "id": "ref-121"
+  },
+  {
+    "title": "Pinched",
+    "creator": "David Vandervoort",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía",
+      "Acción"
+    ],
+    "year": "2020",
+    "url": "https://www.youtube.com/watch?v=oWlhMekUZRs",
+    "description": "Cortometraje animado en 2D que mezcla drama, fantasía y acción.",
+    "id": "ref-122"
+  },
+  {
+    "title": "Metrecalia — T1E00",
+    "creator": "Estudio Metrecalia",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=T9xqpwpHWrw",
+    "description": "Temporada 1, episodio 00 de la serie Metrecalia.",
+    "id": "ref-123"
+  },
+  {
+    "title": "Metrecalia — T1E01",
+    "creator": "Estudio Metrecalia",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=P_rfRMRl8h4",
+    "description": "Temporada 1, episodio 01 de la serie Metrecalia.",
+    "id": "ref-124"
+  },
+  {
+    "title": "Metrecalia — T1E02",
+    "creator": "Estudio Metrecalia",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=PPXPbzhahv0",
+    "description": "Temporada 1, episodio 02 de la serie Metrecalia.",
+    "id": "ref-125"
+  },
+  {
+    "title": "HIDARI (Pilot Film)",
+    "creator": "INORI / Stop Motion Samurai Project",
+    "creatorChannel": "",
+    "type": "Stop Motion",
+    "format": "Cortometraje",
+    "genre": "Acción",
+    "genres": [
+      "Acción",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=DpefYPLH67A",
+    "description": "Piloto de acción y artes marciales en stop-motion sobre un samurái con un brazo de madera tallada.",
+    "id": "ref-126"
+  },
+  {
+    "title": "HIDARI — Behind the Scenes",
+    "creator": "INORI",
+    "creatorChannel": "",
+    "type": "Stop Motion",
+    "format": "Making of",
+    "genre": "Making of",
+    "genres": [
+      "Making of"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=VHO6rTyyG6M",
+    "description": "Documental y detrás de cámaras sobre la producción del filme de samuráis en stop-motion HIDARI.",
+    "id": "ref-127"
+  },
+  {
+    "title": "HIDARI — Behind the Scenes (Full Version)",
+    "creator": "INORI",
+    "creatorChannel": "",
+    "type": "Stop Motion",
+    "format": "Making of",
+    "genre": "Making of",
+    "genres": [
+      "Making of"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=Dbdm-edgRKo",
+    "description": "Versión completa del detrás de cámaras sobre la producción de HIDARI.",
+    "id": "ref-128"
+  },
+  {
+    "title": "Welsh & Shedar",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2022",
+    "url": "https://www.youtube.com/watch?v=PK5q0oGRzTU",
+    "description": "Animación 2D de carácter íntimo con tintes dramáticos y fantásticos.",
+    "id": "ref-129"
+  },
+  {
+    "title": "MEAT MEAT",
+    "creator": "Estudio Independiente 2D",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Acción",
+    "genres": [
+      "Acción",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=WPJkqXZt7mI",
+    "description": "Cortometraje dinámico en 2D centrado en la acción y la fantasía.",
+    "id": "ref-130"
+  },
+  {
+    "title": "La Diplomatie de L'éclipse",
+    "creator": "Estudiantes de Gobelins",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama"
+    ],
+    "year": "2020",
+    "url": "https://www.youtube.com/watch?v=p3pUAE5Bsao",
+    "description": "Cortometraje dramático en 3D sobre relaciones diplomáticas y celestes.",
+    "id": "ref-131"
+  },
+  {
+    "title": "Le Parc aux Cerfs",
+    "creator": "Estudiantes de animación",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Bizarro",
+    "genres": [
+      "Bizarro",
+      "Fantasía"
+    ],
+    "year": "2016",
+    "url": "https://www.youtube.com/watch?v=zblGp7U2pjQ",
+    "description": "Animación 2D con un estilo surrealista y fantástico.",
+    "id": "ref-132"
+  },
+  {
+    "title": "Fantasy Haircut",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2021",
+    "url": "https://www.youtube.com/watch?v=P6uwj5Ix7qg",
+    "description": "Cortometraje 2D que explora situaciones fantásticas y dramáticas.",
+    "id": "ref-133"
+  },
+  {
+    "title": "Gemelos",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama"
+    ],
+    "year": "2022",
+    "url": "https://www.youtube.com/watch?v=XCawr8qHbHE",
+    "description": "Cortometraje de animación 2D enfocado en una narrativa dramática.",
+    "id": "ref-134"
+  },
+  {
+    "title": "Timber",
+    "creator": "Nils Hedinger",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2014",
+    "url": "https://www.youtube.com/watch?v=mBZBPptSneM",
+    "description": "Cortometraje sobre la solidaridad y supervivencia de animales en el bosque dirigido por Nils Hedinger.",
+    "id": "ref-135"
+  },
+  {
+    "title": "The Passenger",
+    "creator": "Estudio 3D",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Suspenso",
+    "genres": [
+      "Suspenso",
+      "Fantasía",
+      "Terror"
+    ],
+    "year": "2020",
+    "url": "https://www.youtube.com/watch?v=DtrncDprmfE",
+    "description": "Cortometraje en 3D que combina suspenso, fantasía y terror.",
+    "id": "ref-136"
+  },
+  {
+    "title": "Hold Up",
+    "creator": "Estudio 3D",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Comedia",
+    "genres": [
+      "Comedia",
+      "Acción",
+      "Drama"
+    ],
+    "year": "2019",
+    "url": "https://www.youtube.com/watch?v=PqyOi1TqZNM",
+    "description": "Comedia de acción y drama en animación 3D.",
+    "id": "ref-137"
+  },
+  {
+    "title": "My Husband",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2021",
+    "url": "https://www.youtube.com/watch?v=EzeRMyRU26I",
+    "description": "Cortometraje 2D de tono dramático y fantástico.",
+    "id": "ref-138"
+  },
+  {
+    "title": "Under The Thicket",
+    "creator": "Courageous Animation",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2021",
+    "url": "https://www.youtube.com/watch?v=au30Dogtj-I",
+    "description": "Aventura fantástica ambientada en la profundidad de la naturaleza.",
+    "id": "ref-139"
+  },
+  {
+    "title": "GNOME SHOW",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Aventura",
+    "genres": [
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2020",
+    "url": "https://www.youtube.com/watch?v=o9DofskLbN8",
+    "description": "Aventura fantástica protagonizada por gnomos.",
+    "id": "ref-140"
+  },
+  {
+    "title": "Yellow Cake",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía",
+      "Drama",
+      "Comedia"
+    ],
+    "year": "2019",
+    "url": "https://www.youtube.com/watch?v=FM5yNgs7vaA",
+    "description": "Cortometraje 2D que combina fantasía, drama y comedia.",
+    "id": "ref-141"
+  },
+  {
+    "title": "The Forest King",
+    "creator": "Estudio de Animación",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": [
+      "Drama",
+      "Fantasía",
+      "Ciencia ficción"
+    ],
+    "year": "2022",
+    "url": "https://www.youtube.com/watch?v=VtRwYS0h4Ao",
+    "description": "Drama de fantasía y ciencia ficción ambientado en los dominios del rey del bosque.",
+    "id": "ref-142"
+  },
+  {
+    "title": "Gnome Halla",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía",
+      "Drama",
+      "Aventura"
+    ],
+    "year": "2021",
+    "url": "https://www.youtube.com/watch?v=Xaw1ECITDaQ",
+    "description": "Cortometraje animado 2D de aventuras y fantasía.",
+    "id": "ref-143"
+  },
+  {
+    "title": "The White Wolf",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía"
+    ],
+    "year": "2020",
+    "url": "https://www.youtube.com/watch?v=En7YfvhxpmY",
+    "description": "Relato fantástico en animación 2D centrado en un lobo blanco legendario.",
+    "id": "ref-144"
+  },
+  {
+    "title": "Old Fur New Teeth",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": [
+      "Fantasía"
+    ],
+    "year": "2022",
+    "url": "https://www.youtube.com/watch?v=4pIH02B1bfo",
+    "description": "Cortometraje de animación 2D con un enfoque fantástico.",
+    "id": "ref-145"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E01",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
+    "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-146"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E02",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
+    "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-147"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E03",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
+    "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-148"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E04",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
+    "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-149"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E05",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
+    "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-150"
+  },
+  {
+    "title": "Serie Sci-Fi, Aventura y Fantasía — T1E06",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Aventura",
+      "Fantasía"
+    ],
+    "year": "2023",
+    "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
+    "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía.",
+    "id": "ref-151"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E01",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=r0b_gKZgnbQ",
+    "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-152"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E02",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=YoNhOiNQols",
+    "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-153"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E03",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=eU_j7rfpTSM",
+    "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-154"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E04",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=SoCn-e5MowA",
+    "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-155"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E05",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=O1JWMBhDArI",
+    "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-156"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E06",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=bgjINrcG0ts",
+    "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-157"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E07",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=JHb3TmsdlCI",
+    "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-158"
+  },
+  {
+    "title": "Serie de Ciencia Ficción y Drama (IA) — T1E08",
+    "creator": "Estudio de Animación IA",
+    "creatorChannel": "",
+    "type": "IA",
+    "format": "Serie",
+    "genre": "Ciencia ficción",
+    "genres": [
+      "Ciencia ficción",
+      "Drama",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=AgSh4bzUGmQ",
+    "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA.",
+    "id": "ref-159"
   }
 ]
