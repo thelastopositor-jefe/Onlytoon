@@ -335,7 +335,23 @@
       "Comedia"
     ],
     "year": "2010",
-    "url": "https://www.youtube.com/watch?v=npUI1vOA_fI"
+    "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
+    "description": "Serie web animada de sátira política. El vídeo enlazado corresponde al episodio inicial.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "ref-025-ep-01",
+            "title": "Isla Presidencial",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
+            "description": "Temporada 1, episodio 1 de Isla Presidencial."
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "ref-026",
@@ -1355,19 +1371,19 @@
   },
   {
     "id": "series-scifi-aventura-fantasia",
-    "title": "Serie Sci-Fi, Aventura y Fantasía",
-    "creator": "Estudio Independiente",
-    "creatorChannel": "",
+    "title": "Monkey Wrench",
+    "creator": "Joshua y Ashley Palmer (Zeurel)",
+    "creatorChannel": "https://www.youtube.com/@MonkeyWrench",
     "type": "2D",
     "format": "Serie",
     "genre": "Ciencia ficción",
     "genres": [
       "Ciencia ficción",
       "Aventura",
-      "Fantasía"
+      "Comedia"
     ],
-    "year": "2023",
-    "description": "Serie animada de ciencia ficción, aventura y fantasía. Los episodios están agrupados por temporada.",
+    "year": "2021",
+    "description": "Serie animada independiente de ciencia ficción y aventura. Episodios agrupados por temporada.",
     "seasons": [
       {
         "season": 1,
@@ -1375,45 +1391,45 @@
         "episodes": [
           {
             "id": "ref-146",
-            "title": "Episodio 01",
+            "title": "The Ghost Egg",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
-            "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 1: The Ghost Egg."
           },
           {
             "id": "ref-147",
-            "title": "Episodio 02",
+            "title": "Lythop Liberation",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
-            "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 2: Lythop Liberation."
           },
           {
             "id": "ref-148",
-            "title": "Episodio 03",
+            "title": "Us & Them",
             "episode": 3,
             "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
-            "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 3: Us & Them."
           },
           {
             "id": "ref-149",
-            "title": "Episodio 04",
+            "title": "The Bone Zone",
             "episode": 4,
             "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
-            "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 4: The Bone Zone."
           },
           {
             "id": "ref-150",
-            "title": "Episodio 05",
+            "title": "Interloper",
             "episode": 5,
             "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
-            "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 5: Interloper."
           },
           {
             "id": "ref-151",
-            "title": "Episodio 06",
+            "title": "Monkey Mind",
             "episode": 6,
             "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
-            "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía."
+            "description": "Monkey Wrench, temporada 1, episodio 6: Monkey Mind."
           }
         ]
       }
