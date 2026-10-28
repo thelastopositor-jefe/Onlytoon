@@ -71,7 +71,40 @@
       "Drama"
     ],
     "year": "",
-    "url": "https://www.youtube.com/watch?v=8pr352T1Ae4"
+    "description": "Serie animada. Episodios identificados por la lista y el canal del creador.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "crunch-t1-e01",
+            "title": "Episodio 01 — Hormiga obrera (piloto)",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=8pr352T1Ae4",
+            "description": "Piloto / capítulo 1.",
+            "youtubeId": "8pr352T1Ae4",
+            "thumbnail": "https://img.youtube.com/vi/8pr352T1Ae4/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
+          },
+          {
+            "id": "crunch-t1-e02",
+            "title": "Episodio 02 — Gallo de reserva",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=iK8kY6CWRp4",
+            "description": "Capítulo 2 de CRUNCH!",
+            "youtubeId": "iK8kY6CWRp4",
+            "thumbnail": "https://img.youtube.com/vi/iK8kY6CWRp4/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
+          }
+        ],
+        "seasonNumber": 1
+      }
+    ],
+    "youtubeId": "8pr352T1Ae4",
+    "thumbnail": "https://img.youtube.com/vi/8pr352T1Ae4/mqdefault.jpg"
   },
   {
     "id": "ref-007",
@@ -225,7 +258,7 @@
   {
     "id": "ref-017",
     "title": "Archie",
-    "creator": "Creador Invitado",
+    "creator": "Creador Independiente",
     "creatorChannel": "",
     "type": "2D",
     "format": "Cortometraje",
@@ -335,23 +368,296 @@
       "Comedia"
     ],
     "year": "2010",
-    "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
-    "description": "Serie web animada de sátira política. El vídeo enlazado corresponde al episodio inicial.",
+    "description": "Serie animada. Episodios agrupados por temporada según la lista de enlaces aportada.",
     "seasons": [
       {
         "season": 1,
         "title": "Temporada 1",
         "episodes": [
           {
-            "id": "ref-025-ep-01",
-            "title": "Isla Presidencial",
+            "id": "isla-t1-e01",
+            "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
-            "description": "Temporada 1, episodio 1 de Isla Presidencial."
+            "description": "Temporada 1, episodio 1.",
+            "youtubeId": "npUI1vOA_fI",
+            "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=4B2v-qBL_QU&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=2",
+            "description": "Temporada 1, episodio 2.",
+            "youtubeId": "4B2v-qBL_QU",
+            "thumbnail": "https://img.youtube.com/vi/4B2v-qBL_QU/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e03",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=yjKePAMd86A&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=3",
+            "description": "Temporada 1, episodio 3.",
+            "youtubeId": "yjKePAMd86A",
+            "thumbnail": "https://img.youtube.com/vi/yjKePAMd86A/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=_Hp5KKLAAOw&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=4",
+            "description": "Temporada 1, episodio 4.",
+            "youtubeId": "_Hp5KKLAAOw",
+            "thumbnail": "https://img.youtube.com/vi/_Hp5KKLAAOw/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e05",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=AAjPD-M7SNE&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=5",
+            "description": "Temporada 1, episodio 5.",
+            "youtubeId": "AAjPD-M7SNE",
+            "thumbnail": "https://img.youtube.com/vi/AAjPD-M7SNE/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 1
           }
-        ]
+        ],
+        "seasonNumber": 1
+      },
+      {
+        "season": 2,
+        "title": "Temporada 2",
+        "episodes": [
+          {
+            "id": "isla-t2-e01",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=fQOC3xZM9fI&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL",
+            "description": "Temporada 2, episodio 1.",
+            "youtubeId": "fQOC3xZM9fI",
+            "thumbnail": "https://img.youtube.com/vi/fQOC3xZM9fI/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=on_fYoDhf-E&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=2",
+            "description": "Temporada 2, episodio 2.",
+            "youtubeId": "on_fYoDhf-E",
+            "thumbnail": "https://img.youtube.com/vi/on_fYoDhf-E/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e03",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=fTv92TGuwTo&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=3",
+            "description": "Temporada 2, episodio 3.",
+            "youtubeId": "fTv92TGuwTo",
+            "thumbnail": "https://img.youtube.com/vi/fTv92TGuwTo/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=p1tzur1BqME&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=4",
+            "description": "Temporada 2, episodio 4.",
+            "youtubeId": "p1tzur1BqME",
+            "thumbnail": "https://img.youtube.com/vi/p1tzur1BqME/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e06",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=Yq8UhguWvXw&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=5",
+            "description": "La lista aportada etiqueta este enlace como episodio 6; revisar numeración del índice de YouTube.",
+            "youtubeId": "Yq8UhguWvXw",
+            "thumbnail": "https://img.youtube.com/vi/Yq8UhguWvXw/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e07",
+            "title": "Episodio 07",
+            "episode": 7,
+            "url": "https://www.youtube.com/watch?v=dptXncT0qlw&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=6",
+            "description": "Temporada 2, episodio 7.",
+            "youtubeId": "dptXncT0qlw",
+            "thumbnail": "https://img.youtube.com/vi/dptXncT0qlw/mqdefault.jpg",
+            "episodeNumber": 7,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e08",
+            "title": "Episodio 08",
+            "episode": 8,
+            "url": "https://www.youtube.com/watch?v=nY114F-iDy0&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=7",
+            "description": "Temporada 2, episodio 8.",
+            "youtubeId": "nY114F-iDy0",
+            "thumbnail": "https://img.youtube.com/vi/nY114F-iDy0/mqdefault.jpg",
+            "episodeNumber": 8,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e10",
+            "title": "Episodio 10",
+            "episode": 10,
+            "url": "https://www.youtube.com/watch?v=QDK0DZa76CM&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=8",
+            "description": "La lista aportada no incluye episodio 9.",
+            "youtubeId": "QDK0DZa76CM",
+            "thumbnail": "https://img.youtube.com/vi/QDK0DZa76CM/mqdefault.jpg",
+            "episodeNumber": 10,
+            "seasonNumber": 2
+          }
+        ],
+        "seasonNumber": 2
+      },
+      {
+        "season": 3,
+        "title": "Temporada 3",
+        "episodes": [
+          {
+            "id": "isla-t3-e01",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=t2Z4svUIvRY&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY",
+            "description": "Temporada 3, episodio 1.",
+            "youtubeId": "t2Z4svUIvRY",
+            "thumbnail": "https://img.youtube.com/vi/t2Z4svUIvRY/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=PgPvcc6G2Co&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=2",
+            "description": "Temporada 3, episodio 2.",
+            "youtubeId": "PgPvcc6G2Co",
+            "thumbnail": "https://img.youtube.com/vi/PgPvcc6G2Co/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=FDKf4DoMpj4&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=3",
+            "description": "La lista aportada etiqueta este enlace como episodio 4; revisar si falta el episodio 3.",
+            "youtubeId": "FDKf4DoMpj4",
+            "thumbnail": "https://img.youtube.com/vi/FDKf4DoMpj4/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e05",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=FQ377-kXwqw&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=4",
+            "description": "Temporada 3, episodio 5.",
+            "youtubeId": "FQ377-kXwqw",
+            "thumbnail": "https://img.youtube.com/vi/FQ377-kXwqw/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e06",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=EoRidxZoK_s&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=5",
+            "description": "Temporada 3, episodio 6.",
+            "youtubeId": "EoRidxZoK_s",
+            "thumbnail": "https://img.youtube.com/vi/EoRidxZoK_s/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e07",
+            "title": "Episodio 07",
+            "episode": 7,
+            "url": "https://www.youtube.com/watch?v=t9766H54nt4&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=6",
+            "description": "Temporada 3, episodio 7.",
+            "youtubeId": "t9766H54nt4",
+            "thumbnail": "https://img.youtube.com/vi/t9766H54nt4/mqdefault.jpg",
+            "episodeNumber": 7,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e08",
+            "title": "Episodio 08",
+            "episode": 8,
+            "url": "https://www.youtube.com/watch?v=QD2j6NgjV1A&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=7",
+            "description": "Temporada 3, episodio 8.",
+            "youtubeId": "QD2j6NgjV1A",
+            "thumbnail": "https://img.youtube.com/vi/QD2j6NgjV1A/mqdefault.jpg",
+            "episodeNumber": 8,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e09",
+            "title": "Episodio 09",
+            "episode": 9,
+            "url": "https://www.youtube.com/watch?v=6qcWZdL06aY&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=8",
+            "description": "Temporada 3, episodio 9.",
+            "youtubeId": "6qcWZdL06aY",
+            "thumbnail": "https://img.youtube.com/vi/6qcWZdL06aY/mqdefault.jpg",
+            "episodeNumber": 9,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e10",
+            "title": "Episodio 10",
+            "episode": 10,
+            "url": "https://www.youtube.com/watch?v=wobiIAVAhnc&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=9",
+            "description": "Temporada 3, episodio 10.",
+            "youtubeId": "wobiIAVAhnc",
+            "thumbnail": "https://img.youtube.com/vi/wobiIAVAhnc/mqdefault.jpg",
+            "episodeNumber": 10,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e11",
+            "title": "Episodio 11",
+            "episode": 11,
+            "url": "https://www.youtube.com/watch?v=3G8N15HEPls&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=10",
+            "description": "Temporada 3, episodio 11.",
+            "youtubeId": "3G8N15HEPls",
+            "thumbnail": "https://img.youtube.com/vi/3G8N15HEPls/mqdefault.jpg",
+            "episodeNumber": 11,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e12",
+            "title": "Episodio 12",
+            "episode": 12,
+            "url": "https://www.youtube.com/watch?v=D7CDUey8S-g&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=11",
+            "description": "Temporada 3, episodio 12.",
+            "youtubeId": "D7CDUey8S-g",
+            "thumbnail": "https://img.youtube.com/vi/D7CDUey8S-g/mqdefault.jpg",
+            "episodeNumber": 12,
+            "seasonNumber": 3
+          }
+        ],
+        "seasonNumber": 3
       }
-    ]
+    ],
+    "youtubeId": "npUI1vOA_fI",
+    "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg"
   },
   {
     "id": "ref-026",
@@ -492,7 +798,7 @@
     "creator": "Seiya CARPENTIER, Zijin CHEN, Pauline Gisèle GAUTSCHI, Jiamin LI, Yuanxin LING, Alexane PIERROT-ZAGO (GOBELINS)",
     "creatorChannel": "",
     "type": "2D",
-    "format": "Cortometraje",
+    "format": "Fantasía",
     "genre": "Fantasía",
     "genres": [
       "Fantasía"
@@ -926,18 +1232,29 @@
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=3MVE6yledLg",
-            "description": "Episodio 01 de una serie animada 2D."
+            "description": "Episodio 01 de una serie animada 2D.",
+            "youtubeId": "3MVE6yledLg",
+            "thumbnail": "https://img.youtube.com/vi/3MVE6yledLg/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
           },
           {
             "id": "review-gFQEX4ltr14",
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=gFQEX4ltr14",
-            "description": "Episodio 02 de una serie animada 2D."
+            "description": "Episodio 02 de una serie animada 2D.",
+            "youtubeId": "gFQEX4ltr14",
+            "thumbnail": "https://img.youtube.com/vi/gFQEX4ltr14/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
           }
-        ]
+        ],
+        "seasonNumber": 1
       }
-    ]
+    ],
+    "youtubeId": "3MVE6yledLg",
+    "thumbnail": "https://img.youtube.com/vi/3MVE6yledLg/mqdefault.jpg"
   },
   {
     "title": "Wild Love",
@@ -1030,25 +1347,40 @@
             "title": "Episodio 00",
             "episode": 0,
             "url": "https://www.youtube.com/watch?v=T9xqpwpHWrw",
-            "description": "Temporada 1, episodio 00 de la serie Metrecalia."
+            "description": "Temporada 1, episodio 00 de la serie Metrecalia.",
+            "youtubeId": "T9xqpwpHWrw",
+            "thumbnail": "https://img.youtube.com/vi/T9xqpwpHWrw/mqdefault.jpg",
+            "episodeNumber": 0,
+            "seasonNumber": 1
           },
           {
             "id": "ref-124",
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=P_rfRMRl8h4",
-            "description": "Temporada 1, episodio 01 de la serie Metrecalia."
+            "description": "Temporada 1, episodio 01 de la serie Metrecalia.",
+            "youtubeId": "P_rfRMRl8h4",
+            "thumbnail": "https://img.youtube.com/vi/P_rfRMRl8h4/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
           },
           {
             "id": "ref-125",
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=PPXPbzhahv0",
-            "description": "Temporada 1, episodio 02 de la serie Metrecalia."
+            "description": "Temporada 1, episodio 02 de la serie Metrecalia.",
+            "youtubeId": "PPXPbzhahv0",
+            "thumbnail": "https://img.youtube.com/vi/PPXPbzhahv0/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
           }
-        ]
+        ],
+        "seasonNumber": 1
       }
-    ]
+    ],
+    "youtubeId": "T9xqpwpHWrw",
+    "thumbnail": "https://img.youtube.com/vi/T9xqpwpHWrw/mqdefault.jpg"
   },
   {
     "title": "HIDARI (Pilot Film)",
@@ -1371,19 +1703,19 @@
   },
   {
     "id": "series-scifi-aventura-fantasia",
-    "title": "Monkey Wrench",
-    "creator": "Joshua y Ashley Palmer (Zeurel)",
-    "creatorChannel": "https://www.youtube.com/@MonkeyWrench",
+    "title": "Serie Sci-Fi, Aventura y Fantasía",
+    "creator": "Estudio Independiente",
+    "creatorChannel": "",
     "type": "2D",
     "format": "Serie",
     "genre": "Ciencia ficción",
     "genres": [
       "Ciencia ficción",
       "Aventura",
-      "Comedia"
+      "Fantasía"
     ],
-    "year": "2021",
-    "description": "Serie animada independiente de ciencia ficción y aventura. Episodios agrupados por temporada.",
+    "year": "2023",
+    "description": "Serie animada de ciencia ficción, aventura y fantasía. Los episodios están agrupados por temporada.",
     "seasons": [
       {
         "season": 1,
@@ -1391,49 +1723,76 @@
         "episodes": [
           {
             "id": "ref-146",
-            "title": "The Ghost Egg",
+            "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
-            "description": "Monkey Wrench, temporada 1, episodio 1: The Ghost Egg."
+            "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "8i18HXAa1uY",
+            "thumbnail": "https://img.youtube.com/vi/8i18HXAa1uY/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
           },
           {
             "id": "ref-147",
-            "title": "Lythop Liberation",
+            "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
-            "description": "Monkey Wrench, temporada 1, episodio 2: Lythop Liberation."
+            "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "zCqxkKXLtz8",
+            "thumbnail": "https://img.youtube.com/vi/zCqxkKXLtz8/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
           },
           {
             "id": "ref-148",
-            "title": "Us & Them",
+            "title": "Episodio 03",
             "episode": 3,
             "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
-            "description": "Monkey Wrench, temporada 1, episodio 3: Us & Them."
+            "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "eOg6HD0NXok",
+            "thumbnail": "https://img.youtube.com/vi/eOg6HD0NXok/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 1
           },
           {
             "id": "ref-149",
-            "title": "The Bone Zone",
+            "title": "Episodio 04",
             "episode": 4,
             "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
-            "description": "Monkey Wrench, temporada 1, episodio 4: The Bone Zone."
+            "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "cCAJ7DOVIL0",
+            "thumbnail": "https://img.youtube.com/vi/cCAJ7DOVIL0/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 1
           },
           {
             "id": "ref-150",
-            "title": "Interloper",
+            "title": "Episodio 05",
             "episode": 5,
             "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
-            "description": "Monkey Wrench, temporada 1, episodio 5: Interloper."
+            "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "m2nZKiK9Xlw",
+            "thumbnail": "https://img.youtube.com/vi/m2nZKiK9Xlw/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 1
           },
           {
             "id": "ref-151",
-            "title": "Monkey Mind",
+            "title": "Episodio 06",
             "episode": 6,
             "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
-            "description": "Monkey Wrench, temporada 1, episodio 6: Monkey Mind."
+            "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía.",
+            "youtubeId": "C9dox-6_Y10",
+            "thumbnail": "https://img.youtube.com/vi/C9dox-6_Y10/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 1
           }
-        ]
+        ],
+        "seasonNumber": 1
       }
-    ]
+    ],
+    "youtubeId": "8i18HXAa1uY",
+    "thumbnail": "https://img.youtube.com/vi/8i18HXAa1uY/mqdefault.jpg"
   },
   {
     "id": "series-ciencia-ficcion-drama-ia",
@@ -1460,59 +1819,181 @@
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=r0b_gKZgnbQ",
-            "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "r0b_gKZgnbQ",
+            "thumbnail": "https://img.youtube.com/vi/r0b_gKZgnbQ/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
           },
           {
             "id": "ref-153",
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=YoNhOiNQols",
-            "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "YoNhOiNQols",
+            "thumbnail": "https://img.youtube.com/vi/YoNhOiNQols/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
           },
           {
             "id": "ref-154",
             "title": "Episodio 03",
             "episode": 3,
             "url": "https://www.youtube.com/watch?v=eU_j7rfpTSM",
-            "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama criada con IA.",
+            "youtubeId": "eU_j7rfpTSM",
+            "thumbnail": "https://img.youtube.com/vi/eU_j7rfpTSM/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 1
           },
           {
             "id": "ref-155",
             "title": "Episodio 04",
             "episode": 4,
             "url": "https://www.youtube.com/watch?v=SoCn-e5MowA",
-            "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "SoCn-e5MowA",
+            "thumbnail": "https://img.youtube.com/vi/SoCn-e5MowA/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 1
           },
           {
             "id": "ref-156",
             "title": "Episodio 05",
             "episode": 5,
             "url": "https://www.youtube.com/watch?v=O1JWMBhDArI",
-            "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "O1JWMBhDArI",
+            "thumbnail": "https://img.youtube.com/vi/O1JWMBhDArI/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 1
           },
           {
             "id": "ref-157",
             "title": "Episodio 06",
             "episode": 6,
             "url": "https://www.youtube.com/watch?v=bgjINrcG0ts",
-            "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "bgjINrcG0ts",
+            "thumbnail": "https://img.youtube.com/vi/bgjINrcG0ts/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 1
           },
           {
             "id": "ref-158",
             "title": "Episodio 07",
             "episode": 7,
             "url": "https://www.youtube.com/watch?v=JHb3TmsdlCI",
-            "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "JHb3TmsdlCI",
+            "thumbnail": "https://img.youtube.com/vi/JHb3TmsdlCI/mqdefault.jpg",
+            "episodeNumber": 7,
+            "seasonNumber": 1
           },
           {
             "id": "ref-159",
             "title": "Episodio 08",
             "episode": 8,
             "url": "https://www.youtube.com/watch?v=AgSh4bzUGmQ",
-            "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA."
+            "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA.",
+            "youtubeId": "AgSh4bzUGmQ",
+            "thumbnail": "https://img.youtube.com/vi/AgSh4bzUGmQ/mqdefault.jpg",
+            "episodeNumber": 8,
+            "seasonNumber": 1
           }
-        ]
+        ],
+        "seasonNumber": 1
       }
-    ]
+    ],
+    "youtubeId": "r0b_gKZgnbQ",
+    "thumbnail": "https://img.youtube.com/vi/r0b_gKZgnbQ/mqdefault.jpg"
+  },
+  {
+    "id": "catalog-iKBs9l8jS6Q",
+    "title": "Project Gold - Blender Stylized Rendering Showcase",
+    "creator": "Blender Animation Studio",
+    "creatorChannel": "https://www.youtube.com/@BlenderFoundation",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Acción",
+    "genres": [
+      "Acción",
+      "Fantasía"
+    ],
+    "year": "2024",
+    "url": "https://www.youtube.com/watch?v=iKBs9l8jS6Q"
+  },
+  {
+    "id": "ref-extra-eden",
+    "title": "EDEN",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Fantasía",
+    "genres": ["Fantasía", "Drama"],
+    "year": "",
+    "url": ""
+  },
+  {
+    "id": "ref-extra-gravity",
+    "title": "GRAVITY",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "2D",
+    "format": "Cortometraje",
+    "genre": "Musical",
+    "genres": ["Musical", "Drama"],
+    "year": "",
+    "url": ""
+  },
+  {
+    "id": "ref-extra-tentatrice",
+    "title": "TENTATRICE",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Drama",
+    "genres": ["Drama"],
+    "year": "",
+    "url": ""
+  },
+  {
+    "id": "ref-extra-amir",
+    "title": "AMIR & AMIRA",
+    "creator": "Creador Independiente",
+    "creatorChannel": "",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Aventura",
+    "genres": ["Aventura"],
+    "year": "",
+    "url": ""
+  },
+  {
+    "id": "ref-extra-sprite",
+    "title": "Sprite Fright",
+    "creator": "Blender Animation Studio",
+    "creatorChannel": "https://www.youtube.com/@BlenderFoundation",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "Terror",
+    "genres": ["Terror", "Comedia"],
+    "year": "2021",
+    "url": ""
+  },
+  {
+    "id": "ref-extra-overgrown",
+    "title": "OVERGROWN",
+    "creator": "Blender Animation Studio",
+    "creatorChannel": "https://www.youtube.com/@BlenderFoundation",
+    "type": "3D",
+    "format": "Tráiler",
+    "genre": "Fantasía",
+    "genres": ["Fantasía"],
+    "year": "2022",
+    "url": ""
   }
 ]
