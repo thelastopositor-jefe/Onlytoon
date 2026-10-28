@@ -357,309 +357,6 @@
     "url": "https://www.youtube.com/watch?v=G51sgH_RZuE"
   },
   {
-    "id": "ref-025",
-    "title": "Isla Presidencial",
-    "creator": "IslaPresidencial",
-    "creatorChannel": "https://www.youtube.com/@IslaPresidencial",
-    "type": "2D",
-    "format": "Serie",
-    "genre": "Comedia",
-    "genres": [
-      "Comedia"
-    ],
-    "year": "2010",
-    "description": "Serie animada. Episodios agrupados por temporada según la lista de enlaces aportada.",
-    "seasons": [
-      {
-        "season": 1,
-        "title": "Temporada 1",
-        "episodes": [
-          {
-            "id": "isla-t1-e01",
-            "title": "Episodio 01",
-            "episode": 1,
-            "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
-            "description": "Temporada 1, episodio 1.",
-            "youtubeId": "npUI1vOA_fI",
-            "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg",
-            "episodeNumber": 1,
-            "seasonNumber": 1
-          },
-          {
-            "id": "isla-t1-e02",
-            "title": "Episodio 02",
-            "episode": 2,
-            "url": "https://www.youtube.com/watch?v=4B2v-qBL_QU&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=2",
-            "description": "Temporada 1, episodio 2.",
-            "youtubeId": "4B2v-qBL_QU",
-            "thumbnail": "https://img.youtube.com/vi/4B2v-qBL_QU/mqdefault.jpg",
-            "episodeNumber": 2,
-            "seasonNumber": 1
-          },
-          {
-            "id": "isla-t1-e03",
-            "title": "Episodio 03",
-            "episode": 3,
-            "url": "https://www.youtube.com/watch?v=yjKePAMd86A&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=3",
-            "description": "Temporada 1, episodio 3.",
-            "youtubeId": "yjKePAMd86A",
-            "thumbnail": "https://img.youtube.com/vi/yjKePAMd86A/mqdefault.jpg",
-            "episodeNumber": 3,
-            "seasonNumber": 1
-          },
-          {
-            "id": "isla-t1-e04",
-            "title": "Episodio 04",
-            "episode": 4,
-            "url": "https://www.youtube.com/watch?v=_Hp5KKLAAOw&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=4",
-            "description": "Temporada 1, episodio 4.",
-            "youtubeId": "_Hp5KKLAAOw",
-            "thumbnail": "https://img.youtube.com/vi/_Hp5KKLAAOw/mqdefault.jpg",
-            "episodeNumber": 4,
-            "seasonNumber": 1
-          },
-          {
-            "id": "isla-t1-e05",
-            "title": "Episodio 05",
-            "episode": 5,
-            "url": "https://www.youtube.com/watch?v=AAjPD-M7SNE&list=PLcG36HOfiUM16uMSLxrZ2izM9pQHp3uHP&index=5",
-            "description": "Temporada 1, episodio 5.",
-            "youtubeId": "AAjPD-M7SNE",
-            "thumbnail": "https://img.youtube.com/vi/AAjPD-M7SNE/mqdefault.jpg",
-            "episodeNumber": 5,
-            "seasonNumber": 1
-          }
-        ],
-        "seasonNumber": 1
-      },
-      {
-        "season": 2,
-        "title": "Temporada 2",
-        "episodes": [
-          {
-            "id": "isla-t2-e01",
-            "title": "Episodio 01",
-            "episode": 1,
-            "url": "https://www.youtube.com/watch?v=fQOC3xZM9fI&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL",
-            "description": "Temporada 2, episodio 1.",
-            "youtubeId": "fQOC3xZM9fI",
-            "thumbnail": "https://img.youtube.com/vi/fQOC3xZM9fI/mqdefault.jpg",
-            "episodeNumber": 1,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e02",
-            "title": "Episodio 02",
-            "episode": 2,
-            "url": "https://www.youtube.com/watch?v=on_fYoDhf-E&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=2",
-            "description": "Temporada 2, episodio 2.",
-            "youtubeId": "on_fYoDhf-E",
-            "thumbnail": "https://img.youtube.com/vi/on_fYoDhf-E/mqdefault.jpg",
-            "episodeNumber": 2,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e03",
-            "title": "Episodio 03",
-            "episode": 3,
-            "url": "https://www.youtube.com/watch?v=fTv92TGuwTo&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=3",
-            "description": "Temporada 2, episodio 3.",
-            "youtubeId": "fTv92TGuwTo",
-            "thumbnail": "https://img.youtube.com/vi/fTv92TGuwTo/mqdefault.jpg",
-            "episodeNumber": 3,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e04",
-            "title": "Episodio 04",
-            "episode": 4,
-            "url": "https://www.youtube.com/watch?v=p1tzur1BqME&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=4",
-            "description": "Temporada 2, episodio 4.",
-            "youtubeId": "p1tzur1BqME",
-            "thumbnail": "https://img.youtube.com/vi/p1tzur1BqME/mqdefault.jpg",
-            "episodeNumber": 4,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e06",
-            "title": "Episodio 06",
-            "episode": 6,
-            "url": "https://www.youtube.com/watch?v=Yq8UhguWvXw&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=5",
-            "description": "La lista aportada etiqueta este enlace como episodio 6; revisar numeración del índice de YouTube.",
-            "youtubeId": "Yq8UhguWvXw",
-            "thumbnail": "https://img.youtube.com/vi/Yq8UhguWvXw/mqdefault.jpg",
-            "episodeNumber": 6,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e07",
-            "title": "Episodio 07",
-            "episode": 7,
-            "url": "https://www.youtube.com/watch?v=dptXncT0qlw&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=6",
-            "description": "Temporada 2, episodio 7.",
-            "youtubeId": "dptXncT0qlw",
-            "thumbnail": "https://img.youtube.com/vi/dptXncT0qlw/mqdefault.jpg",
-            "episodeNumber": 7,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e08",
-            "title": "Episodio 08",
-            "episode": 8,
-            "url": "https://www.youtube.com/watch?v=nY114F-iDy0&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=7",
-            "description": "Temporada 2, episodio 8.",
-            "youtubeId": "nY114F-iDy0",
-            "thumbnail": "https://img.youtube.com/vi/nY114F-iDy0/mqdefault.jpg",
-            "episodeNumber": 8,
-            "seasonNumber": 2
-          },
-          {
-            "id": "isla-t2-e10",
-            "title": "Episodio 10",
-            "episode": 10,
-            "url": "https://www.youtube.com/watch?v=QDK0DZa76CM&list=PLcG36HOfiUM3-ujw2GswmTeC7fTWRfmhL&index=8",
-            "description": "La lista aportada no incluye episodio 9.",
-            "youtubeId": "QDK0DZa76CM",
-            "thumbnail": "https://img.youtube.com/vi/QDK0DZa76CM/mqdefault.jpg",
-            "episodeNumber": 10,
-            "seasonNumber": 2
-          }
-        ],
-        "seasonNumber": 2
-      },
-      {
-        "season": 3,
-        "title": "Temporada 3",
-        "episodes": [
-          {
-            "id": "isla-t3-e01",
-            "title": "Episodio 01",
-            "episode": 1,
-            "url": "https://www.youtube.com/watch?v=t2Z4svUIvRY&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY",
-            "description": "Temporada 3, episodio 1.",
-            "youtubeId": "t2Z4svUIvRY",
-            "thumbnail": "https://img.youtube.com/vi/t2Z4svUIvRY/mqdefault.jpg",
-            "episodeNumber": 1,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e02",
-            "title": "Episodio 02",
-            "episode": 2,
-            "url": "https://www.youtube.com/watch?v=PgPvcc6G2Co&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=2",
-            "description": "Temporada 3, episodio 2.",
-            "youtubeId": "PgPvcc6G2Co",
-            "thumbnail": "https://img.youtube.com/vi/PgPvcc6G2Co/mqdefault.jpg",
-            "episodeNumber": 2,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e04",
-            "title": "Episodio 04",
-            "episode": 4,
-            "url": "https://www.youtube.com/watch?v=FDKf4DoMpj4&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=3",
-            "description": "La lista aportada etiqueta este enlace como episodio 4; revisar si falta el episodio 3.",
-            "youtubeId": "FDKf4DoMpj4",
-            "thumbnail": "https://img.youtube.com/vi/FDKf4DoMpj4/mqdefault.jpg",
-            "episodeNumber": 4,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e05",
-            "title": "Episodio 05",
-            "episode": 5,
-            "url": "https://www.youtube.com/watch?v=FQ377-kXwqw&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=4",
-            "description": "Temporada 3, episodio 5.",
-            "youtubeId": "FQ377-kXwqw",
-            "thumbnail": "https://img.youtube.com/vi/FQ377-kXwqw/mqdefault.jpg",
-            "episodeNumber": 5,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e06",
-            "title": "Episodio 06",
-            "episode": 6,
-            "url": "https://www.youtube.com/watch?v=EoRidxZoK_s&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=5",
-            "description": "Temporada 3, episodio 6.",
-            "youtubeId": "EoRidxZoK_s",
-            "thumbnail": "https://img.youtube.com/vi/EoRidxZoK_s/mqdefault.jpg",
-            "episodeNumber": 6,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e07",
-            "title": "Episodio 07",
-            "episode": 7,
-            "url": "https://www.youtube.com/watch?v=t9766H54nt4&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=6",
-            "description": "Temporada 3, episodio 7.",
-            "youtubeId": "t9766H54nt4",
-            "thumbnail": "https://img.youtube.com/vi/t9766H54nt4/mqdefault.jpg",
-            "episodeNumber": 7,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e08",
-            "title": "Episodio 08",
-            "episode": 8,
-            "url": "https://www.youtube.com/watch?v=QD2j6NgjV1A&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=7",
-            "description": "Temporada 3, episodio 8.",
-            "youtubeId": "QD2j6NgjV1A",
-            "thumbnail": "https://img.youtube.com/vi/QD2j6NgjV1A/mqdefault.jpg",
-            "episodeNumber": 8,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e09",
-            "title": "Episodio 09",
-            "episode": 9,
-            "url": "https://www.youtube.com/watch?v=6qcWZdL06aY&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=8",
-            "description": "Temporada 3, episodio 9.",
-            "youtubeId": "6qcWZdL06aY",
-            "thumbnail": "https://img.youtube.com/vi/6qcWZdL06aY/mqdefault.jpg",
-            "episodeNumber": 9,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e10",
-            "title": "Episodio 10",
-            "episode": 10,
-            "url": "https://www.youtube.com/watch?v=wobiIAVAhnc&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=9",
-            "description": "Temporada 3, episodio 10.",
-            "youtubeId": "wobiIAVAhnc",
-            "thumbnail": "https://img.youtube.com/vi/wobiIAVAhnc/mqdefault.jpg",
-            "episodeNumber": 10,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e11",
-            "title": "Episodio 11",
-            "episode": 11,
-            "url": "https://www.youtube.com/watch?v=3G8N15HEPls&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=10",
-            "description": "Temporada 3, episodio 11.",
-            "youtubeId": "3G8N15HEPls",
-            "thumbnail": "https://img.youtube.com/vi/3G8N15HEPls/mqdefault.jpg",
-            "episodeNumber": 11,
-            "seasonNumber": 3
-          },
-          {
-            "id": "isla-t3-e12",
-            "title": "Episodio 12",
-            "episode": 12,
-            "url": "https://www.youtube.com/watch?v=D7CDUey8S-g&list=PLcG36HOfiUM06yLGY2WyLs4U-A973vpgY&index=11",
-            "description": "Temporada 3, episodio 12.",
-            "youtubeId": "D7CDUey8S-g",
-            "thumbnail": "https://img.youtube.com/vi/D7CDUey8S-g/mqdefault.jpg",
-            "episodeNumber": 12,
-            "seasonNumber": 3
-          }
-        ],
-        "seasonNumber": 3
-      }
-    ],
-    "youtubeId": "npUI1vOA_fI",
-    "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg"
-  },
-  {
     "id": "ref-026",
     "title": "APUKUNAPA KUTIMUYNIN - El Regreso de los Dioses",
     "creator": "Ninakami Estudio de Animación",
@@ -1257,6 +954,285 @@
     "thumbnail": "https://img.youtube.com/vi/3MVE6yledLg/mqdefault.jpg"
   },
   {
+    "id": "series-isla-presidencial",
+    "title": "Isla Presidencial",
+    "creator": "IslaPresidencial",
+    "creatorChannel": "https://www.youtube.com/@IslaPresidencial",
+    "type": "2D",
+    "format": "Serie",
+    "genre": "Comedia",
+    "genres": [
+      "Comedia"
+    ],
+    "year": "2010",
+    "description": "Serie animada. Episodios agrupados por temporada.",
+    "seasons": [
+      {
+        "season": 1,
+        "title": "Temporada 1",
+        "episodes": [
+          {
+            "id": "isla-t1-e01",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=npUI1vOA_fI",
+            "youtubeId": "npUI1vOA_fI",
+            "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=4B2v-qBL_QU",
+            "youtubeId": "4B2v-qBL_QU",
+            "thumbnail": "https://img.youtube.com/vi/4B2v-qBL_QU/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e03",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=yjKePAMd86A",
+            "youtubeId": "yjKePAMd86A",
+            "thumbnail": "https://img.youtube.com/vi/yjKePAMd86A/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=_Hp5KKLAAOw",
+            "youtubeId": "_Hp5KKLAAOw",
+            "thumbnail": "https://img.youtube.com/vi/_Hp5KKLAAOw/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 1
+          },
+          {
+            "id": "isla-t1-e05",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=AAjPD-M7SNE",
+            "youtubeId": "AAjPD-M7SNE",
+            "thumbnail": "https://img.youtube.com/vi/AAjPD-M7SNE/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 1
+          }
+        ],
+        "seasonNumber": 1
+      },
+      {
+        "season": 2,
+        "title": "Temporada 2",
+        "episodes": [
+          {
+            "id": "isla-t2-e01",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=fQOC3xZM9fI",
+            "youtubeId": "fQOC3xZM9fI",
+            "thumbnail": "https://img.youtube.com/vi/fQOC3xZM9fI/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=on_fYoDhf-E",
+            "youtubeId": "on_fYoDhf-E",
+            "thumbnail": "https://img.youtube.com/vi/on_fYoDhf-E/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e03",
+            "title": "Episodio 03",
+            "episode": 3,
+            "url": "https://www.youtube.com/watch?v=fTv92TGuwTo",
+            "youtubeId": "fTv92TGuwTo",
+            "thumbnail": "https://img.youtube.com/vi/fTv92TGuwTo/mqdefault.jpg",
+            "episodeNumber": 3,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=p1tzur1BqME",
+            "youtubeId": "p1tzur1BqME",
+            "thumbnail": "https://img.youtube.com/vi/p1tzur1BqME/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e06",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=Yq8UhguWvXw",
+            "youtubeId": "Yq8UhguWvXw",
+            "thumbnail": "https://img.youtube.com/vi/Yq8UhguWvXw/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e07",
+            "title": "Episodio 07",
+            "episode": 7,
+            "url": "https://www.youtube.com/watch?v=dptXncT0qlw",
+            "youtubeId": "dptXncT0qlw",
+            "thumbnail": "https://img.youtube.com/vi/dptXncT0qlw/mqdefault.jpg",
+            "episodeNumber": 7,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e08",
+            "title": "Episodio 08",
+            "episode": 8,
+            "url": "https://www.youtube.com/watch?v=nY114F-iDy0",
+            "youtubeId": "nY114F-iDy0",
+            "thumbnail": "https://img.youtube.com/vi/nY114F-iDy0/mqdefault.jpg",
+            "episodeNumber": 8,
+            "seasonNumber": 2
+          },
+          {
+            "id": "isla-t2-e10",
+            "title": "Episodio 10",
+            "episode": 10,
+            "url": "https://www.youtube.com/watch?v=QDK0DZa76CM",
+            "youtubeId": "QDK0DZa76CM",
+            "thumbnail": "https://img.youtube.com/vi/QDK0DZa76CM/mqdefault.jpg",
+            "episodeNumber": 10,
+            "seasonNumber": 2
+          }
+        ],
+        "seasonNumber": 2
+      },
+      {
+        "season": 3,
+        "title": "Temporada 3",
+        "episodes": [
+          {
+            "id": "isla-t3-e01",
+            "title": "Episodio 01",
+            "episode": 1,
+            "url": "https://www.youtube.com/watch?v=t2Z4svUIvRY",
+            "youtubeId": "t2Z4svUIvRY",
+            "thumbnail": "https://img.youtube.com/vi/t2Z4svUIvRY/mqdefault.jpg",
+            "episodeNumber": 1,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e02",
+            "title": "Episodio 02",
+            "episode": 2,
+            "url": "https://www.youtube.com/watch?v=PgPvcc6G2Co",
+            "youtubeId": "PgPvcc6G2Co",
+            "thumbnail": "https://img.youtube.com/vi/PgPvcc6G2Co/mqdefault.jpg",
+            "episodeNumber": 2,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e04",
+            "title": "Episodio 04",
+            "episode": 4,
+            "url": "https://www.youtube.com/watch?v=FDKf4DoMpj4",
+            "youtubeId": "FDKf4DoMpj4",
+            "thumbnail": "https://img.youtube.com/vi/FDKf4DoMpj4/mqdefault.jpg",
+            "episodeNumber": 4,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e05",
+            "title": "Episodio 05",
+            "episode": 5,
+            "url": "https://www.youtube.com/watch?v=FQ377-kXwqw",
+            "youtubeId": "FQ377-kXwqw",
+            "thumbnail": "https://img.youtube.com/vi/FQ377-kXwqw/mqdefault.jpg",
+            "episodeNumber": 5,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e06",
+            "title": "Episodio 06",
+            "episode": 6,
+            "url": "https://www.youtube.com/watch?v=EoRidxZoK_s",
+            "youtubeId": "EoRidxZoK_s",
+            "thumbnail": "https://img.youtube.com/vi/EoRidxZoK_s/mqdefault.jpg",
+            "episodeNumber": 6,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e07",
+            "title": "Episodio 07",
+            "episode": 7,
+            "url": "https://www.youtube.com/watch?v=t9766H54nt4",
+            "youtubeId": "t9766H54nt4",
+            "thumbnail": "https://img.youtube.com/vi/t9766H54nt4/mqdefault.jpg",
+            "episodeNumber": 7,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e08",
+            "title": "Episodio 08",
+            "episode": 8,
+            "url": "https://www.youtube.com/watch?v=QD2j6NgjV1A",
+            "youtubeId": "QD2j6NgjV1A",
+            "thumbnail": "https://img.youtube.com/vi/QD2j6NgjV1A/mqdefault.jpg",
+            "episodeNumber": 8,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e09",
+            "title": "Episodio 09",
+            "episode": 9,
+            "url": "https://www.youtube.com/watch?v=6qcWZdL06aY",
+            "youtubeId": "6qcWZdL06aY",
+            "thumbnail": "https://img.youtube.com/vi/6qcWZdL06aY/mqdefault.jpg",
+            "episodeNumber": 9,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e10",
+            "title": "Episodio 10",
+            "episode": 10,
+            "url": "https://www.youtube.com/watch?v=wobiIAVAhnc",
+            "youtubeId": "wobiIAVAhnc",
+            "thumbnail": "https://img.youtube.com/vi/wobiIAVAhnc/mqdefault.jpg",
+            "episodeNumber": 10,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e11",
+            "title": "Episodio 11",
+            "episode": 11,
+            "url": "https://www.youtube.com/watch?v=3G8N15HEPls",
+            "youtubeId": "3G8N15HEPls",
+            "thumbnail": "https://img.youtube.com/vi/3G8N15HEPls/mqdefault.jpg",
+            "episodeNumber": 11,
+            "seasonNumber": 3
+          },
+          {
+            "id": "isla-t3-e12",
+            "title": "Episodio 12",
+            "episode": 12,
+            "url": "https://www.youtube.com/watch?v=D7CDUey8S-g",
+            "youtubeId": "D7CDUey8S-g",
+            "thumbnail": "https://img.youtube.com/vi/D7CDUey8S-g/mqdefault.jpg",
+            "episodeNumber": 12,
+            "seasonNumber": 3
+          }
+        ],
+        "seasonNumber": 3
+      }
+    ],
+    "youtubeId": "npUI1vOA_fI",
+    "thumbnail": "https://img.youtube.com/vi/npUI1vOA_fI/mqdefault.jpg"
+  },
+  {
     "title": "Wild Love",
     "creator": "Paul Autric, Quentin Camus, Maryka Laudet, Léora Lutz, Corentin McIntyre (ESMA)",
     "creatorChannel": "",
@@ -1347,7 +1323,6 @@
             "title": "Episodio 00",
             "episode": 0,
             "url": "https://www.youtube.com/watch?v=T9xqpwpHWrw",
-            "description": "Temporada 1, episodio 00 de la serie Metrecalia.",
             "youtubeId": "T9xqpwpHWrw",
             "thumbnail": "https://img.youtube.com/vi/T9xqpwpHWrw/mqdefault.jpg",
             "episodeNumber": 0,
@@ -1358,7 +1333,6 @@
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=P_rfRMRl8h4",
-            "description": "Temporada 1, episodio 01 de la serie Metrecalia.",
             "youtubeId": "P_rfRMRl8h4",
             "thumbnail": "https://img.youtube.com/vi/P_rfRMRl8h4/mqdefault.jpg",
             "episodeNumber": 1,
@@ -1369,7 +1343,6 @@
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=PPXPbzhahv0",
-            "description": "Temporada 1, episodio 02 de la serie Metrecalia.",
             "youtubeId": "PPXPbzhahv0",
             "thumbnail": "https://img.youtube.com/vi/PPXPbzhahv0/mqdefault.jpg",
             "episodeNumber": 2,
@@ -1726,7 +1699,6 @@
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=8i18HXAa1uY",
-            "description": "Temporada 1, episodio 01 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "8i18HXAa1uY",
             "thumbnail": "https://img.youtube.com/vi/8i18HXAa1uY/mqdefault.jpg",
             "episodeNumber": 1,
@@ -1737,7 +1709,6 @@
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=zCqxkKXLtz8",
-            "description": "Temporada 1, episodio 02 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "zCqxkKXLtz8",
             "thumbnail": "https://img.youtube.com/vi/zCqxkKXLtz8/mqdefault.jpg",
             "episodeNumber": 2,
@@ -1748,7 +1719,6 @@
             "title": "Episodio 03",
             "episode": 3,
             "url": "https://www.youtube.com/watch?v=eOg6HD0NXok",
-            "description": "Temporada 1, episodio 03 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "eOg6HD0NXok",
             "thumbnail": "https://img.youtube.com/vi/eOg6HD0NXok/mqdefault.jpg",
             "episodeNumber": 3,
@@ -1759,7 +1729,6 @@
             "title": "Episodio 04",
             "episode": 4,
             "url": "https://www.youtube.com/watch?v=cCAJ7DOVIL0",
-            "description": "Temporada 1, episodio 04 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "cCAJ7DOVIL0",
             "thumbnail": "https://img.youtube.com/vi/cCAJ7DOVIL0/mqdefault.jpg",
             "episodeNumber": 4,
@@ -1770,7 +1739,6 @@
             "title": "Episodio 05",
             "episode": 5,
             "url": "https://www.youtube.com/watch?v=m2nZKiK9Xlw",
-            "description": "Temporada 1, episodio 05 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "m2nZKiK9Xlw",
             "thumbnail": "https://img.youtube.com/vi/m2nZKiK9Xlw/mqdefault.jpg",
             "episodeNumber": 5,
@@ -1781,7 +1749,6 @@
             "title": "Episodio 06",
             "episode": 6,
             "url": "https://www.youtube.com/watch?v=C9dox-6_Y10",
-            "description": "Temporada 1, episodio 06 de la serie animada de ciencia ficción, aventura y fantasía.",
             "youtubeId": "C9dox-6_Y10",
             "thumbnail": "https://img.youtube.com/vi/C9dox-6_Y10/mqdefault.jpg",
             "episodeNumber": 6,
@@ -1819,7 +1786,6 @@
             "title": "Episodio 01",
             "episode": 1,
             "url": "https://www.youtube.com/watch?v=r0b_gKZgnbQ",
-            "description": "Temporada 1, episodio 01 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "r0b_gKZgnbQ",
             "thumbnail": "https://img.youtube.com/vi/r0b_gKZgnbQ/mqdefault.jpg",
             "episodeNumber": 1,
@@ -1830,7 +1796,6 @@
             "title": "Episodio 02",
             "episode": 2,
             "url": "https://www.youtube.com/watch?v=YoNhOiNQols",
-            "description": "Temporada 1, episodio 02 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "YoNhOiNQols",
             "thumbnail": "https://img.youtube.com/vi/YoNhOiNQols/mqdefault.jpg",
             "episodeNumber": 2,
@@ -1841,7 +1806,6 @@
             "title": "Episodio 03",
             "episode": 3,
             "url": "https://www.youtube.com/watch?v=eU_j7rfpTSM",
-            "description": "Temporada 1, episodio 03 de la serie de ciencia ficción y drama criada con IA.",
             "youtubeId": "eU_j7rfpTSM",
             "thumbnail": "https://img.youtube.com/vi/eU_j7rfpTSM/mqdefault.jpg",
             "episodeNumber": 3,
@@ -1852,7 +1816,6 @@
             "title": "Episodio 04",
             "episode": 4,
             "url": "https://www.youtube.com/watch?v=SoCn-e5MowA",
-            "description": "Temporada 1, episodio 04 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "SoCn-e5MowA",
             "thumbnail": "https://img.youtube.com/vi/SoCn-e5MowA/mqdefault.jpg",
             "episodeNumber": 4,
@@ -1863,7 +1826,6 @@
             "title": "Episodio 05",
             "episode": 5,
             "url": "https://www.youtube.com/watch?v=O1JWMBhDArI",
-            "description": "Temporada 1, episodio 05 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "O1JWMBhDArI",
             "thumbnail": "https://img.youtube.com/vi/O1JWMBhDArI/mqdefault.jpg",
             "episodeNumber": 5,
@@ -1874,7 +1836,6 @@
             "title": "Episodio 06",
             "episode": 6,
             "url": "https://www.youtube.com/watch?v=bgjINrcG0ts",
-            "description": "Temporada 1, episodio 06 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "bgjINrcG0ts",
             "thumbnail": "https://img.youtube.com/vi/bgjINrcG0ts/mqdefault.jpg",
             "episodeNumber": 6,
@@ -1885,7 +1846,6 @@
             "title": "Episodio 07",
             "episode": 7,
             "url": "https://www.youtube.com/watch?v=JHb3TmsdlCI",
-            "description": "Temporada 1, episodio 07 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "JHb3TmsdlCI",
             "thumbnail": "https://img.youtube.com/vi/JHb3TmsdlCI/mqdefault.jpg",
             "episodeNumber": 7,
@@ -1896,7 +1856,6 @@
             "title": "Episodio 08",
             "episode": 8,
             "url": "https://www.youtube.com/watch?v=AgSh4bzUGmQ",
-            "description": "Temporada 1, episodio 08 de la serie de ciencia ficción y drama creada con IA.",
             "youtubeId": "AgSh4bzUGmQ",
             "thumbnail": "https://img.youtube.com/vi/AgSh4bzUGmQ/mqdefault.jpg",
             "episodeNumber": 8,
@@ -1932,9 +1891,12 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Fantasía",
-    "genres": ["Fantasía", "Drama"],
+    "genres": [
+      "Fantasía",
+      "Drama"
+    ],
     "year": "",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=C_VxYeIUmDU"
   },
   {
     "id": "ref-extra-gravity",
@@ -1944,9 +1906,12 @@
     "type": "2D",
     "format": "Cortometraje",
     "genre": "Musical",
-    "genres": ["Musical", "Drama"],
+    "genres": [
+      "Musical",
+      "Drama"
+    ],
     "year": "",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=2m1Ek6Pjw7s"
   },
   {
     "id": "ref-extra-tentatrice",
@@ -1956,9 +1921,11 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Drama",
-    "genres": ["Drama"],
+    "genres": [
+      "Drama"
+    ],
     "year": "",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=nRIEYXXRPHE"
   },
   {
     "id": "ref-extra-amir",
@@ -1968,9 +1935,11 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Aventura",
-    "genres": ["Aventura"],
+    "genres": [
+      "Aventura"
+    ],
     "year": "",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=_i5tXEKYPZA"
   },
   {
     "id": "ref-extra-sprite",
@@ -1980,9 +1949,12 @@
     "type": "3D",
     "format": "Cortometraje",
     "genre": "Terror",
-    "genres": ["Terror", "Comedia"],
+    "genres": [
+      "Terror",
+      "Comedia"
+    ],
     "year": "2021",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=f9AWpnblqkg"
   },
   {
     "id": "ref-extra-overgrown",
@@ -1992,8 +1964,262 @@
     "type": "3D",
     "format": "Tráiler",
     "genre": "Fantasía",
-    "genres": ["Fantasía"],
+    "genres": [
+      "Fantasía"
+    ],
     "year": "2022",
-    "url": ""
+    "url": "https://www.youtube.com/watch?v=V80s97w_Q8c"
+  },
+  {
+    "id": "add-01",
+    "url": "https://www.youtube.com/watch?v=AJYByGgUW6Q",
+    "title": "Animación Independiente 01",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-02",
+    "url": "https://www.youtube.com/watch?v=8gKRkDfp9UE",
+    "title": "Animación Independiente 02",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-03",
+    "url": "https://www.youtube.com/watch?v=QNdekqVWWIQ",
+    "title": "Animación Independiente 03",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-04",
+    "url": "https://www.youtube.com/watch?v=PeTee-_B2Qc",
+    "title": "Animación Independiente 04",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-05",
+    "url": "https://www.youtube.com/watch?v=mhIsqhVk9MQ",
+    "title": "Animación Independiente 05",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-06",
+    "url": "https://www.youtube.com/watch?v=9F294j6xrw0",
+    "title": "Animación Independiente 06",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-07",
+    "url": "https://www.youtube.com/watch?v=AHYGs9B5atQ",
+    "title": "Animación Independiente 07",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-08",
+    "url": "https://www.youtube.com/watch?v=Vqx2jolzYSU",
+    "title": "Animación Independiente 08",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-09",
+    "url": "https://www.youtube.com/watch?v=_cMxraX_5RE",
+    "title": "Animación Independiente 09",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-10",
+    "url": "https://www.youtube.com/watch?v=GkS9RUi_UcQ",
+    "title": "Animación Independiente 10",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-11",
+    "url": "https://www.youtube.com/watch?v=0YEP4XuE2BQ",
+    "title": "Animación Independiente 11",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-12",
+    "url": "https://www.youtube.com/watch?v=b4_dq_e4KGs",
+    "title": "Animación Independiente 12",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-13",
+    "url": "https://www.youtube.com/watch?v=bd_79PcioN4",
+    "title": "Animación Independiente 13",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-14",
+    "url": "https://www.youtube.com/watch?v=C4ZP3--XhyU",
+    "title": "Animación Independiente 14",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-15",
+    "url": "https://www.youtube.com/watch?v=EdsC5J-FzJ8",
+    "title": "Animación Independiente 15",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-16",
+    "url": "https://www.youtube.com/watch?v=II1cuT6eZjc",
+    "title": "Animación Independiente 16",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-17",
+    "url": "https://www.youtube.com/watch?v=AldqlGq0B9w",
+    "title": "Animación Independiente 17",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-18",
+    "url": "https://www.youtube.com/watch?v=Y4KtAX6aqKo",
+    "title": "Animación Independiente 18",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-19",
+    "url": "https://www.youtube.com/watch?v=24moNtD7OKU",
+    "title": "Animación Independiente 19",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-20",
+    "url": "https://www.youtube.com/watch?v=83yqxdMA4A4",
+    "title": "Animación Independiente 20",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
+  },
+  {
+    "id": "add-21",
+    "url": "https://www.youtube.com/watch?v=9OhUJyF1bYo",
+    "title": "Animación Independiente 21",
+    "creator": "Creador Independiente",
+    "type": "3D",
+    "format": "Cortometraje",
+    "genre": "General",
+    "genres": [
+      "General"
+    ]
   }
 ]

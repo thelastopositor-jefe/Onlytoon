@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
+import JobsSection from './components/JobsSection';
 const TOONKNIGHT_LOGO = '/images/logo/toonknight.png';
 import { auth, googleProvider, signInWithPopup, signOut, db } from './firebase';
 import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, increment, onSnapshot } from 'firebase/firestore';
@@ -1164,6 +1165,7 @@ export default function App() {
           <button onClick={() => setActiveTab('productos')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'productos' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Productos</button>
           <button onClick={() => setActiveTab('educacion')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'educacion' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Aprender</button>
           <button onClick={() => setActiveTab('comunidad')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'comunidad' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Comunidad</button>
+          <button onClick={() => setActiveTab('empleo')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'empleo' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Empleo</button>
           {isAdmin && <button onClick={() => setActiveTab('admin')} className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 ${activeTab === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'text-amber-400 hover:bg-amber-500/10'}`}><ShieldCheck className="w-4 h-4" /><span>Moderación</span></button>}
         </nav>
 
@@ -1191,7 +1193,7 @@ export default function App() {
       {/* Menú desplegable móvil */}
       {mobileMenuOpen && (
         <nav className="md:hidden sticky top-[57px] z-30 bg-[#161618] border-b border-[#2e2e34] px-4 py-3 shadow-xl space-y-1">
-          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['educacion', 'Aprender'], ['comunidad', 'Comunidad']].map(([tab, label]) => (
+          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['educacion', 'Aprender'], ['comunidad', 'Comunidad'], ['empleo', 'Empleo y colaboraciones']].map(([tab, label]) => (
             <button key={tab} onClick={() => { setActiveTab(tab); setMobileMenuOpen(false); }} className={`block w-full text-left px-3 py-3 rounded-lg text-sm font-medium ${activeTab === tab ? 'bg-[#222226] text-blue-400' : 'text-gray-200 hover:bg-[#222226]'}`}>{label}</button>
           ))}
           {isAdmin && <button onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-amber-400 hover:bg-[#222226]">Moderación</button>}
@@ -1545,6 +1547,13 @@ export default function App() {
             </div>
             {educationItems.filter(item => (educationTechniqueFilter === 'Todos' || (item.techniques || []).includes(educationTechniqueFilter)) && (educationTopicFilter === 'Todos' || (item.topics || []).includes(educationTopicFilter)) && (educationSoftwareFilter === 'Todos' || (item.software || []).includes(educationSoftwareFilter))).length ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{educationItems.filter(item => (educationTechniqueFilter === 'Todos' || (item.techniques || []).includes(educationTechniqueFilter)) && (educationTopicFilter === 'Todos' || (item.topics || []).includes(educationTopicFilter)) && (educationSoftwareFilter === 'Todos' || (item.software || []).includes(educationSoftwareFilter))).map(item => <article key={item.id} className="bg-[#1a1a1e] border border-[#2e2e34] rounded-2xl overflow-hidden flex flex-col">{item.image && <img src={item.image} alt={item.title} className="w-full h-44 object-cover"/>}<div className="p-5 flex-1 space-y-3"><div className="flex justify-between gap-2"><span className="text-[10px] rounded-full bg-blue-500/10 text-blue-300 px-2 py-1">{item.price || 'Consultar precio'}</span><span className="text-xs text-gray-400">{item.provider}</span></div><h3 className="text-lg font-bold text-white">{item.title}</h3><p className="text-sm text-gray-400">{item.description}</p>{[...(item.techniques || []), ...(item.topics || []), ...(item.software || [])].map(tag => <span key={tag} className="inline-block text-[10px] rounded-full bg-[#292930] px-2 py-1 mr-1 mb-1 text-gray-300">{tag}</span>)}</div><div className="p-5 pt-0 flex gap-2"><a href={item.url} target="_blank" rel="noopener noreferrer" className="flex-1 text-center bg-blue-600 hover:bg-blue-500 rounded-xl py-2.5 text-sm font-semibold text-white">Ver curso <ExternalLink className="inline w-3 h-3"/></a>{isAdmin && <><button onClick={() => openEditEducation(item)} className="px-3 rounded-lg bg-blue-500/10 text-blue-300 text-xs">Editar</button><button onClick={() => handleDeleteEducation(item)} className="px-3 rounded-lg bg-red-500/10 text-red-300 text-xs">Eliminar</button></>}</div></article>)}</div> : <p className="text-sm text-gray-500 rounded-2xl border border-dashed border-[#2e2e34] p-8 text-center">Aún no hay cursos con estos filtros. {isAdmin ? 'Agrega el primero desde el botón superior.' : 'Vuelve más tarde para descubrir nuevos recursos.'}</p>}
           </div>
+        )}
+
+        {/* ------------------------------------------
+            PESTAÑA: EMPLEO Y COLABORACIONES
+        ------------------------------------------ */}
+        {activeTab === 'empleo' && (
+          <JobsSection user={user} isAdmin={isAdmin} onLogin={handleGoogleLogin} />
         )}
 
         {/* ------------------------------------------
