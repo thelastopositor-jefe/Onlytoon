@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
+import JobsSection from './components/JobsSection';
 const TOONKNIGHT_LOGO = '/images/logo/toonknight.png';
 import { auth, googleProvider, signInWithPopup, signOut, db } from './firebase';
 import { collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove, increment, onSnapshot } from 'firebase/firestore';
@@ -1198,6 +1199,7 @@ export default function App() {
           <button onClick={() => setActiveTab('productos')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'productos' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Productos</button>
           <button onClick={() => setActiveTab('educacion')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'educacion' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Aprender</button>
           <button onClick={() => setActiveTab('comunidad')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'comunidad' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Comunidad</button>
+          <button onClick={() => setActiveTab('empleo')} className={`px-3 py-2 rounded-lg text-sm font-medium ${activeTab === 'empleo' ? 'bg-[#222226] text-blue-400' : 'text-gray-400 hover:text-white'}`}>Empleo</button>
           {isAdmin && <button onClick={() => setActiveTab('admin')} className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 ${activeTab === 'admin' ? 'bg-amber-500/20 text-amber-400' : 'text-amber-400 hover:bg-amber-500/10'}`}><ShieldCheck className="w-4 h-4" /><span>Moderación</span></button>}
         </nav>
 
@@ -1225,7 +1227,7 @@ export default function App() {
       {/* Menú desplegable móvil */}
       {mobileMenuOpen && (
         <nav className="md:hidden sticky top-[57px] z-30 bg-[#161618] border-b border-[#2e2e34] px-4 py-3 shadow-xl space-y-1">
-          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['educacion', 'Aprender'], ['comunidad', 'Comunidad']].map(([tab, label]) => (
+          {[['explorar', 'Explorar'], ['productos', 'Productos'], ['educacion', 'Aprender'], ['comunidad', 'Comunidad'], ['empleo', 'Empleo y colaboraciones']].map(([tab, label]) => (
             <button key={tab} onClick={() => { setActiveTab(tab); setMobileMenuOpen(false); }} className={`block w-full text-left px-3 py-3 rounded-lg text-sm font-medium ${activeTab === tab ? 'bg-[#222226] text-blue-400' : 'text-gray-200 hover:bg-[#222226]'}`}>{label}</button>
           ))}
           {isAdmin && <button onClick={() => { setActiveTab('admin'); setMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 rounded-lg text-sm font-medium text-amber-400 hover:bg-[#222226]">Moderación</button>}
@@ -1587,6 +1589,13 @@ export default function App() {
         {/* ------------------------------------------
             PESTAÑA 3: COMUNIDAD Y FORO
         ------------------------------------------ */}
+        {/* ------------------------------------------
+            PESTAÑA: EMPLEO Y COLABORACIONES
+        ------------------------------------------ */}
+        {activeTab === 'empleo' && (
+          <JobsSection user={user} isAdmin={isAdmin} onLogin={handleGoogleLogin} />
+        )}
+
         {activeTab === 'comunidad' && (
           <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4">
