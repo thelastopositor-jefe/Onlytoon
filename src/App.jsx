@@ -924,7 +924,7 @@ export default function App() {
       alert('FormSubmit ha aceptado el mensaje. Comprueba que llegó a contacto@toonknight.com, incluida la carpeta de spam.');
     } catch (error) {
       console.error('Error al enviar mensaje de contacto:', error);
-      alert('No se pudo confirmar el envío del mensaje. Revisa tu conexión e inténtalo de nuevo. Si persiste, consulta la consola del navegador para ver el error.');
+      alert('FormSubmit no confirmó el envío. Si es la primera vez que usas este correo, revisa si FormSubmit te envió un mensaje de activación y confírmalo. Si ya está activado, abre la consola del navegador para ver el error exacto.');
     } finally {
       setSendingContact(false);
     }
