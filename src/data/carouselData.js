@@ -23,7 +23,7 @@ export const CAROUSEL_ITEMS = [
     tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía",
     category: "ESTRENO",
     thumbnail: "/images/carousel/carousel03.jpg",
-    videoUrl: "https://www.toonknight.com/?project=WJbIXPJ6MrpdbtTUWnCU",
+    videoUrl: "https://youtu.be/Jro1TkqpEXg",
     linkText: "Ver proyecto"
   },
   {
@@ -32,7 +32,7 @@ export const CAROUSEL_ITEMS = [
     tagline: "Cuando cinco vagos sin futuro son invocados a un mundo de fantasía para cumplir la profecía",
     category: "ESTRENO",
     thumbnail: "/images/carousel/carousel04.jpg",
-    videoUrl: "https://www.toonknight.com/?project=WJbIXPJ6MrpdbtTUWnCU",
+    videoUrl: "https://youtu.be/Jro1TkqpEXg",
     linkText: "Ver proyecto"
   },
   {
