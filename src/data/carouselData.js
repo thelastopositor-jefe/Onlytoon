@@ -12,10 +12,10 @@ export const CAROUSEL_ITEMS = [
     id: 2,
     title: "",
     tagline: "",
-    category: "POPULAR",
+    category: "",
     thumbnail: "/images/carousel/carousel02.jpg",
     videoUrl: "",
-    linkText: "Sube tu proyecto"
+    linkText: "Apóyanos en Ko-fi"
   },
   {
     id: 3,
@@ -39,9 +39,9 @@ export const CAROUSEL_ITEMS = [
     id: 5,
     title: "",
     tagline: "",
-    category: "POPULAR",
+    category: "",
     thumbnail: "/images/carousel/carousel05.jpg",
     videoUrl: "https://onlytoon.vercel.app/",
-    linkText: "Sube tu proyecto"
+    linkText: "Apóyanos en Patreon"
   }
 ];
