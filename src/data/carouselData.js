@@ -14,7 +14,7 @@ export const CAROUSEL_ITEMS = [
     tagline: "",
     category: "",
     thumbnail: "/images/carousel/carousel02.jpg",
-    videoUrl: "",
+    videoUrl: "https://ko-fi.com/toonknignht",
     linkText: "Apóyanos en Ko-fi"
   },
   {
@@ -41,7 +41,7 @@ export const CAROUSEL_ITEMS = [
     tagline: "",
     category: "",
     thumbnail: "/images/carousel/carousel05.jpg",
-    videoUrl: "https://onlytoon.vercel.app/",
+    videoUrl: "https://www.patreon.com/cw/ToonKnight",
     linkText: "Apóyanos en Patreon"
   }
 ];
