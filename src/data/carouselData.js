@@ -43,5 +43,14 @@ export const CAROUSEL_ITEMS = [
     thumbnail: "/images/carousel/carousel05.jpg",
     videoUrl: "https://www.patreon.com/cw/ToonKnight",
     linkText: "Apóyanos en Patreon"
-  }
+  },
+  {
+  id: 6,
+  title: "NUEVO PROYECTO",
+  tagline: "Descripción del proyecto",
+  category: "CORTO ANIMADO",
+  thumbnail: "/images/carousel/carousel06.jpg",
+  videoUrl: "https://youtu.be/XZiMOjnLU3w",
+  linkText: "Ver proyecto"
+}
 ];
