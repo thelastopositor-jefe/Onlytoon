@@ -49,7 +49,7 @@ export const CAROUSEL_ITEMS = [
   title: "NUEVO PROYECTO",
   tagline: "Descripción del proyecto",
   category: "CORTO ANIMADO",
-  thumbnail: "/images/carousel/carousel06.jpg",
+  thumbnail: "/images/carousel/carousel06.jpeg",
   videoUrl: "https://youtu.be/XZiMOjnLU3w",
   linkText: "Ver proyecto"
 }

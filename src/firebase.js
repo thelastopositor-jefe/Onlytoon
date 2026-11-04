@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC2iexQvY1xjFMjy9qZSRjZsLYkfqGU0uk",
@@ -38,6 +39,9 @@ export const db = getFirestore(app);
 
 // Storage
 export const storage = getStorage(app);
+
+// Cloud Functions: operaciones sensibles se ejecutan en servidor, nunca con permisos administrativos en el navegador.
+export const functions = getFunctions(app, 'europe-west1');
 
 // Métodos de autenticación
 export {
