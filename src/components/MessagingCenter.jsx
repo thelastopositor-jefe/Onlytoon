@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  collection, getDocs, limit, onSnapshot, orderBy, query, where
+  collection, doc, getDocs, limit, onSnapshot, orderBy, query, where
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { Flag, Lock, MessageCircle, Search, Send, ShieldBan, UserRound, X } from 'lucide-react';
@@ -18,6 +18,7 @@ const conversationIdFor = (first, second) => [first, second].sort().join('__');
 
 export default function MessagingCenter({ user, initialConversationId = '' }) {
   const [conversations, setConversations] = useState([]);
+  const [participantProfiles, setParticipantProfiles] = useState({});
   const [selectedConversationId, setSelectedConversationId] = useState(initialConversationId);
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -99,9 +100,22 @@ export default function MessagingCenter({ user, initialConversationId = '' }) {
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [searchText, user?.id]);
 
+  // Consulta los perfiles públicos por UID: el nombre y la foto cambian sin alterar el historial.
+  const participantIds = useMemo(() => [...new Set(conversations.flatMap(item => item.participants || []).filter(id => id && id !== user?.id))].sort(), [conversations, user?.id]);
+  const participantIdsKey = participantIds.join('|');
+  useEffect(() => {
+    const ids = participantIdsKey ? participantIdsKey.split('|') : [];
+    setParticipantProfiles({});
+    const unsubscribers = ids.map(uid => onSnapshot(doc(db, 'publicProfiles', uid), snapshot => {
+      if (snapshot.exists()) setParticipantProfiles(current => ({ ...current, [uid]: snapshot.data() }));
+    }, error => console.warn('No se pudo consultar el perfil público del participante:', uid, error)));
+    return () => unsubscribers.forEach(unsubscribe => unsubscribe());
+  }, [participantIdsKey]);
+
   const activeConversation = useMemo(() => conversations.find(item => item.id === selectedConversationId) || null, [conversations, selectedConversationId]);
   const otherUid = activeConversation?.participants?.find(uid => uid !== user?.id) || selectedRecipient?.id || '';
-  const otherName = activeConversation?.participantNames?.[otherUid]
+  const otherName = participantProfiles[otherUid]?.name
+    || activeConversation?.participantNames?.[otherUid]
     || selectedRecipient?.name
     || searchResults.find(profile => profile.id === otherUid)?.name
     || 'Usuario de ToonKnight';
@@ -196,8 +210,8 @@ export default function MessagingCenter({ user, initialConversationId = '' }) {
         <div className="max-h-[440px] overflow-y-auto p-2">
           {conversations.length === 0 ? <p className="p-4 text-sm text-gray-500">Todavía no tienes conversaciones. Busca a un usuario para escribirle.</p> : conversations.map(conversation => {
             const participant = conversation.participants?.find(uid => uid !== user.id);
-            const name = conversation.participantNames?.[participant] || 'Usuario de ToonKnight';
-            const photo = conversation.participantPhotos?.[participant] || '';
+            const name = participantProfiles[participant]?.name || conversation.participantNames?.[participant] || 'Usuario de ToonKnight';
+            const photo = participantProfiles[participant]?.photo || conversation.participantPhotos?.[participant] || '';
             return <button key={conversation.id} type="button" onClick={() => { setSelectedConversationId(conversation.id); setSelectedRecipient(null); setErrorMessage(''); }} className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition ${selectedConversationId === conversation.id ? 'bg-blue-600/15 border border-blue-500/30' : 'border border-transparent hover:bg-[#222226]'}`}><img src={photo} alt="" className="h-10 w-10 rounded-full bg-[#2a2a30] object-cover" /><span className="min-w-0 flex-1"><span className="block truncate text-sm font-semibold text-white">{name}</span><span className="block truncate text-xs text-gray-500">{conversation.lastMessage || 'Abrir conversación'}</span></span><MessageCircle className="h-4 w-4 shrink-0 text-gray-500" /></button>;
           })}
         </div>

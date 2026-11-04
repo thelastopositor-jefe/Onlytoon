@@ -327,9 +327,9 @@ export default function App() {
     }
   });
 
-  const [projects, setProjects] = useState(INITIAL_PROJECTS);
+  const [projects, setProjects] = useState([]);
   const [products, setProducts] = useState(PRODUCTS_DATA);
-  const [forumTopics, setForumTopics] = useState(INITIAL_FORUM_TOPICS);
+  const [forumTopics, setForumTopics] = useState([]);
   const [showProductModal, setShowProductModal] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);
   const [productForm, setProductForm] = useState({ title: '', category: 'Software', subtype: '', techniques: [], uses: [], software: [], price: '', image: '', description: '', link: '', isAffiliate: false });
@@ -455,7 +455,7 @@ export default function App() {
   // ESTADO Y EFECTO DEL CARRUSEL (ÚNICO)
   // ==========================================
   const [heroIndex, setHeroIndex] = useState(0);
-  const [carouselItems, setCarouselItems] = useState(CAROUSEL_ITEMS);
+  const [carouselItems, setCarouselItems] = useState([]);
   const [carouselStored, setCarouselStored] = useState(false);
   const [showCarouselEditor, setShowCarouselEditor] = useState(false);
   const [editingCarouselId, setEditingCarouselId] = useState(null);
@@ -471,7 +471,7 @@ export default function App() {
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'carouselItems'), snapshot => {
       if (snapshot.empty) {
-        setCarouselItems(CAROUSEL_ITEMS);
+        setCarouselItems([]);
         setCarouselStored(false);
         return;
       }
@@ -1720,13 +1720,17 @@ export default function App() {
       setUser(newUserData);
       localStorage.setItem('onlytoon_user', JSON.stringify(newUserData));
       // Solo actualiza proyectos atribuidos explícitamente al perfil; no sobrescribe nombres de estudios/equipos.
-      const profileProjects = projects.filter(project => project.creatorProfileId === user.id);
+      const profileProjects = projects.filter(project => project.creatorProfileId === user.id ||
+        (project.creatorId === user.id && !project.creatorProfileId &&
+          [project.creator, project.creatorName].some(name => name?.trim() === user.name?.trim())));
       await Promise.all(profileProjects.map(project => updateDoc(doc(db, 'projects', project.id), {
         creator: updatedData.name, creatorName: updatedData.name,
         creatorPhoto: updatedData.photo, creatorBio: updatedData.bio,
         creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl
       }).catch(err => console.error('No se pudo sincronizar el creador del proyecto:', err))));
-      setProjects(prev => prev.map(project => project.creatorProfileId === user.id
+      setProjects(prev => prev.map(project => (project.creatorProfileId === user.id ||
+        (project.creatorId === user.id && !project.creatorProfileId &&
+          [project.creator, project.creatorName].some(name => name?.trim() === user.name?.trim())))
         ? { ...project, creator: updatedData.name, creatorName: updatedData.name, creatorPhoto: updatedData.photo, creatorBio: updatedData.bio, creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl } : project));
       const ownedTopics = forumTopics.filter(t => t.authorId === user.id || t.authorEmail === user.email);
       await Promise.all(ownedTopics.map(t => {
@@ -1739,7 +1743,9 @@ export default function App() {
         ...(t.authorId === user.id || t.authorEmail === user.email ? { authorName: updatedData.name } : {}),
         comments: (t.comments || []).map(c => c.authorId === user.id ? { ...c, author: updatedData.name } : c)
       })));
-      setSelectedProject(current => current?.creatorProfileId === user.id
+      setSelectedProject(current => (current?.creatorProfileId === user.id ||
+        (current?.creatorId === user.id && !current?.creatorProfileId &&
+          [current?.creator, current?.creatorName].some(name => name?.trim() === user.name?.trim())))
         ? { ...current, creator: updatedData.name, creatorName: updatedData.name, creatorPhoto: updatedData.photo, creatorBio: updatedData.bio, creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl } : current);
       setProfileImageFiles({ photo: null, banner: null });
       setShowEditProfileModal(false);
@@ -1975,8 +1981,8 @@ export default function App() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {visibleFeaturedProjects.map((item, index) => (
-                    <button key={item.id} type="button" onClick={() => { trackAnalyticsEvent('toonknight_featured_click', { project_id: item.id }); openProject(item); }} className="min-w-0 text-left bg-[#1a1a1e] hover:bg-[#222226] border border-[#2e2e34] p-3.5 rounded-xl flex items-center gap-4 transition-all hover:border-amber-500/50 group">
-                      <span className={`relative block shrink-0 ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="h-14 w-20 rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
+                    <button key={item.id} type="button" onClick={() => { trackAnalyticsEvent('toonknight_featured_click', { project_id: item.id }); openProject(item); }} className="min-w-0 text-left bg-[#1a1a1e] hover:bg-[#222226] border border-[#2e2e34] p-3.5 rounded-xl flex flex-col gap-3 transition-all hover:border-amber-500/50 group">
+                      <span className={`relative block w-full ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="w-full aspect-video rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                       <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{item.creator || item.creatorName || 'Creador'}</span></span>
                     </button>
                   ))}

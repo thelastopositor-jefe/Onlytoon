@@ -82,6 +82,32 @@ service cloud.firestore {
     }
 
     // ==========================================
+    // MENSAJERIA PRIVADA
+    // ==========================================
+
+    match /conversations/{conversationId} {
+      // Firestore comprueba que la consulta solo pueda devolver
+      // conversaciones en las que participa el usuario autenticado.
+      allow get, list: if signedIn()
+        && request.auth.uid in resource.data.participants;
+
+      // Las conversaciones se crean y actualizan exclusivamente
+      // desde las Cloud Functions (Admin SDK).
+      allow create, update, delete: if false;
+
+      match /messages/{messageId} {
+        // El acceso a mensajes depende de ser participante
+        // de la conversacion padre, no de los datos del mensaje.
+        allow get, list: if signedIn()
+          && request.auth.uid in get(
+            /databases/$(database)/documents/conversations/$(conversationId)
+          ).data.participants;
+
+        allow create, update, delete: if false;
+      }
+    }
+
+    // ==========================================
     // PERFILES PUBLICOS DE CREADORES
     // ==========================================
 
@@ -108,8 +134,7 @@ service cloud.firestore {
         && request.resource.data.creatorEmail
           == request.auth.token.email
         && request.resource.data.status == 'pending'
-        && request.resource.data.isFeatured == false
-        && request.resource.data.get('hasHonorFrame', false) == false;
+        && request.resource.data.isFeatured == false;
 
       // Los administradores pueden moderar proyectos.
       // Los autores pueden editar sus proyectos, pero no
@@ -124,8 +149,6 @@ service cloud.firestore {
           && request.resource.data.status == resource.data.status
           && request.resource.data.isFeatured
             == resource.data.isFeatured
-          && request.resource.data.get('hasHonorFrame', false)
-            == resource.data.get('hasHonorFrame', false)
         )
         // Se conservan los contadores públicos de la web.
         // Solo pueden cambiar esos campos en esta operación.
@@ -146,11 +169,6 @@ service cloud.firestore {
       // Los administradores pueden borrar cualquier proyecto.
       // El autor también puede borrar su propio proyecto.
       allow delete: if isAdmin() || ownsProject();
-    }
-
-    // El registro de selección por creador es exclusivo de Cloud Functions (Admin SDK).
-    match /honorSelections/{creatorId} {
-      allow read, write: if false;
     }
 
     // ==========================================
