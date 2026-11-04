@@ -328,6 +328,8 @@ export default function App() {
   });
 
   const [projects, setProjects] = useState([]);
+  // Los nombres visibles dependen del UID, no de copias antiguas guardadas en vídeos.
+  const [projectPublicProfiles, setProjectPublicProfiles] = useState({});
   const [products, setProducts] = useState(PRODUCTS_DATA);
   const [forumTopics, setForumTopics] = useState([]);
   const [showProductModal, setShowProductModal] = useState(false);
@@ -397,6 +399,22 @@ export default function App() {
     }
     return () => unsubscribers.forEach(unsubscribe => unsubscribe());
   }, [isAdmin, user?.id, user?.email]);
+
+  // Una suscripción por cuenta distinta (no por vídeo), actualizada en tiempo real.
+  const projectProfileIds = useMemo(() => [...new Set(projects.map(project => project.creatorId).filter(Boolean))].sort().join('|'), [projects]);
+  useEffect(() => {
+    const ids = projectProfileIds ? projectProfileIds.split('|') : [];
+    const unsubscribers = ids.map(uid => onSnapshot(doc(db, 'publicProfiles', uid), snapshot => {
+      setProjectPublicProfiles(previous => ({
+        ...previous, [uid]: snapshot.exists() ? snapshot.data() : null
+      }));
+    }, error => console.warn('No se pudo leer el perfil público del proyecto:', uid, error)));
+    return () => unsubscribers.forEach(unsubscribe => unsubscribe());
+  }, [projectProfileIds]);
+
+  const projectDisplayName = project => projectPublicProfiles[project?.creatorId]?.name
+    || project?.creator || project?.creatorName || 'Creador';
+  const projectDisplayPhoto = project => projectPublicProfiles[project?.creatorId]?.photo || project?.creatorPhoto || '';
 
   useEffect(() => {
     if (!user?.id) return undefined;
@@ -577,7 +595,7 @@ export default function App() {
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchTitle = String(p.title || '').toLowerCase().includes(query);
-        const matchCreator = String(p.creator || p.creatorName || '').toLowerCase().includes(query);
+        const matchCreator = projectDisplayName(p).toLowerCase().includes(query);
         if (!matchTitle && !matchCreator) return false;
       }
 
@@ -767,7 +785,7 @@ export default function App() {
   };
 
   const handleShareProject = async (project) => {
-    const shareText = `${project.title} — ${project.creator || project.creatorName || 'ToonKnight'}`;
+    const shareText = `${project.title} — ${projectDisplayName(project)}`;
     const shareUrl = `${window.location.origin}${window.location.pathname}?project=${encodeURIComponent(project.id)}`;
     try {
       if (navigator.share) await navigator.share({ title: project.title, text: shareText, url: shareUrl });
@@ -1422,24 +1440,16 @@ export default function App() {
     }
   };
 
-  // Solo se consultan perfiles públicos; nunca los documentos privados users/{uid}.
+  // Los nombres del foro se actualizan en tiempo real al editar el perfil.
+  const forumAuthorIds = useMemo(() => [...new Set(forumTopics.flatMap(topic => [topic.authorId,
+    ...(topic.comments || []).map(comment => comment.authorId)]).filter(Boolean))].sort().join('|'), [forumTopics]);
   useEffect(() => {
-    const ids = [...new Set(forumTopics.flatMap(topic => [topic.authorId,
-      ...(topic.comments || []).map(comment => comment.authorId)]).filter(Boolean))];
-    let cancelled = false;
-    Promise.all(ids.map(async uid => {
-      try {
-        const snapshot = await getDoc(doc(db, 'publicProfiles', uid));
-        return [uid, snapshot.exists() ? snapshot.data() : null];
-      } catch (error) {
-        console.warn('No se pudo cargar un perfil público del foro:', error);
-        return [uid, null];
-      }
-    })).then(entries => {
-      if (!cancelled) setForumPublicAuthors(Object.fromEntries(entries));
-    });
-    return () => { cancelled = true; };
-  }, [forumTopics]);
+    const ids = forumAuthorIds ? forumAuthorIds.split('|') : [];
+    const unsubscribers = ids.map(uid => onSnapshot(doc(db, 'publicProfiles', uid), snapshot => {
+      setForumPublicAuthors(previous => ({ ...previous, [uid]: snapshot.exists() ? snapshot.data() : null }));
+    }, error => console.warn('No se pudo leer un perfil público del foro:', uid, error)));
+    return () => unsubscribers.forEach(unsubscribe => unsubscribe());
+  }, [forumAuthorIds]);
 
   const forumAuthor = (uid, fallbackName) => {
     const profile = uid ? forumPublicAuthors[uid] : null;
@@ -1719,34 +1729,8 @@ export default function App() {
       const newUserData = { ...user, ...updatedData };
       setUser(newUserData);
       localStorage.setItem('onlytoon_user', JSON.stringify(newUserData));
-      // Solo actualiza proyectos atribuidos explícitamente al perfil; no sobrescribe nombres de estudios/equipos.
-      const profileProjects = projects.filter(project => project.creatorProfileId === user.id ||
-        (project.creatorId === user.id && !project.creatorProfileId &&
-          [project.creator, project.creatorName].some(name => name?.trim() === user.name?.trim())));
-      await Promise.all(profileProjects.map(project => updateDoc(doc(db, 'projects', project.id), {
-        creator: updatedData.name, creatorName: updatedData.name,
-        creatorPhoto: updatedData.photo, creatorBio: updatedData.bio,
-        creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl
-      }).catch(err => console.error('No se pudo sincronizar el creador del proyecto:', err))));
-      setProjects(prev => prev.map(project => (project.creatorProfileId === user.id ||
-        (project.creatorId === user.id && !project.creatorProfileId &&
-          [project.creator, project.creatorName].some(name => name?.trim() === user.name?.trim())))
-        ? { ...project, creator: updatedData.name, creatorName: updatedData.name, creatorPhoto: updatedData.photo, creatorBio: updatedData.bio, creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl } : project));
-      const ownedTopics = forumTopics.filter(t => t.authorId === user.id || t.authorEmail === user.email);
-      await Promise.all(ownedTopics.map(t => {
-        const comments = (t.comments || []).map(c => c.authorId === user.id ? { ...c, author: updatedData.name } : c);
-        return updateDoc(doc(db, 'discussions', t.id), { authorName: updatedData.name, comments })
-          .catch(err => console.error('No se pudo sincronizar el nombre en el foro:', err));
-      }));
-      setForumTopics(prev => prev.map(t => ({
-        ...t,
-        ...(t.authorId === user.id || t.authorEmail === user.email ? { authorName: updatedData.name } : {}),
-        comments: (t.comments || []).map(c => c.authorId === user.id ? { ...c, author: updatedData.name } : c)
-      })));
-      setSelectedProject(current => (current?.creatorProfileId === user.id ||
-        (current?.creatorId === user.id && !current?.creatorProfileId &&
-          [current?.creator, current?.creatorName].some(name => name?.trim() === user.name?.trim())))
-        ? { ...current, creator: updatedData.name, creatorName: updatedData.name, creatorPhoto: updatedData.photo, creatorBio: updatedData.bio, creatorPatreon: updatedData.patreonUrl, creatorKofi: updatedData.kofiUrl, creatorWeb: updatedData.websiteUrl } : current);
+      // No reescribimos los vídeos ni comentarios históricos al renombrar la cuenta.
+      // Las vistas leen el perfil público vigente mediante UID.
       setProfileImageFiles({ photo: null, banner: null });
       setShowEditProfileModal(false);
       alert('¡Perfil actualizado con éxito en la nube!');
@@ -1983,7 +1967,7 @@ export default function App() {
                   {visibleFeaturedProjects.map((item, index) => (
                     <button key={item.id} type="button" onClick={() => { trackAnalyticsEvent('toonknight_featured_click', { project_id: item.id }); openProject(item); }} className="min-w-0 text-left bg-[#1a1a1e] hover:bg-[#222226] border border-[#2e2e34] p-3.5 rounded-xl flex flex-col gap-3 transition-all hover:border-amber-500/50 group">
                       <span className={`relative block w-full ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="w-full aspect-video rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
-                      <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{item.creator || item.creatorName || 'Creador'}</span></span>
+                      <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{projectDisplayName(item)}</span></span>
                     </button>
                   ))}
                 </div>
@@ -2012,7 +1996,7 @@ export default function App() {
                       <h4 className="text-sm font-semibold text-white truncate group-hover:text-blue-400 transition-colors">
                         {item.title}
                       </h4>
-                      <p className="text-xs text-gray-400 truncate">{item.creator} • {item.year}</p>
+                      <p className="text-xs text-gray-400 truncate">{projectDisplayName(item)} • {item.year}</p>
                     </div>
                   </div>
                 ))}
@@ -2167,7 +2151,7 @@ export default function App() {
                         >
                           {project.title}
                         </h3>
-                        <p className="text-xs text-gray-400 truncate">{project.creator}</p>
+                        <p className="text-xs text-gray-400 truncate">{projectDisplayName(project)}</p>
                       </div>
 
                       {project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-details" />}
@@ -2600,10 +2584,10 @@ export default function App() {
               </div>
               <input type="search" value={featuredSearchQuery} onChange={event => setFeaturedSearchQuery(event.target.value)} placeholder="Buscar proyectos por título o creador..." className="w-full bg-[#121212] border border-[#2e2e34] rounded-xl px-3 py-2.5 text-sm text-white" />
               <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
-                {projects.filter(project => project.status === 'approved' && (!featuredSearchQuery.trim() || `${project.title || ''} ${project.creator || project.creatorName || ''}`.toLowerCase().includes(featuredSearchQuery.trim().toLowerCase()))).map(project => (
+                {projects.filter(project => project.status === 'approved' && (!featuredSearchQuery.trim() || `${project.title || ''} ${projectDisplayName(project)}`.toLowerCase().includes(featuredSearchQuery.trim().toLowerCase()))).map(project => (
                   <div key={`featured-admin-${project.id}`} className="flex items-center gap-3 bg-[#1a1a1e] border border-[#2e2e34] rounded-xl p-3">
                     <img src={project.thumbnail} alt="" className="w-16 h-11 object-cover rounded-lg shrink-0" />
-                    <div className="flex-1 min-w-0"><p className="text-sm text-white font-semibold truncate">{project.title}</p><p className="text-xs text-gray-400 truncate">{project.creator || project.creatorName || 'Creador'}</p></div>
+                    <div className="flex-1 min-w-0"><p className="text-sm text-white font-semibold truncate">{project.title}</p><p className="text-xs text-gray-400 truncate">{projectDisplayName(project)}</p></div>
                     <button type="button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); handleToggleFeatured(project.id); }} className={`shrink-0 px-3 py-2 rounded-lg text-xs font-bold border ${project.isFeatured ? 'bg-amber-500/15 border-amber-500/40 text-amber-300' : 'bg-[#222226] border-[#3a3a42] text-gray-300 hover:border-amber-500/40'}`}>{project.isFeatured ? 'Quitar' : 'Destacar'}</button>
                   </div>
                 ))}
@@ -2621,17 +2605,17 @@ export default function App() {
                 {honorProjects.length === 0 ? <p className="text-xs text-gray-400">No hay proyectos con Escudo de Honor activo.</p> : honorProjects.map(project => (
                   <div key={`honor-active-${project.id}`} className="flex items-center gap-3 rounded-lg bg-[#1a1a1e] p-2">
                     <img src={project.thumbnail} alt="" className="h-10 w-16 rounded object-cover" />
-                    <div className="min-w-0 flex-1"><p className="truncate text-sm text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{project.creator || project.creatorName || 'Creador'}</p></div>
+                    <div className="min-w-0 flex-1"><p className="truncate text-sm text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{projectDisplayName(project)}</p></div>
                     <button type="button" disabled={Boolean(honorSavingId)} onClick={event => { event.preventDefault(); event.stopPropagation(); handleToggleHonor(project); }} className="rounded-lg border border-orange-500/40 px-3 py-2 text-xs text-orange-200 disabled:opacity-50">Desactivar</button>
                   </div>
                 ))}
               </div>
               <input type="search" value={honorSearchQuery} onChange={event => setHonorSearchQuery(event.target.value)} placeholder="Buscar proyecto o creador para activar Escudo de Honor..." className="w-full rounded-xl border border-[#2e2e34] bg-[#121212] px-3 py-2.5 text-sm text-white" />
               <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
-                {projects.filter(project => project.status === 'approved' && (!honorSearchQuery.trim() || `${project.title || ''} ${project.creator || project.creatorName || ''}`.toLowerCase().includes(honorSearchQuery.trim().toLowerCase()))).map(project => (
+                {projects.filter(project => project.status === 'approved' && (!honorSearchQuery.trim() || `${project.title || ''} ${projectDisplayName(project)}`.toLowerCase().includes(honorSearchQuery.trim().toLowerCase()))).map(project => (
                   <div key={`honor-search-${project.id}`} className="flex items-center gap-3 rounded-xl border border-[#2e2e34] bg-[#1a1a1e] p-3">
                     <img src={project.thumbnail} alt="" className="h-11 w-16 shrink-0 rounded-lg object-cover" />
-                    <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{project.creator || project.creatorName || 'Creador'}</p></div>
+                    <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{projectDisplayName(project)}</p></div>
                     <button type="button" disabled={Boolean(honorSavingId) || (!project.hasHonorFrame && !project.creatorId)} title={!project.creatorId ? 'El proyecto no tiene una cuenta de creador vinculada' : ''} onClick={event => { event.preventDefault(); event.stopPropagation(); handleToggleHonor(project); }} className={`shrink-0 rounded-lg border px-3 py-2 text-xs font-bold disabled:opacity-40 ${project.hasHonorFrame ? 'border-orange-500/40 bg-orange-500/15 text-orange-300' : 'border-[#3a3a42] bg-[#222226] text-gray-300 hover:border-orange-500/40'}`}>{honorSavingId === project.id ? 'Guardando...' : project.hasHonorFrame ? 'Quitar' : 'Activar'}</button>
                   </div>
                 ))}
@@ -2772,14 +2756,14 @@ export default function App() {
 
               {/* 3. Tarjeta del creador: destacada antes de temporadas */}
               <section className="bg-[#1c1c22] border border-[#34343d] p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                {(selectedProject.creatorId || selectedProject.creatorProfileId) ? <button type="button" onClick={() => openPublicProfile((selectedProject.creatorId || selectedProject.creatorProfileId))} aria-label={`Ver perfil de ${selectedProject.creatorName || 'creador'}`} className="shrink-0">{selectedProject.creatorPhoto ? <img
-                  src={selectedProject.creatorPhoto}
-                  alt={`Avatar de ${selectedProject.creatorName || 'creador'}`}
+                {(selectedProject.creatorId || selectedProject.creatorProfileId) ? <button type="button" onClick={() => openPublicProfile((selectedProject.creatorId || selectedProject.creatorProfileId))} aria-label={`Ver perfil de ${projectDisplayName(selectedProject)}`} className="shrink-0">{projectDisplayPhoto(selectedProject) ? <img
+                  src={projectDisplayPhoto(selectedProject)}
+                  alt={`Avatar de ${projectDisplayName(selectedProject)}`}
                   className="h-16 w-16 rounded-full border-2 border-blue-500/70 bg-[#292930] object-cover transition hover:border-blue-300 sm:h-20 sm:w-20"
                 /> : <span className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-blue-500/70 bg-[#292930] text-gray-300 sm:h-20 sm:w-20"><User className="h-8 w-8" /></span>}</button> : <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-[#45454d] bg-[#24242a] text-gray-400 sm:h-20 sm:w-20"><Building2 className="h-8 w-8" /></div>}
                 <div className="min-w-0 flex-1 text-center sm:text-left">
                   <p className="text-[10px] uppercase tracking-[0.18em] text-blue-300 font-bold mb-1">{(selectedProject.creatorId || selectedProject.creatorProfileId) ? 'Conoce al creador' : 'Autor / estudio'}</p>
-                  <h3 className="text-lg font-bold text-white">{(selectedProject.creatorId || selectedProject.creatorProfileId) ? <button type="button" onClick={() => openPublicProfile((selectedProject.creatorId || selectedProject.creatorProfileId))} className="hover:text-blue-300">{selectedProject.creatorName || selectedProject.creator || 'Creador de ToonKnight'}</button> : (selectedProject.creatorName || selectedProject.creator || 'Creador de ToonKnight')}</h3>
+                  <h3 className="text-lg font-bold text-white">{(selectedProject.creatorId || selectedProject.creatorProfileId) ? <button type="button" onClick={() => openPublicProfile((selectedProject.creatorId || selectedProject.creatorProfileId))} className="hover:text-blue-300">{projectDisplayName(selectedProject)}</button> : (selectedProject.creatorName || selectedProject.creator || 'Creador de ToonKnight')}</h3>
                   <p className="text-sm text-gray-400 mt-1 whitespace-pre-wrap">{selectedProject.creatorBio || ((selectedProject.creatorId || selectedProject.creatorProfileId) ? 'Creador de contenido en ToonKnight.' : 'Proyecto atribuido a un creador, estudio o equipo. La cuenta que lo publica puede ser diferente.')}</p>
                   <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
                     {(selectedProject.creatorPatreon || selectedProject.patreonUrl) && (
