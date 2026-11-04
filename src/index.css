@@ -27,3 +27,14 @@
   width: 26px;
   height: 26px;
 }
+/* Emblema en la zona de información de la tarjeta, no sobre la miniatura. */
+.honor-project-details {
+  position: relative;
+  padding-right: 4.25rem;
+}
+.honor-badge-image-details {
+  bottom: 10px;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+}

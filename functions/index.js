@@ -406,7 +406,7 @@ export const setProjectFeatured = onCall(async request => {
   return { featured };
 });
 
-/** Escudo de Honor: un único proyecto aprobado por creador, concedido solo por moderación. */
+/** Escudo de Honor: cada proyecto aprobado se gestiona individualmente por moderación. */
 export const setProjectHonor = onCall(async request => {
   const caller = requireUser(request);
   if (!isModerator(caller)) throw new HttpsError('permission-denied', 'Solo moderación puede gestionar Escudo de Honor.');
@@ -420,25 +420,13 @@ export const setProjectHonor = onCall(async request => {
     if (!projectSnap.exists || projectSnap.data().status !== 'approved') throw new HttpsError('failed-precondition', 'El proyecto debe estar aprobado.');
     const creatorId = String(projectSnap.data().creatorId || '').trim();
     if (!creatorId || creatorId.includes('/')) throw new HttpsError('failed-precondition', 'Este proyecto no tiene una cuenta de creador vinculada.');
-    const selectionRef = db.collection('honorSelections').doc(creatorId);
-    const selectionSnap = await transaction.get(selectionRef);
-    const previousId = String(selectionSnap.data()?.projectId || '');
-    const previousRef = previousId && previousId !== projectId ? db.collection('projects').doc(previousId) : null;
-    const previousSnap = previousRef ? await transaction.get(previousRef) : null;
-    if (enabled) {
-      if (previousSnap?.exists) transaction.update(previousRef, { hasHonorFrame: false });
-      transaction.update(projectRef, { hasHonorFrame: true });
-      transaction.set(selectionRef, { projectId, updatedAt: FieldValue.serverTimestamp(), updatedBy: caller.uid });
-    } else {
-      transaction.update(projectRef, { hasHonorFrame: false });
-      if (previousId === projectId) transaction.delete(selectionRef);
-    }
-    return { creatorId, previousProjectId: enabled && previousId !== projectId ? previousId : null };
+    transaction.update(projectRef, { hasHonorFrame: enabled });
+    return { creatorId };
   });
   await db.collection('moderationAudit').add({
     action: enabled ? 'project_honor_enabled' : 'project_honor_disabled',
     actorUid: caller.uid, projectId, creatorId: result.creatorId,
-    previousProjectId: result.previousProjectId, createdAt: FieldValue.serverTimestamp()
+    createdAt: FieldValue.serverTimestamp()
   });
   return { enabled, ...result };
 });

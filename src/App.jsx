@@ -1278,8 +1278,6 @@ export default function App() {
   const handleToggleHonor = async (project) => {
     if (!isAdmin || honorSavingId) return;
     const enabled = project.hasHonorFrame !== true;
-    const sameCreator = projects.find(item => item.id !== project.id && item.creatorId && item.creatorId === project.creatorId && item.hasHonorFrame);
-    if (enabled && sameCreator && !window.confirm(`El proyecto «${sameCreator.title}» perderá Escudo de Honor. ¿Continuar?`)) return;
     setHonorSavingId(project.id);
     try {
       const setHonor = httpsCallable(functions, 'setProjectHonor');
@@ -2138,7 +2136,6 @@ export default function App() {
                       <span className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded">
                         {(project.viewsCount || 0).toLocaleString('es-ES')} visitas
                       </span>
-                      {project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image" />}
 
                       {/* Botón Admin para Borrado Rápido */}
                       {isAdmin && (
@@ -2156,7 +2153,7 @@ export default function App() {
                     </div>
 
                     {/* Metadatos */}
-                    <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div className={`p-4 space-y-2 flex-1 flex flex-col justify-between ${project.hasHonorFrame ? 'honor-project-details' : ''}`}>
                       <div>
                         <h3
                           onClick={() => openProject(project)}
@@ -2166,6 +2163,8 @@ export default function App() {
                         </h3>
                         <p className="text-xs text-gray-400 truncate">{project.creator}</p>
                       </div>
+
+                      {project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-details" />}
 
                       {/* Badges de Categoría */}
                       <div className="flex items-center gap-2 pt-2">
@@ -2582,10 +2581,10 @@ export default function App() {
               </div>
             </section>
 
-            {/* Escudo de Honor: independiente de Destacados y limitado a un proyecto por creador. */}
+            {/* Escudo de Honor: independiente de Destacados, sin límite de proyectos por creador. */}
             <section className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-                <div><h3 className="text-xl font-bold text-white">Escudo de Honor</h3><p className="mt-1 text-xs text-gray-400">Promoción Patreon: un proyecto aprobado por creador. Al elegir otro, el anterior pierde el marco.</p></div>
+                <div><h3 className="text-xl font-bold text-white">Escudo de Honor</h3><p className="mt-1 text-xs text-gray-400">Promoción Patreon: puedes activar varios proyectos por creador. Cada escudo se gestiona individualmente.</p></div>
                 <span className="text-xs text-orange-300">{honorProjects.length} activos</span>
               </div>
               <div className="rounded-xl border border-orange-500/25 bg-orange-500/5 p-3 space-y-2">
