@@ -465,6 +465,8 @@ export default function App() {
   const [featuredOffset, setFeaturedOffset] = useState(0);
   const [featuredOrder, setFeaturedOrder] = useState([]);
   const [featuredSearchQuery, setFeaturedSearchQuery] = useState('');
+  const [honorSearchQuery, setHonorSearchQuery] = useState('');
+  const [honorSavingId, setHonorSavingId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'carouselItems'), snapshot => {
@@ -535,6 +537,8 @@ export default function App() {
   const featuredProjects = useMemo(() => {
     return projects.filter(p => p.status === 'approved' && p.isFeatured);
   }, [projects]);
+
+  const honorProjects = useMemo(() => projects.filter(project => project.status === 'approved' && project.hasHonorFrame === true), [projects]);
 
   // Orden cronológico por fecha de incorporación a ToonKnight, no por año de producción.
   const recentProjects = useMemo(() => projects
@@ -1271,6 +1275,24 @@ export default function App() {
     catch (error) { console.error(error); alert('No se pudo eliminar la imagen del carrusel.'); }
   };
 
+  const handleToggleHonor = async (project) => {
+    if (!isAdmin || honorSavingId) return;
+    const enabled = project.hasHonorFrame !== true;
+    const sameCreator = projects.find(item => item.id !== project.id && item.creatorId && item.creatorId === project.creatorId && item.hasHonorFrame);
+    if (enabled && sameCreator && !window.confirm(`El proyecto «${sameCreator.title}» perderá Escudo de Honor. ¿Continuar?`)) return;
+    setHonorSavingId(project.id);
+    try {
+      const setHonor = httpsCallable(functions, 'setProjectHonor');
+      await setHonor({ projectId: project.id, enabled });
+      // onSnapshot sincroniza todos los proyectos, también en otras sesiones.
+    } catch (error) {
+      console.error('No se pudo actualizar Escudo de Honor:', error);
+      alert(error?.message || 'No se pudo actualizar Escudo de Honor.');
+    } finally {
+      setHonorSavingId(null);
+    }
+  };
+
   const handleToggleFeatured = async (id) => {
     const project = projects.find(item => item.id === id);
     if (!project) return;
@@ -1956,7 +1978,7 @@ export default function App() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {visibleFeaturedProjects.map((item, index) => (
                     <button key={item.id} type="button" onClick={() => { trackAnalyticsEvent('toonknight_featured_click', { project_id: item.id }); openProject(item); }} className="min-w-0 text-left bg-[#1a1a1e] hover:bg-[#222226] border border-[#2e2e34] p-3.5 rounded-xl flex items-center gap-4 transition-all hover:border-amber-500/50 group">
-                      <span className={`relative block shrink-0 ${item.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}><img src={item.thumbnail} alt={item.title} className="h-14 w-20 rounded-lg object-cover" />{item.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image patreon-badge-image-small" />}</span>
+                      <span className={`relative block shrink-0 ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="h-14 w-20 rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                       <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{item.creator || item.creatorName || 'Creador'}</span></span>
                     </button>
                   ))}
@@ -1981,7 +2003,7 @@ export default function App() {
                     <span className="text-xl font-bold text-gray-500 group-hover:text-blue-400 font-mono">
                       0{idx + 1}
                     </span>
-                    <span className={`relative block shrink-0 ${item.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}><img src={item.thumbnail} alt={item.title} className="h-12 w-16 rounded-lg object-cover" />{item.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image patreon-badge-image-small" />}</span>
+                    <span className={`relative block shrink-0 ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="h-12 w-16 rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-semibold text-white truncate group-hover:text-blue-400 transition-colors">
                         {item.title}
@@ -2098,25 +2120,25 @@ export default function App() {
                 {filteredProjects.map((project) => (
                   <div
                     key={project.id}
-                    className="bg-[#1a1a1e] border border-[#2e2e34] rounded-xl overflow-hidden group hover:border-gray-500 transition-all flex flex-col justify-between"
+                    className={`bg-[#1a1a1e] border border-[#2e2e34] rounded-xl overflow-hidden group hover:border-gray-500 transition-all flex flex-col justify-between ${project.hasHonorFrame ? 'honor-project-card' : ''}`}
                   >
                     {/* Miniatura con Duración */}
                     <div
                       onClick={() => openProject(project)}
-                      className={`relative aspect-video bg-black cursor-pointer overflow-hidden ${project.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}
+                      className={`relative aspect-video bg-black cursor-pointer overflow-hidden ${project.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}
                     >
                       <img
                         src={project.thumbnail}
                         alt={project.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <span className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-0.5 rounded">
+                      <span className={`absolute ${project.hasHonorFrame ? 'top-2 left-2' : 'bottom-2 right-2'} bg-black/80 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-0.5 rounded`}>
                         {project.duration}
                       </span>
                       <span className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded">
                         {(project.viewsCount || 0).toLocaleString('es-ES')} visitas
                       </span>
-                      {project.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image" />}
+                      {project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image" />}
 
                       {/* Botón Admin para Borrado Rápido */}
                       {isAdmin && (
@@ -2447,7 +2469,7 @@ export default function App() {
                         onClick={() => openProject(proj)}
                         className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex gap-4 items-center cursor-pointer hover:border-purple-500/50 transition-colors"
                       >
-                        <span className={`relative block shrink-0 ${proj.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}><img src={proj.thumbnail || proj.image} alt={proj.title} className="h-16 w-24 rounded-lg object-cover" />{proj.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image patreon-badge-image-small" />}</span>
+                        <span className={`relative block shrink-0 ${proj.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={proj.thumbnail || proj.image} alt={proj.title} className="h-16 w-24 rounded-lg object-cover" />{proj.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                         <div className="min-w-0">
                           <h3 className="font-semibold text-white text-sm truncate">{proj.title}</h3>
                           <p className="text-gray-400 text-xs">{proj.genre}</p>
@@ -2476,7 +2498,7 @@ export default function App() {
                         onClick={() => openProject(proj)}
                         className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex gap-4 items-center cursor-pointer hover:border-blue-500/50 transition-colors"
                       >
-                        <span className={`relative block shrink-0 ${proj.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}><img src={proj.thumbnail || proj.image} alt={proj.title} className="h-16 w-24 rounded-lg object-cover" />{proj.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image patreon-badge-image-small" />}</span>
+                        <span className={`relative block shrink-0 ${proj.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={proj.thumbnail || proj.image} alt={proj.title} className="h-16 w-24 rounded-lg object-cover" />{proj.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
                             <h3 className="font-semibold text-white text-sm truncate">{proj.title}</h3>
@@ -2555,6 +2577,34 @@ export default function App() {
                     <img src={project.thumbnail} alt="" className="w-16 h-11 object-cover rounded-lg shrink-0" />
                     <div className="flex-1 min-w-0"><p className="text-sm text-white font-semibold truncate">{project.title}</p><p className="text-xs text-gray-400 truncate">{project.creator || project.creatorName || 'Creador'}</p></div>
                     <button type="button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); handleToggleFeatured(project.id); }} className={`shrink-0 px-3 py-2 rounded-lg text-xs font-bold border ${project.isFeatured ? 'bg-amber-500/15 border-amber-500/40 text-amber-300' : 'bg-[#222226] border-[#3a3a42] text-gray-300 hover:border-amber-500/40'}`}>{project.isFeatured ? 'Quitar' : 'Destacar'}</button>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Escudo de Honor: independiente de Destacados y limitado a un proyecto por creador. */}
+            <section className="space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                <div><h3 className="text-xl font-bold text-white">Escudo de Honor</h3><p className="mt-1 text-xs text-gray-400">Promoción Patreon: un proyecto aprobado por creador. Al elegir otro, el anterior pierde el marco.</p></div>
+                <span className="text-xs text-orange-300">{honorProjects.length} activos</span>
+              </div>
+              <div className="rounded-xl border border-orange-500/25 bg-orange-500/5 p-3 space-y-2">
+                <h4 className="text-sm font-semibold text-orange-200">Proyectos con marco activo</h4>
+                {honorProjects.length === 0 ? <p className="text-xs text-gray-400">No hay proyectos con Escudo de Honor activo.</p> : honorProjects.map(project => (
+                  <div key={`honor-active-${project.id}`} className="flex items-center gap-3 rounded-lg bg-[#1a1a1e] p-2">
+                    <img src={project.thumbnail} alt="" className="h-10 w-16 rounded object-cover" />
+                    <div className="min-w-0 flex-1"><p className="truncate text-sm text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{project.creator || project.creatorName || 'Creador'}</p></div>
+                    <button type="button" disabled={Boolean(honorSavingId)} onClick={event => { event.preventDefault(); event.stopPropagation(); handleToggleHonor(project); }} className="rounded-lg border border-orange-500/40 px-3 py-2 text-xs text-orange-200 disabled:opacity-50">Desactivar</button>
+                  </div>
+                ))}
+              </div>
+              <input type="search" value={honorSearchQuery} onChange={event => setHonorSearchQuery(event.target.value)} placeholder="Buscar proyecto o creador para activar Escudo de Honor..." className="w-full rounded-xl border border-[#2e2e34] bg-[#121212] px-3 py-2.5 text-sm text-white" />
+              <div className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
+                {projects.filter(project => project.status === 'approved' && (!honorSearchQuery.trim() || `${project.title || ''} ${project.creator || project.creatorName || ''}`.toLowerCase().includes(honorSearchQuery.trim().toLowerCase()))).map(project => (
+                  <div key={`honor-search-${project.id}`} className="flex items-center gap-3 rounded-xl border border-[#2e2e34] bg-[#1a1a1e] p-3">
+                    <img src={project.thumbnail} alt="" className="h-11 w-16 shrink-0 rounded-lg object-cover" />
+                    <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-white">{project.title}</p><p className="truncate text-xs text-gray-400">{project.creator || project.creatorName || 'Creador'}</p></div>
+                    <button type="button" disabled={Boolean(honorSavingId) || (!project.hasHonorFrame && !project.creatorId)} title={!project.creatorId ? 'El proyecto no tiene una cuenta de creador vinculada' : ''} onClick={event => { event.preventDefault(); event.stopPropagation(); handleToggleHonor(project); }} className={`shrink-0 rounded-lg border px-3 py-2 text-xs font-bold disabled:opacity-40 ${project.hasHonorFrame ? 'border-orange-500/40 bg-orange-500/15 text-orange-300' : 'border-[#3a3a42] bg-[#222226] text-gray-300 hover:border-orange-500/40'}`}>{honorSavingId === project.id ? 'Guardando...' : project.hasHonorFrame ? 'Quitar' : 'Activar'}</button>
                   </div>
                 ))}
               </div>
@@ -2759,7 +2809,7 @@ export default function App() {
                       (!selectedProject.creatorId && !selectedProject.creatorEmail && (project.creatorName || project.creator) === (selectedProject.creatorName || selectedProject.creator))
                     )).map(project => (
                       <button key={project.id} type="button" onClick={() => openProject(project)} className="bg-[#222226] hover:bg-[#2e2e34] border border-[#2e2e34] rounded-xl p-3 text-left flex gap-3 items-center transition-colors">
-                        <span className={`relative block w-24 shrink-0 ${project.creatorPatreonSupporter ? 'patreon-supporter-card' : ''}`}><img src={project.thumbnail || (project.youtubeId ? `https://img.youtube.com/vi/${project.youtubeId}/mqdefault.jpg` : '')} alt="" className="aspect-video w-full rounded-lg bg-black object-cover" />{project.creatorPatreonSupporter && <img src="/images/patreon-badge.svg" alt="Colaborador de Patreon" className="patreon-badge-image patreon-badge-image-small" />}</span>
+                        <span className={`relative block w-24 shrink-0 ${project.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={project.thumbnail || (project.youtubeId ? `https://img.youtube.com/vi/${project.youtubeId}/mqdefault.jpg` : '')} alt="" className="aspect-video w-full rounded-lg bg-black object-cover" />{project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                         <span className="min-w-0"><span className="block text-sm font-semibold text-white truncate">{project.title}</span><span className="block text-xs text-gray-400 mt-1">{project.format || project.type || 'Proyecto'}</span></span>
                       </button>
                     ))}

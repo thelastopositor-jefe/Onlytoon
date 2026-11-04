@@ -1,27 +1,29 @@
 @import "tailwindcss";
 
-/* Distintivo de colaboradores Patreon: borde coral/naranja y resplandor discreto. */
-.patreon-supporter-card {
-  border: 2px solid transparent;
-  background: linear-gradient(135deg, #1f2937, #111827) padding-box,
-              linear-gradient(135deg, #ff424d, #f97316) border-box;
-  border-radius: 1rem;
-  box-shadow: 0 0 12px rgba(255, 66, 77, 0.13);
+/* Escudo de Honor: solo proyectos seleccionados por moderación. */
+.honor-project-card {
+  border-color: #d8794f;
+  box-shadow: 0 0 9px rgba(235, 115, 69, .6), 0 0 23px rgba(235, 115, 69, .25), inset 0 0 4px rgba(235, 115, 69, .3);
 }
-.patreon-badge-image {
+.honor-project-thumbnail {
+  outline: 2px solid #dc8058;
+  outline-offset: -2px;
+  box-shadow: inset 0 0 9px rgba(235, 115, 69, .5);
+}
+.honor-badge-image {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  bottom: 5px;
+  right: 5px;
   z-index: 10;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, .75));
   pointer-events: none;
 }
-.patreon-badge-image-small {
-  top: 2px;
+.honor-badge-image-small {
+  bottom: 2px;
   right: 2px;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
