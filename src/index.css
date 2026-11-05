@@ -27,3 +27,23 @@
   width: 26px;
   height: 26px;
 }
+/* El escudo queda anclado a la zona gris de información, no a la miniatura. */
+.honor-project-details {
+  position: relative;
+}
+.honor-project-categories {
+  padding-right: 54px;
+}
+.honor-badge-image-details {
+  bottom: 8px;
+  right: 8px;
+}
+.honor-featured-details {
+  position: relative;
+  padding-right: 34px;
+  min-height: 46px;
+}
+.honor-featured-details .honor-badge-image-small {
+  bottom: 2px;
+  right: 0;
+}

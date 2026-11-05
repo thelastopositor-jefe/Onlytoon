@@ -2108,8 +2108,8 @@ export default function App() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {visibleFeaturedProjects.map((item, index) => (
                     <button key={item.id} type="button" onClick={() => { trackAnalyticsEvent('toonknight_featured_click', { project_id: item.id }); openProject(item); }} className="min-w-0 text-left bg-[#1a1a1e] hover:bg-[#222226] border border-[#2e2e34] p-3.5 rounded-xl flex flex-col gap-3 transition-all hover:border-amber-500/50 group">
-                      <span className={`relative block w-full ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="w-full aspect-video rounded-lg object-cover" />{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
-                      <span className="flex-1 min-w-0"><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{projectDisplayName(item)}</span></span>
+                      <span className={`relative block w-full ${item.hasHonorFrame ? 'honor-project-thumbnail' : ''}`}><img src={item.thumbnail} alt={item.title} className="w-full aspect-video rounded-lg object-cover" /></span>
+                      <span className={`relative block flex-1 min-w-0 ${item.hasHonorFrame ? 'honor-featured-details' : ''}`}><span className="block text-[10px] font-bold tracking-wider text-amber-400 uppercase">Destacado {index + 1}</span><span className="block text-sm font-semibold text-white truncate group-hover:text-amber-300 transition-colors">{item.title}</span><span className="block text-xs text-gray-400 truncate">{projectDisplayName(item)}</span>{item.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-small" />}</span>
                     </button>
                   ))}
                 </div>
@@ -2299,7 +2299,7 @@ export default function App() {
                       {project.hasHonorFrame && <img src="/images/escudo-de-honor.webp" alt="Escudo de Honor" className="honor-badge-image honor-badge-image-details" />}
 
                       {/* Badges de Categoría */}
-                      <div className="flex items-center gap-2 pt-2">
+                      <div className={`flex items-center gap-2 pt-2 flex-wrap ${project.hasHonorFrame ? 'honor-project-categories' : ''}`}>
                         <span className="text-[10px] font-bold bg-[#222226] text-gray-300 px-2 py-0.5 rounded border border-[#2e2e34]">
                           {project.type}
                         </span>
