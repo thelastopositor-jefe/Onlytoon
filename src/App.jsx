@@ -510,7 +510,25 @@ export default function App() {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [autoPlayNext, setAutoPlayNext] = useState(() => localStorage.getItem('toonknight_autoplay_next') !== 'false');
-  const [playedVideoKeys, setPlayedVideoKeys] = useState([]);
+  // Historial de esta pestaña: no se reinicia al cambiar de proyecto ni al recargar.
+  const [playedVideoKeys, setPlayedVideoKeys] = useState(() => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('toonknight_played_video_keys') || '[]');
+      return Array.isArray(saved) ? saved.filter(key => typeof key === 'string') : [];
+    } catch { return []; }
+  });
+  useEffect(() => {
+    try { sessionStorage.setItem('toonknight_played_video_keys', JSON.stringify(playedVideoKeys)); }
+    catch (error) { console.warn('No se pudo guardar el historial de reproducción:', error); }
+  }, [playedVideoKeys]);
+  // Registrar también los vídeos abiertos manualmente y los episodios elegidos por el espectador.
+  useEffect(() => {
+    if (!selectedProject?.id || !selectedProject?.youtubeId) return;
+    const key = `${selectedProject.id}:${selectedProject.youtubeId}`;
+    setPlayedVideoKeys(previous => previous.includes(key) ? previous : [...previous, key]);
+  }, [selectedProject?.id, selectedProject?.youtubeId]);
+  // Semilla por visita: cambia el creador elegido entre sesiones, pero no en cada render.
+  const creatorShuffleSeed = useRef(Math.floor(Math.random() * 0x7fffffff));
   useEffect(() => { localStorage.setItem('toonknight_autoplay_next', String(autoPlayNext)); }, [autoPlayNext]);
 
   // Prioriza episodios de la serie, después obras del mismo creador y finalmente otros creadores.
@@ -531,15 +549,34 @@ export default function App() {
       : p.creatorId ? `uploader:${p.creatorId}` : '';
     const currentKey = creatorKey(current);
     const ordered = [...eligible].sort((a, b) => getCreatedAtMillis(b.createdAt) - getCreatedAtMillis(a.createdAt));
-    const next = (currentKey && ordered.find(p => creatorKey(p) === currentKey)) || ordered.find(p => creatorKey(p) !== currentKey);
-    return next ? { project: next, youtubeId: next.youtubeId } : null;
+    // Se mantiene el orden habitual para el mismo creador.
+    const sameCreator = currentKey && ordered.find(p => creatorKey(p) === currentKey);
+    if (sameCreator) return { project: sameCreator, youtubeId: sameCreator.youtubeId };
+
+    // Al cambiar de creador, se escoge uno al azar entre los disponibles.
+    // La elección es estable mientras se muestra este vídeo (también para el botón «Siguiente»).
+    const otherCreators = new Map();
+    for (const project of ordered) {
+      const key = creatorKey(project) || `project:${project.id}`;
+      if (key !== currentKey && !otherCreators.has(key)) otherCreators.set(key, project);
+    }
+    const candidates = [...otherCreators.values()];
+    if (!candidates.length) return null;
+    const choiceKey = `${current.id}:${current.youtubeId}:${[...seenKeys].sort().join('|')}`;
+    let hash = creatorShuffleSeed.current;
+    for (let i = 0; i < choiceKey.length; i++) hash = Math.imul(hash ^ choiceKey.charCodeAt(i), 16777619);
+    const next = candidates[(hash >>> 0) % candidates.length];
+    return { project: next, youtubeId: next.youtubeId };
   };
   const nextToonKnightVideo = getNextToonKnightVideo(selectedProject);
   const playNextToonKnightVideo = () => {
     if (!selectedProject) return;
     const next = getNextToonKnightVideo(selectedProject);
     if (!next) return;
-    setPlayedVideoKeys(prev => [...prev, `${selectedProject.id}:${selectedProject.youtubeId}`]);
+    setPlayedVideoKeys(prev => {
+      const key = `${selectedProject.id}:${selectedProject.youtubeId}`;
+      return prev.includes(key) ? prev : [...prev, key];
+    });
     if (next.project.id === selectedProject.id) {
       setActiveSeasonIndex(next.episode.seasonIndex);
       setSelectedProject(current => current ? { ...current, youtubeId: next.youtubeId } : current);
@@ -833,7 +870,6 @@ export default function App() {
     url.searchParams.set('project', project.id);
     window.history.pushState({ projectId: project.id }, '', `${url.pathname}${url.search}${url.hash}`);
     setSelectedPublicProfileId('');
-    if (!preservePlayback) setPlayedVideoKeys([]);
     setSelectedProject(project);
     setActiveTab('explorar');
     setActiveSeasonIndex(0);
