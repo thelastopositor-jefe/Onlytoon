@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { CAROUSEL_ITEMS } from './data/carouselData';
 import JobsSection from './components/JobsSection';
 import MessagingCenter from './components/MessagingCenter';
@@ -10,6 +10,72 @@ import PatreonManager from './components/PatreonManager';
 import BroadcastManager from './components/BroadcastManager';
 import ModerationAudit from './components/ModerationAudit';
 const TOONKNIGHT_LOGO = '/images/logo/toonknight.png';
+
+// Carga compartida de la API oficial de YouTube (permite detectar el final del vídeo).
+let toonKnightYouTubeApiPromise;
+const loadToonKnightYouTubeApi = () => {
+  if (typeof window === 'undefined') return Promise.reject(new Error('YouTube requiere navegador'));
+  if (window.YT?.Player) return Promise.resolve(window.YT);
+  if (toonKnightYouTubeApiPromise) return toonKnightYouTubeApiPromise;
+  toonKnightYouTubeApiPromise = new Promise((resolve, reject) => {
+    const previousReady = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof previousReady === 'function') previousReady();
+      resolve(window.YT);
+    };
+    if (!document.querySelector('script[data-toonknight-youtube-api]')) {
+      const script = document.createElement('script');
+      script.src = 'https://www.youtube.com/iframe_api';
+      script.async = true;
+      script.dataset.toonknightYoutubeApi = 'true';
+      script.onerror = () => {
+        toonKnightYouTubeApiPromise = null;
+        reject(new Error('No se pudo cargar la API de YouTube'));
+      };
+      document.head.appendChild(script);
+    }
+  });
+  return toonKnightYouTubeApiPromise;
+};
+
+function ToonKnightPlayer({ videoId, title, onEnded }) {
+  const containerRef = useRef(null);
+  const playerRef = useRef(null);
+  const endedRef = useRef(onEnded);
+  const lastIdRef = useRef(videoId);
+  useEffect(() => { endedRef.current = onEnded; }, [onEnded]);
+  useEffect(() => {
+    let cancelled = false;
+    loadToonKnightYouTubeApi().then(YT => {
+      if (cancelled || !containerRef.current) return;
+      playerRef.current = new YT.Player(containerRef.current, {
+        width: '100%', height: '100%', videoId: lastIdRef.current,
+        playerVars: { autoplay: 1, playsinline: 1, rel: 0, origin: window.location.origin },
+        events: {
+          onReady: event => {
+            if (cancelled) return;
+            if (lastIdRef.current) event.target.loadVideoById(lastIdRef.current);
+          },
+          onStateChange: event => {
+            if (!cancelled && event.data === YT.PlayerState.ENDED) endedRef.current?.();
+          }
+        }
+      });
+    }).catch(error => console.error('Error al cargar el reproductor:', error));
+    return () => {
+      cancelled = true;
+      try { playerRef.current?.destroy(); } catch (error) { console.warn('No se pudo cerrar el reproductor:', error); }
+      playerRef.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (!videoId || videoId === lastIdRef.current) return;
+    lastIdRef.current = videoId;
+    try { playerRef.current?.loadVideoById(videoId); } catch (error) { console.warn('No se pudo cambiar de vídeo:', error); }
+  }, [videoId]);
+  return <div className="w-full h-full" aria-label={title || 'Reproductor de ToonKnight'}><div ref={containerRef} className="w-full h-full" /></div>;
+}
+
 
 const trackAnalyticsEvent = (event, parameters = {}) => {
   if (typeof window !== 'undefined' && Array.isArray(window.dataLayer)) {
@@ -443,6 +509,45 @@ export default function App() {
   }, []);
 
   const [selectedProject, setSelectedProject] = useState(null);
+  const [autoPlayNext, setAutoPlayNext] = useState(() => localStorage.getItem('toonknight_autoplay_next') !== 'false');
+  const [playedVideoKeys, setPlayedVideoKeys] = useState([]);
+  useEffect(() => { localStorage.setItem('toonknight_autoplay_next', String(autoPlayNext)); }, [autoPlayNext]);
+
+  // Prioriza episodios de la serie, después obras del mismo creador y finalmente otros creadores.
+  // Se excluyen vídeos ya reproducidos para evitar bucles de reproducción.
+  const getNextToonKnightVideo = (current, seen = playedVideoKeys) => {
+    if (!current) return null;
+    const seenKeys = new Set([...seen, `${current.id}:${current.youtubeId}`]);
+    const episodes = (current.seasons || []).flatMap((season, seasonIndex) =>
+      (season.episodes || []).map((episode, episodeIndex) => ({ ...episode, seasonIndex, episodeIndex })));
+    const currentEpisodeIndex = episodes.findIndex(ep => ep.youtubeId === current.youtubeId);
+    if (normalizeFilterText(current.format) === 'serie' && currentEpisodeIndex >= 0) {
+      const nextEpisode = episodes.slice(currentEpisodeIndex + 1).find(ep => ep.youtubeId && !seenKeys.has(`${current.id}:${ep.youtubeId}`));
+      if (nextEpisode) return { project: current, youtubeId: nextEpisode.youtubeId, episode: nextEpisode };
+    }
+    const eligible = projects.filter(p => p.id !== current.id && p.youtubeId && (p.status === 'approved' || p.status === 'aprobado') && !seenKeys.has(`${p.id}:${p.youtubeId}`));
+    const creatorKey = p => p.creatorProfileId ? `profile:${p.creatorProfileId}`
+      : (p.creatorName || p.creator) ? `name:${normalizeFilterText(p.creatorName || p.creator)}`
+      : p.creatorId ? `uploader:${p.creatorId}` : '';
+    const currentKey = creatorKey(current);
+    const ordered = [...eligible].sort((a, b) => getCreatedAtMillis(b.createdAt) - getCreatedAtMillis(a.createdAt));
+    const next = (currentKey && ordered.find(p => creatorKey(p) === currentKey)) || ordered.find(p => creatorKey(p) !== currentKey);
+    return next ? { project: next, youtubeId: next.youtubeId } : null;
+  };
+  const nextToonKnightVideo = getNextToonKnightVideo(selectedProject);
+  const playNextToonKnightVideo = () => {
+    if (!selectedProject) return;
+    const next = getNextToonKnightVideo(selectedProject);
+    if (!next) return;
+    setPlayedVideoKeys(prev => [...prev, `${selectedProject.id}:${selectedProject.youtubeId}`]);
+    if (next.project.id === selectedProject.id) {
+      setActiveSeasonIndex(next.episode.seasonIndex);
+      setSelectedProject(current => current ? { ...current, youtubeId: next.youtubeId } : current);
+    } else {
+      openProject(next.project, true);
+    }
+  };
+
   const [likedProjectIds, setLikedProjectIds] = useState(() => new Set());
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('Derechos de autor');
@@ -721,13 +826,14 @@ export default function App() {
     setSeasons(current => [...current, { seasonNumber: current.length + 1, episodes: [{ title: 'Episodio 1', youtubeUrl: '', episodeNumber: 1 }] }]);
   };
 
-  const openProject = (project) => {
+  const openProject = (project, preservePlayback = false) => {
     if (!project?.id) return;
     const url = new URL(window.location.href);
     url.searchParams.delete('creator');
     url.searchParams.set('project', project.id);
     window.history.pushState({ projectId: project.id }, '', `${url.pathname}${url.search}${url.hash}`);
     setSelectedPublicProfileId('');
+    if (!preservePlayback) setPlayedVideoKeys([]);
     setSelectedProject(project);
     setActiveTab('explorar');
     setActiveSeasonIndex(0);
@@ -2689,13 +2795,7 @@ export default function App() {
           <div className="bg-[#161618] border border-[#2e2e34] w-full max-w-5xl max-h-[92vh] rounded-3xl overflow-y-auto shadow-2xl my-auto">
             {/* 1. Reproductor principal */}
             <div className="relative aspect-video bg-black">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${selectedProject.youtubeId || ''}?autoplay=1`}
-                title={selectedProject.title || 'Reproductor de ToonKnight'}
-                className="w-full h-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              <ToonKnightPlayer videoId={selectedProject.youtubeId} title={selectedProject.title} onEnded={() => { if (autoPlayNext) playNextToonKnightVideo(); }} />
               <button
                 onClick={closeProject}
                 aria-label="Cerrar detalle del proyecto"
@@ -2706,6 +2806,17 @@ export default function App() {
             </div>
 
             <div className="px-5 py-5 sm:px-7 lg:px-8 space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#222226] border border-[#33333b] p-3">
+                <label className="flex items-center gap-2 text-sm font-semibold text-white cursor-pointer">
+                  <input type="checkbox" checked={autoPlayNext} onChange={e => setAutoPlayNext(e.target.checked)} className="accent-blue-500 w-4 h-4" />
+                  Reproducción continua
+                </label>
+                {nextToonKnightVideo ? (
+                  <button type="button" onClick={playNextToonKnightVideo} className="text-xs font-bold text-blue-300 hover:text-white text-right">
+                    Siguiente: {nextToonKnightVideo.episode?.title || nextToonKnightVideo.project.title} ▶
+                  </button>
+                ) : <span className="text-xs text-gray-400">No hay más vídeos disponibles</span>}
+              </div>
               {/* 2. Título, interacción y géneros */}
               <section className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
@@ -2795,7 +2906,7 @@ export default function App() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {(selectedProject.seasons[Math.min(activeSeasonIndex, selectedProject.seasons.length - 1)]?.episodes || []).map((ep, idx) => (
                       <div key={ep.id || `${selectedProject.id}-s${activeSeasonIndex}-e${idx}`} className={`p-3 rounded-xl flex items-center gap-3 transition-colors border ${selectedProject.youtubeId === ep.youtubeId ? 'bg-blue-950/40 border-blue-600' : 'bg-[#222226] hover:bg-[#2e2e34] border-[#2e2e34]'}`}>
-                        <button type="button" onClick={() => setSelectedProject(current => current ? { ...current, youtubeId: ep.youtubeId } : current)} className="flex-1 min-w-0 text-left flex items-center gap-3">
+                        <button type="button" onClick={() => { setActiveSeasonIndex(activeSeasonIndex); setSelectedProject(current => current ? { ...current, youtubeId: ep.youtubeId } : current); }} className="flex-1 min-w-0 text-left flex items-center gap-3">
                           <img src={ep.thumbnail || (ep.youtubeId ? `https://img.youtube.com/vi/${ep.youtubeId}/mqdefault.jpg` : selectedProject.thumbnail)} alt="" className="w-24 aspect-video object-cover rounded-lg bg-black" />
                           <span className="min-w-0"><span className="block text-[10px] text-blue-400 font-bold uppercase">Episodio {ep.episodeNumber || idx + 1}</span><span className="block text-xs font-bold text-gray-200 mt-1">{ep.title || `Episodio ${idx + 1}`}</span><span className="block text-[10px] text-gray-400 mt-1">Reproducir episodio</span></span>
                         </button>
