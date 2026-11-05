@@ -2,13 +2,13 @@
 
 /* Escudo de Honor: solo proyectos seleccionados por moderación. */
 .honor-project-card {
-  border-color: #d8794f;
-  box-shadow: 0 0 9px rgba(235, 115, 69, .6), 0 0 23px rgba(235, 115, 69, .25), inset 0 0 4px rgba(235, 115, 69, .3);
+  border-color: #ff202e;
+  box-shadow: 0 0 10px rgba(255, 25, 40, .75), 0 0 26px rgba(255, 0, 24, .38), inset 0 0 5px rgba(255, 35, 50, .4);
 }
 .honor-project-thumbnail {
-  outline: 2px solid #dc8058;
+  outline: 2px solid #ff2638;
   outline-offset: -2px;
-  box-shadow: inset 0 0 9px rgba(235, 115, 69, .5);
+  box-shadow: inset 0 0 10px rgba(255, 25, 40, .65);
 }
 .honor-badge-image {
   position: absolute;
@@ -26,15 +26,4 @@
   right: 2px;
   width: 26px;
   height: 26px;
-}
-/* Emblema en la zona de información de la tarjeta, no sobre la miniatura. */
-.honor-project-details {
-  position: relative;
-  padding-right: 4.25rem;
-}
-.honor-badge-image-details {
-  bottom: 10px;
-  right: 10px;
-  width: 48px;
-  height: 48px;
 }
