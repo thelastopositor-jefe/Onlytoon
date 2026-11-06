@@ -619,7 +619,7 @@ export default function App() {
   const [carouselStored, setCarouselStored] = useState(false);
   const [showCarouselEditor, setShowCarouselEditor] = useState(false);
   const [editingCarouselId, setEditingCarouselId] = useState(null);
-  const [carouselForm, setCarouselForm] = useState({ title: '', tagline: '', category: '', thumbnail: '', thumbnailPath: '', videoUrl: '', linkText: 'Ver proyecto' });
+  const [carouselForm, setCarouselForm] = useState({ title: '', tagline: '', category: '', thumbnail: '', thumbnailPath: '', videoUrl: '', linkText: 'Ver proyecto', darkOverlay: true });
   const [carouselImageFile, setCarouselImageFile] = useState(null);
   const [savingCarousel, setSavingCarousel] = useState(false);
   const [featuredOffset, setFeaturedOffset] = useState(0);
@@ -1352,6 +1352,7 @@ export default function App() {
     try {
       await Promise.all(CAROUSEL_ITEMS.slice(0, 8).map((item, index) => setDoc(doc(db, 'carouselItems', `slide-${item.id || index + 1}`), {
         ...item,
+        darkOverlay: item.darkOverlay !== false,
         order: index,
         createdBy: user?.id || '',
         updatedBy: user?.id || '',
@@ -1367,7 +1368,7 @@ export default function App() {
   const openNewCarouselItem = () => {
     if (!isAdmin || !carouselStored || carouselItems.length >= 8) return;
     setEditingCarouselId(null);
-    setCarouselForm({ title: '', tagline: '', category: '', thumbnail: '', thumbnailPath: '', videoUrl: '', linkText: 'Ver proyecto' });
+    setCarouselForm({ title: '', tagline: '', category: '', thumbnail: '', thumbnailPath: '', videoUrl: '', linkText: 'Ver proyecto', darkOverlay: true });
     setCarouselImageFile(null);
     setShowCarouselEditor(true);
   };
@@ -1376,7 +1377,7 @@ export default function App() {
     setEditingCarouselId(item.id);
     setCarouselForm({
       title: item.title || '', tagline: item.tagline || '', category: item.category || '',
-      thumbnail: item.thumbnail || '', thumbnailPath: item.thumbnailPath || '', videoUrl: item.videoUrl || '', linkText: item.linkText || 'Ver proyecto'
+      thumbnail: item.thumbnail || '', thumbnailPath: item.thumbnailPath || '', videoUrl: item.videoUrl || '', linkText: item.linkText || 'Ver proyecto', darkOverlay: item.darkOverlay !== false
     });
     setCarouselImageFile(null);
     setShowCarouselEditor(true);
@@ -2044,7 +2045,9 @@ export default function App() {
     className="w-full h-full object-contain sm:object-cover opacity-100 scale-100"
   />
   {/* Gradiente más suave: deja ver mejor la imagen sin perder legibilidad del texto */}
-  <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/55 via-transparent to-transparent sm:bg-gradient-to-r sm:from-[#121212]/75 sm:via-[#121212]/35 sm:to-transparent" />
+  {carouselItems[heroIndex]?.darkOverlay !== false && (
+    <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/55 via-transparent to-transparent sm:bg-gradient-to-r sm:from-[#121212]/75 sm:via-[#121212]/35 sm:to-transparent" />
+  )}
 </div>
 
                 {/* Contenido Hero */}
@@ -3016,6 +3019,10 @@ export default function App() {
             <label className="block text-xs text-gray-400">URL de imagen (opcional si subes un archivo)<input value={carouselForm.thumbnail} onChange={event => setCarouselForm(current => ({ ...current, thumbnail: event.target.value, thumbnailPath: event.target.value === current.thumbnail ? current.thumbnailPath : '' }))} placeholder="/images/carousel/imagen.jpg o https://..." className="mt-1 w-full rounded-xl border border-[#34343b] bg-[#111113] p-3 text-sm text-white" /></label><label className="block text-xs text-gray-400">O subir imagen desde tu dispositivo<input type="file" accept="image/*" onChange={event => setCarouselImageFile(event.target.files?.[0] || null)} className="mt-1 block w-full text-xs text-gray-400 file:mr-3 file:rounded-lg file:border-0 file:bg-[#292930] file:px-3 file:py-2 file:text-xs file:font-semibold file:text-gray-200" /><span className="mt-1 block text-[10px] text-gray-500">Imagen de hasta 5 MB. {carouselImageFile ? `Seleccionada: ${carouselImageFile.name}` : ''}</span></label>
             <label className="block text-xs text-gray-400">Enlace del botón<input required type="url" value={carouselForm.videoUrl} onChange={event => setCarouselForm(current => ({ ...current, videoUrl: event.target.value }))} placeholder="https://..." className="mt-1 w-full rounded-xl border border-[#34343b] bg-[#111113] p-3 text-sm text-white" /></label>
             <label className="block text-xs text-gray-400">Texto del botón<input value={carouselForm.linkText} onChange={event => setCarouselForm(current => ({ ...current, linkText: event.target.value }))} maxLength={40} className="mt-1 w-full rounded-xl border border-[#34343b] bg-[#111113] p-3 text-sm text-white" /></label>
+            <label className="flex items-start gap-3 rounded-xl border border-[#34343b] bg-[#111113] p-3 cursor-pointer">
+              <input type="checkbox" checked={carouselForm.darkOverlay !== false} onChange={event => setCarouselForm(current => ({ ...current, darkOverlay: event.target.checked }))} className="mt-0.5 h-4 w-4 accent-blue-600" />
+              <span className="text-xs text-gray-300"><span className="block font-semibold text-white">Aplicar degradado oscuro a esta imagen</span><span className="mt-1 block text-gray-400">Desmárcalo para mostrar el banner sin el oscurecimiento. Cada imagen conserva su propia elección.</span></span>
+            </label>
             <div className="flex gap-2"><button type="button" onClick={() => { setShowCarouselEditor(false); setCarouselImageFile(null); }} className="flex-1 rounded-xl bg-[#292930] py-3 text-sm text-gray-200">Cancelar</button><button type="submit" disabled={savingCarousel} className="flex-1 rounded-xl bg-blue-600 py-3 text-sm font-bold text-white disabled:opacity-50">{savingCarousel ? 'Guardando...' : 'Guardar'}</button></div>
           </form>
         </div>
