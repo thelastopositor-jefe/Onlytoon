@@ -7,6 +7,7 @@ import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { onDocumentCreated, onDocumentUpdated, onDocumentDeleted } from 'firebase-functions/v2/firestore';
 import { setGlobalOptions } from 'firebase-functions/v2';
 import { onSchedule } from 'firebase-functions/v2/scheduler';
+import { defineSecret } from 'firebase-functions/params';
 
 initializeApp();
 setGlobalOptions({ region: 'europe-west1', maxInstances: 10 });
@@ -753,4 +754,63 @@ export const deleteUserAccount = onCall({ timeoutSeconds: 540, memory: '1GiB' },
   await db.collection('publicProfiles').doc(targetUid).delete().catch(() => {});
   await auth.deleteUser(targetUid);
   return { deleted: true, projectsDeleted: projectRefs.size, jobsDeleted: ownedJobs.size, discussionsDeleted: ownedTopics.size, auditId: auditRef.id };
+});
+
+
+/** Informe diario de moderación. Resend debe tener verificado el dominio remitente. */
+const RESEND_API_KEY = defineSecret('RESEND_API_KEY');
+const MODERATION_DIGEST_TO = 'thelastopositor@gmail.com';
+const MODERATION_DIGEST_FROM = 'ToonKnight <notificaciones@toonknight.com>';
+const escapeEmailHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
+export const sendDailyModerationDigest = onSchedule({
+  schedule: '0 9 * * *',
+  timeZone: 'Europe/Madrid',
+  region: 'europe-west1',
+  maxInstances: 1,
+  secrets: [RESEND_API_KEY]
+}, async () => {
+  const stateRef = db.collection('systemSettings').doc('dailyModerationDigest');
+  const stateSnap = await stateRef.get();
+  const previous = stateSnap.data()?.lastCheckedAt?.toDate?.() || new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const now = new Date();
+  // discussions.createdAt se almacena como cadena ISO en la aplicación.
+  const [pendingProjects, pendingReports, pendingJobReports, recentTopics] = await Promise.all([
+    db.collection('projects').where('status', '==', 'pending').count().get(),
+    db.collection('reports').where('status', '==', 'pending').count().get(),
+    db.collection('jobReports').where('status', '==', 'pending').count().get(),
+    db.collection('discussions').where('createdAt', '>=', previous.toISOString()).get()
+  ]);
+  const projects = pendingProjects.data().count;
+  const reports = pendingReports.data().count;
+  const jobReports = pendingJobReports.data().count;
+  const topics = recentTopics.docs.filter(doc => {
+    const createdAt = Date.parse(doc.data().createdAt || '');
+    return Number.isFinite(createdAt) && createdAt > previous.getTime() && createdAt <= now.getTime();
+  });
+  if (!projects && !reports && !jobReports && !topics.length) {
+    await stateRef.set({ lastCheckedAt: Timestamp.fromDate(now), lastResult: 'no_activity' }, { merge: true });
+    return;
+  }
+  const topicItems = topics.slice(0, 15).map(doc => `<li>${escapeEmailHtml(doc.data().title || 'Sin título')}</li>`).join('');
+  const html = `<div style="font-family:Arial,sans-serif;max-width:580px;margin:auto;color:#222">
+    <h2>ToonKnight · Informe de moderación</h2>
+    <p>Resumen del ${escapeEmailHtml(now.toLocaleDateString('es-ES', { timeZone: 'Europe/Madrid' }))}:</p>
+    <ul><li><b>Vídeos pendientes:</b> ${projects}</li>
+    <li><b>Denuncias pendientes:</b> ${reports}</li>
+    <li><b>Denuncias de ofertas de trabajo:</b> ${jobReports}</li>
+    <li><b>Nuevos temas de comunidad:</b> ${topics.length}</li></ul>
+    ${topics.length ? `<h3>Temas nuevos</h3><ul>${topicItems}</ul>` : ''}
+    <p><a href="https://toonknight.com/">Entrar a ToonKnight</a></p>
+    <p style="color:#777;font-size:12px">Mensaje automático de moderación.</p></div>`;
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${RESEND_API_KEY.value()}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ from: MODERATION_DIGEST_FROM, to: [MODERATION_DIGEST_TO], subject: `ToonKnight · Moderación: ${projects} vídeos, ${reports + jobReports} denuncias, ${topics.length} temas`, html })
+  });
+  if (!response.ok) {
+    const detail = (await response.text()).slice(0, 500);
+    throw new Error(`Resend no pudo enviar el informe (${response.status}): ${detail}`);
+  }
+  await stateRef.set({ lastCheckedAt: Timestamp.fromDate(now), lastSentAt: FieldValue.serverTimestamp(), lastResult: 'sent' }, { merge: true });
 });
